@@ -263,3 +263,177 @@ export function esriCapitalProjectsToGeoJSON(
       })),
   };
 }
+
+// ---------------------------------------------------------------------------
+// City Pavement Maintenance & Roads Priority
+// ---------------------------------------------------------------------------
+
+const PAVEMENT_MAINTENANCE_BASE =
+  "https://services7.arcgis.com/p0Gk2nDbPs7KEqSZ/ArcGIS/rest/services/PavementMaintenance_1/FeatureServer/0";
+
+const ROADS_PRIORITY_BASE =
+  "https://services7.arcgis.com/p0Gk2nDbPs7KEqSZ/ArcGIS/rest/services/RoadsMaintenanceCrewPriority_1/FeatureServer/0";
+
+export async function queryPavementMaintenance(params: ArcGISQueryParams) {
+  return queryFeatureService(PAVEMENT_MAINTENANCE_BASE, params);
+}
+
+export async function queryRoadsPriority(params: ArcGISQueryParams) {
+  return queryFeatureService(ROADS_PRIORITY_BASE, params);
+}
+
+export interface PavementMaintenanceFeature {
+  attributes: {
+    OBJECTID_1: number;
+    STREET: string | null;
+    RCLNAME: string | null;
+    RCLCOND: string | null;
+    RCLTYPE: string | null;
+    RCLCLASS: string | null;
+    SPEEDLIMIT: number | null;
+    MILES: number | null;
+    MILE: number | null;
+    YearRepave: number | null;
+  };
+  geometry?: { paths: number[][][] };
+}
+
+export interface RoadsPriorityFeature {
+  attributes: {
+    OBJECTID_1: number;
+    ROADNAME: string | null;
+    MILES: number | null;
+    Priority: number | null;
+    SFFRC: number | null;
+  };
+  geometry?: { paths: number[][][] };
+}
+
+export const ROAD_CONDITIONS: Record<string, string> = {
+  GOOD: "Good",
+  FAIR: "Fair",
+  " ": "Not Rated",
+};
+
+export const ROAD_CONDITION_COLORS: Record<string, string> = {
+  GOOD: "#22c55e",
+  FAIR: "#f59e0b",
+  " ": "#d1d5db",
+};
+
+export const MAINTENANCE_PRIORITY: Record<number, string> = {
+  1: "Highest",
+  2: "Medium",
+  3: "Lower",
+  0: "None",
+};
+
+export const MAINTENANCE_PRIORITY_COLORS: Record<number, string> = {
+  1: "#ef4444",
+  2: "#f97316",
+  3: "#eab308",
+  0: "#9ca3af",
+};
+
+const CURRENT_YEAR = new Date().getFullYear();
+
+export function repaveAgeColor(yearRepave: number | null): string {
+  if (!yearRepave || yearRepave <= 0) return "#9ca3af";
+  const age = CURRENT_YEAR - yearRepave;
+  if (age <= 5) return "#22c55e";
+  if (age <= 10) return "#84cc16";
+  if (age <= 15) return "#eab308";
+  if (age <= 20) return "#f97316";
+  if (age <= 25) return "#ef4444";
+  return "#991b1b";
+}
+
+export const REPAVE_AGE_LEGEND: { label: string; color: string }[] = [
+  { label: "0–5 years", color: "#22c55e" },
+  { label: "6–10 years", color: "#84cc16" },
+  { label: "11–15 years", color: "#eab308" },
+  { label: "16–20 years", color: "#f97316" },
+  { label: "21–25 years", color: "#ef4444" },
+  { label: "26+ years", color: "#991b1b" },
+  { label: "Unknown", color: "#9ca3af" },
+];
+
+export const ROAD_SURFACE_TYPES: Record<string, string> = {
+  ASPHALT: "Asphalt",
+  DIRT: "Dirt",
+  "BASE COURSE": "Base Course",
+  "CHIP SEAL": "Chip Seal",
+  "COLD MILLINGS": "Cold Millings",
+  GRAVEL: "Gravel",
+  CONCRETE: "Concrete",
+  PAVEMENT: "Pavement",
+  "DIRT 2-TRACK": "Dirt 2-Track",
+  "DIRT STABLE": "Dirt Stabilized",
+  PLANNED: "Planned",
+};
+
+export function esriPavementToGeoJSON(
+  features: PavementMaintenanceFeature[]
+): GeoJSON.FeatureCollection {
+  return {
+    type: "FeatureCollection",
+    features: features
+      .filter((f) => f.geometry?.paths?.length)
+      .map((f) => {
+        const paths = f.geometry!.paths;
+        const geometry: GeoJSON.Geometry =
+          paths.length === 1
+            ? { type: "LineString", coordinates: paths[0] }
+            : { type: "MultiLineString", coordinates: paths };
+
+        const cond = (f.attributes.RCLCOND ?? " ").trim() || " ";
+        const yearRepave = f.attributes.YearRepave ?? 0;
+        const age = yearRepave > 0 ? CURRENT_YEAR - yearRepave : null;
+
+        return {
+          type: "Feature" as const,
+          id: f.attributes.OBJECTID_1,
+          geometry,
+          properties: {
+            ...f.attributes,
+            condition_label: ROAD_CONDITIONS[cond] ?? cond,
+            surface_label:
+              ROAD_SURFACE_TYPES[(f.attributes.RCLTYPE ?? "").trim()] ??
+              f.attributes.RCLTYPE ??
+              "Unknown",
+            repave_age: age,
+            repave_age_color: repaveAgeColor(yearRepave),
+          },
+        };
+      }),
+  };
+}
+
+export function esriRoadsPriorityToGeoJSON(
+  features: RoadsPriorityFeature[]
+): GeoJSON.FeatureCollection {
+  return {
+    type: "FeatureCollection",
+    features: features
+      .filter((f) => f.geometry?.paths?.length)
+      .map((f) => {
+        const paths = f.geometry!.paths;
+        const geometry: GeoJSON.Geometry =
+          paths.length === 1
+            ? { type: "LineString", coordinates: paths[0] }
+            : { type: "MultiLineString", coordinates: paths };
+
+        const pri = f.attributes.Priority ?? 0;
+        return {
+          type: "Feature" as const,
+          id: f.attributes.OBJECTID_1,
+          geometry,
+          properties: {
+            ...f.attributes,
+            priority_label: MAINTENANCE_PRIORITY[pri] ?? `Priority ${pri}`,
+            priority_color: MAINTENANCE_PRIORITY_COLORS[pri] ?? "#9ca3af",
+          },
+        };
+      }),
+  };
+}

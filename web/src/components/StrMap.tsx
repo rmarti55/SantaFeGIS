@@ -19,6 +19,13 @@ interface StrProperties {
   zoning: string | null;
   issue_date: string | null;
   expiration_date: string | null;
+  owner_name: string | null;
+  owner_city: string | null;
+  owner_state: string | null;
+  is_head_of_family: number | null;
+  second_home_score: number | null;
+  is_likely_second_home: boolean | null;
+  parcel_matched: boolean;
 }
 
 interface Filters {
@@ -26,6 +33,7 @@ interface Filters {
   rentalType: string;
 }
 
+type ColorMode = "rental_type" | "ownership";
 type ViewMode = "markers" | "heatmap";
 
 const RENTAL_TYPE_COLORS: Record<string, string> = {
@@ -37,6 +45,20 @@ const RENTAL_TYPE_COLORS: Record<string, string> = {
 function markerColor(rentalType: string | null): string {
   if (!rentalType) return "#94a3b8";
   return RENTAL_TYPE_COLORS[rentalType] ?? "#94a3b8";
+}
+
+function ownershipColor(p: StrProperties): string {
+  if (!p.parcel_matched) return "#94a3b8";
+  if (p.is_likely_second_home) return "#ef4444";
+  if (p.second_home_score != null && p.second_home_score >= 2) return "#f59e0b";
+  return "#22c55e";
+}
+
+function ownershipLabel(p: StrProperties): string {
+  if (!p.parcel_matched) return "No parcel match";
+  if (p.is_likely_second_home) return "Likely Second Home";
+  if (p.second_home_score != null && p.second_home_score >= 2) return "Possible Second Home";
+  return "Likely Primary Residence";
 }
 
 function formatDate(iso: string | null): string {
@@ -70,6 +92,7 @@ export default function StrMap() {
   const [count, setCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("markers");
+  const [colorMode, setColorMode] = useState<ColorMode>("ownership");
   const [filters, setFilters] = useState<Filters>({
     status: "",
     rentalType: "",
@@ -100,17 +123,21 @@ export default function StrMap() {
   }, []);
 
   const renderMarkers = useCallback(
-    (geojson: GeoJSON.FeatureCollection) => {
+    (geojson: GeoJSON.FeatureCollection, cMode: ColorMode) => {
       if (!mapRef.current || !markersRef.current) return;
 
       markersRef.current.clearLayers();
 
       L.geoJSON(geojson, {
         pointToLayer: (_feature, latlng) => {
-          const rt = _feature.properties?.rental_type;
+          const p = _feature.properties as StrProperties;
+          const fill =
+            cMode === "ownership"
+              ? ownershipColor(p)
+              : markerColor(p.rental_type);
           return L.circleMarker(latlng, {
             radius: 7,
-            fillColor: markerColor(rt),
+            fillColor: fill,
             color: "#fff",
             weight: 1.5,
             fillOpacity: 0.85,
@@ -119,9 +146,21 @@ export default function StrMap() {
         onEachFeature: (feature, layer) => {
           const p: StrProperties = feature.properties as StrProperties;
           const displayAddr = p.match_addr || p.address || "No address";
+          const ownerBlock = p.parcel_matched
+            ? `<div style="margin-top:6px;padding-top:6px;border-top:1px solid #e5e7eb;">
+                <div style="font-weight:600;font-size:12px;color:${ownershipColor(p)};margin-bottom:2px;">
+                  ${ownershipLabel(p)}${p.second_home_score != null ? ` (Score: ${p.second_home_score})` : ""}
+                </div>
+                <div><strong>Owner:</strong> ${p.owner_name || "N/A"}</div>
+                <div><strong>Owner Location:</strong> ${[p.owner_city, p.owner_state].filter(Boolean).join(", ") || "N/A"}</div>
+                ${p.is_head_of_family === 1 ? '<div style="color:#22c55e;font-size:11px;">Head of Family exemption claimed</div>' : ""}
+              </div>`
+            : `<div style="margin-top:6px;padding-top:6px;border-top:1px solid #e5e7eb;color:#94a3b8;font-size:12px;">
+                No matching parcel record found
+              </div>`;
           layer.bindPopup(
             `<div style="font-family:system-ui;font-size:13px;line-height:1.5;min-width:240px;">
-              <div style="font-weight:700;font-size:14px;margin-bottom:4px;color:${markerColor(p.rental_type)};">
+              <div style="font-weight:700;font-size:14px;margin-bottom:4px;color:${cMode === "ownership" ? ownershipColor(p) : markerColor(p.rental_type)};">
                 ${displayAddr}
               </div>
               ${p.business_name ? `<div style="margin-bottom:6px;"><strong>${p.business_name}</strong>${p.dba && p.dba.trim() ? ` <span style="color:#6b7280;">DBA: ${p.dba}</span>` : ""}</div>` : ""}
@@ -135,6 +174,7 @@ export default function StrMap() {
                 <div><strong>Issued:</strong> ${formatDate(p.issue_date)}</div>
                 <div><strong>Expires:</strong> ${formatDate(p.expiration_date)}</div>
               </div>
+              ${ownerBlock}
             </div>`,
             { maxWidth: 340 }
           );
@@ -174,7 +214,7 @@ export default function StrMap() {
   );
 
   const applyView = useCallback(
-    (geojson: GeoJSON.FeatureCollection, mode: ViewMode) => {
+    (geojson: GeoJSON.FeatureCollection, mode: ViewMode, cMode: ColorMode) => {
       if (!mapRef.current) return;
 
       if (heatRef.current) {
@@ -188,7 +228,7 @@ export default function StrMap() {
       if (mode === "heatmap") {
         renderHeatmap(geojson);
       } else {
-        renderMarkers(geojson);
+        renderMarkers(geojson, cMode);
       }
     },
     [renderMarkers, renderHeatmap]
@@ -212,20 +252,20 @@ export default function StrMap() {
       const geojson = await resp.json();
 
       geojsonCacheRef.current = geojson;
-      applyView(geojson, viewMode);
+      applyView(geojson, viewMode, colorMode);
       setCount(geojson.features?.length ?? 0);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to load STR data");
     } finally {
       setLoading(false);
     }
-  }, [filters, viewMode, applyView]);
+  }, [filters, viewMode, colorMode, applyView]);
 
   useEffect(() => {
     if (geojsonCacheRef.current) {
-      applyView(geojsonCacheRef.current, viewMode);
+      applyView(geojsonCacheRef.current, viewMode, colorMode);
     }
-  }, [viewMode, applyView]);
+  }, [viewMode, colorMode, applyView]);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -275,6 +315,18 @@ export default function StrMap() {
           </select>
         </label>
 
+        <label className="flex items-center gap-1.5">
+          <span className="text-gray-500">Color by</span>
+          <select
+            className="border rounded px-2 py-1 text-gray-800 bg-white"
+            value={colorMode}
+            onChange={(e) => setColorMode(e.target.value as ColorMode)}
+          >
+            <option value="ownership">Ownership</option>
+            <option value="rental_type">Rental Type</option>
+          </select>
+        </label>
+
         <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-0.5">
           <button
             onClick={() => setViewMode("markers")}
@@ -314,24 +366,7 @@ export default function StrMap() {
 
       {/* Legend */}
       <div className="absolute bottom-6 left-4 bg-white/95 backdrop-blur rounded-lg shadow-lg px-4 py-3 z-[1000] text-xs">
-        {viewMode === "markers" ? (
-          <>
-            <div className="font-semibold text-gray-700 mb-2">Rental Type</div>
-            {[
-              { color: "#3b82f6", label: "Residential" },
-              { color: "#8b5cf6", label: "Non-Residential" },
-              { color: "#94a3b8", label: "Unknown" },
-            ].map(({ color, label }) => (
-              <div key={label} className="flex items-center gap-2 mb-1">
-                <span
-                  className="w-3 h-3 rounded-full inline-block shrink-0"
-                  style={{ backgroundColor: color }}
-                />
-                <span className="text-gray-600">{label}</span>
-              </div>
-            ))}
-          </>
-        ) : (
+        {viewMode === "heatmap" ? (
           <>
             <div className="font-semibold text-gray-700 mb-2">
               STR Density
@@ -349,6 +384,41 @@ export default function StrMap() {
               <span>Low</span>
               <span>High</span>
             </div>
+          </>
+        ) : colorMode === "ownership" ? (
+          <>
+            <div className="font-semibold text-gray-700 mb-2">Owner Status</div>
+            {[
+              { color: "#22c55e", label: "Likely Primary Residence" },
+              { color: "#f59e0b", label: "Possible Second Home" },
+              { color: "#ef4444", label: "Likely Second Home" },
+              { color: "#94a3b8", label: "No Parcel Match" },
+            ].map(({ color, label }) => (
+              <div key={label} className="flex items-center gap-2 mb-1">
+                <span
+                  className="w-3 h-3 rounded-full inline-block shrink-0"
+                  style={{ backgroundColor: color }}
+                />
+                <span className="text-gray-600">{label}</span>
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            <div className="font-semibold text-gray-700 mb-2">Rental Type</div>
+            {[
+              { color: "#3b82f6", label: "Residential" },
+              { color: "#8b5cf6", label: "Non-Residential" },
+              { color: "#94a3b8", label: "Unknown" },
+            ].map(({ color, label }) => (
+              <div key={label} className="flex items-center gap-2 mb-1">
+                <span
+                  className="w-3 h-3 rounded-full inline-block shrink-0"
+                  style={{ backgroundColor: color }}
+                />
+                <span className="text-gray-600">{label}</span>
+              </div>
+            ))}
           </>
         )}
       </div>

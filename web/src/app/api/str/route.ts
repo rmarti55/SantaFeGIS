@@ -15,18 +15,18 @@ export async function GET(req: NextRequest) {
   const rentalType = searchParams.get("rentalType") ?? "";
   const bbox = searchParams.get("bbox") ?? "";
 
-  const conditions: string[] = ["geom IS NOT NULL"];
+  const conditions: string[] = ["s.geom IS NOT NULL"];
   const params: (string | number)[] = [];
   let paramIdx = 1;
 
   if (status) {
-    conditions.push(`status = $${paramIdx}`);
+    conditions.push(`s.status = $${paramIdx}`);
     params.push(status);
     paramIdx++;
   }
 
   if (rentalType) {
-    conditions.push(`rental_type = $${paramIdx}`);
+    conditions.push(`s.rental_type = $${paramIdx}`);
     params.push(rentalType);
     paramIdx++;
   }
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     if (parts.length === 4 && parts.every((n) => !isNaN(n))) {
       const [west, south, east, north] = parts;
       conditions.push(
-        `geom && ST_MakeEnvelope($${paramIdx}, $${paramIdx + 1}, $${paramIdx + 2}, $${paramIdx + 3}, 4326)`
+        `s.geom && ST_MakeEnvelope($${paramIdx}, $${paramIdx + 1}, $${paramIdx + 2}, $${paramIdx + 3}, 4326)`
       );
       params.push(west, south, east, north);
       paramIdx += 4;
@@ -53,27 +53,43 @@ export async function GET(req: NextRequest) {
     FROM (
       SELECT json_build_object(
         'type', 'Feature',
-        'id', id,
-        'geometry', ST_AsGeoJSON(geom)::json,
+        'id', s.id,
+        'geometry', ST_AsGeoJSON(s.geom)::json,
         'properties', json_build_object(
-          'id', id,
-          'source', source,
-          'address', address,
-          'match_addr', match_addr,
-          'business_license', business_license,
-          'business_name', business_name,
-          'dba', dba,
-          'status', status,
-          'license_type', license_type,
-          'rental_type', rental_type,
-          'zoning', zoning,
-          'issue_date', issue_date,
-          'expiration_date', expiration_date
+          'id', s.id,
+          'source', s.source,
+          'address', s.address,
+          'match_addr', s.match_addr,
+          'business_license', s.business_license,
+          'business_name', s.business_name,
+          'dba', s.dba,
+          'status', s.status,
+          'license_type', s.license_type,
+          'rental_type', s.rental_type,
+          'zoning', s.zoning,
+          'issue_date', s.issue_date,
+          'expiration_date', s.expiration_date,
+          'owner_name', a.owner_name,
+          'owner_city', TRIM(a.owner_city),
+          'owner_state', TRIM(a.owner_state),
+          'is_head_of_family', a.is_head_of_family,
+          'second_home_score', a.second_home_score,
+          'is_likely_second_home', a.is_likely_second_home,
+          'parcel_matched', (a.objectid IS NOT NULL)
         )
       ) AS feat
-      FROM short_term_rentals
+      FROM short_term_rentals s
+      LEFT JOIN LATERAL (
+        SELECT a2.objectid, a2.owner_name, a2.owner_city, a2.owner_state,
+               a2.is_head_of_family, a2.second_home_score, a2.is_likely_second_home
+        FROM accounts a2
+        WHERE a2.geom IS NOT NULL
+          AND ST_DWithin(s.geom, a2.geom, 0.0003)
+        ORDER BY ST_Distance(s.geom, a2.geom)
+        LIMIT 1
+      ) a ON true
       WHERE ${where}
-      ORDER BY address ASC
+      ORDER BY s.address ASC
       LIMIT 5000
     ) sub
   `;
