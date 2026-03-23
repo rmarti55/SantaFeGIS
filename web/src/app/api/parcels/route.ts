@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
 
   const conditions: string[] = [
     "geom IS NOT NULL",
+    "UPPER(TRIM(situs_city)) LIKE '%SANTA FE%'",
     `second_home_score >= ${Number(minScore) || 0}`,
     `second_home_score <= ${Number(maxScore) || 99}`,
   ];

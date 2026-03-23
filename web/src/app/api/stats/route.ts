@@ -16,12 +16,14 @@ export async function GET() {
         ROUND(AVG(COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0)) FILTER (WHERE is_likely_second_home = true)) AS avg_value_second_home,
         ROUND(AVG(COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0)) FILTER (WHERE is_likely_second_home = false AND property_class IN ('SRES','MRES','CRES'))) AS avg_value_primary
       FROM accounts
+      WHERE UPPER(TRIM(situs_city)) LIKE '%SANTA FE%'
     `;
 
     const topStates = await sql`
       SELECT TRIM(owner_state) AS state, COUNT(*) AS count
       FROM accounts
-      WHERE is_likely_second_home = true
+      WHERE UPPER(TRIM(situs_city)) LIKE '%SANTA FE%'
+        AND is_likely_second_home = true
         AND TRIM(owner_state) != 'NM' AND TRIM(owner_state) != ''
         AND owner_state IS NOT NULL
       GROUP BY TRIM(owner_state)
@@ -36,7 +38,8 @@ export async function GET() {
         COUNT(*) FILTER (WHERE is_likely_second_home = true) AS second_homes,
         ROUND(100.0 * COUNT(*) FILTER (WHERE is_likely_second_home = true) / NULLIF(COUNT(*), 0), 1) AS pct
       FROM accounts
-      WHERE property_class IN ('SRES','MRES','CRES')
+      WHERE UPPER(TRIM(situs_city)) LIKE '%SANTA FE%'
+        AND property_class IN ('SRES','MRES','CRES')
         AND neighborhood_name IS NOT NULL AND TRIM(neighborhood_name) != ''
       GROUP BY TRIM(neighborhood_name)
       HAVING COUNT(*) >= 10
