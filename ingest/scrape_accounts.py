@@ -10,7 +10,6 @@ Usage:
 
 import json
 import os
-import re
 import sys
 import time
 
@@ -25,7 +24,7 @@ BASE_URL = (
     "https://sfcomaps.santafecountynm.gov/restsvc/rest/services"
     "/LAND/Accounts/MapServer/0/query"
 )
-PAGE_SIZE = 2000
+PAGE_SIZE = 500
 
 FIELDS = [
     "OBJECTID", "UPC", "parcel_number", "pact_code", "roll_code",
@@ -33,7 +32,7 @@ FIELDS = [
     "situs_state", "situs_zip", "owner_name", "owner_care_of",
     "owner_line_1", "owner_line_2", "owner_city", "owner_state",
     "owner_zip", "owner_country", "subdiv_name", "subdiv_lot",
-    "subdiv_block", "legal_text", "tax_district", "property_class",
+    "subdiv_block", "tax_district", "property_class",
     "acreage", "neighborhood_num", "neighborhood_name",
     "prior_market_land_res", "prior_market_imp_res",
     "prior_assessed_land", "prior_assessed_imp",
@@ -44,6 +43,8 @@ FIELDS = [
     "is_head_of_family", "is_veteran_1", "is_veteran_2",
     "is_disabled_veteran", "is_senior_freeze", "is_affordable_housing",
 ]
+
+DB_COLUMNS = [f.lower() for f in FIELDS]
 
 
 def get_db():
@@ -81,7 +82,6 @@ def init_db(conn):
                 subdiv_name     TEXT,
                 subdiv_lot      TEXT,
                 subdiv_block    TEXT,
-                legal_text      TEXT,
                 tax_district    TEXT,
                 property_class  TEXT,
                 acreage         TEXT,
@@ -106,28 +106,15 @@ def init_db(conn):
                 is_disabled_veteran INTEGER,
                 is_senior_freeze    INTEGER,
                 is_affordable_housing INTEGER,
-                -- scoring columns (populated later)
                 second_home_score   INTEGER DEFAULT 0,
                 is_likely_second_home BOOLEAN DEFAULT FALSE,
                 geom GEOMETRY(Geometry, 4326)
             );
         """)
-        cur.execute("""
-            CREATE INDEX IF NOT EXISTS idx_accounts_geom
-            ON accounts USING GIST (geom);
-        """)
-        cur.execute("""
-            CREATE INDEX IF NOT EXISTS idx_accounts_situs_city
-            ON accounts (situs_city);
-        """)
-        cur.execute("""
-            CREATE INDEX IF NOT EXISTS idx_accounts_property_class
-            ON accounts (property_class);
-        """)
-        cur.execute("""
-            CREATE INDEX IF NOT EXISTS idx_accounts_score
-            ON accounts (second_home_score);
-        """)
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_geom ON accounts USING GIST (geom);")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_situs_city ON accounts (situs_city);")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_property_class ON accounts (property_class);")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_score ON accounts (second_home_score);")
     conn.commit()
     print("Database initialized.")
 
@@ -160,13 +147,11 @@ def insert_features(conn, features):
     if not features:
         return 0
 
-    col_names = [f.lower() for f in FIELDS]
-    param_placeholders = ["%s"] * len(col_names)
-    param_placeholders.append("ST_SetSRID(ST_GeomFromGeoJSON(%s), 4326)")
-    cols_sql = ", ".join(col_names + ["geom"])
-    vals_sql = ", ".join(param_placeholders)
+    cols_sql = ", ".join(DB_COLUMNS + ["geom"])
+    param_placeholders = ", ".join(["%s"] * len(DB_COLUMNS))
+    vals_sql = f"{param_placeholders}, ST_SetSRID(ST_GeomFromGeoJSON(%s), 4326)"
     conflict_sets = ", ".join(
-        f"{c} = EXCLUDED.{c}" for c in col_names if c != "objectid"
+        f"{c} = EXCLUDED.{c}" for c in DB_COLUMNS if c != "objectid"
     )
     conflict_sets += ", geom = EXCLUDED.geom"
 
@@ -176,30 +161,30 @@ def insert_features(conn, features):
         ON CONFLICT (objectid) DO UPDATE SET {conflict_sets}
     """
 
+    rows = []
+    for feat in features:
+        props = feat.get("properties", {})
+        geom = feat.get("geometry")
+        vals = []
+        for field in FIELDS:
+            v = props.get(field)
+            if isinstance(v, str):
+                v = v.strip()
+            vals.append(v)
+        vals.append(json.dumps(geom) if geom else None)
+        rows.append(vals)
+
     with conn.cursor() as cur:
-        for feat in features:
-            props = feat.get("properties", {})
-            geom = feat.get("geometry")
-            vals = []
-            for field in FIELDS:
-                v = props.get(field)
-                if isinstance(v, str):
-                    v = v.strip()
-                vals.append(v)
-            vals.append(json.dumps(geom) if geom else None)
-            cur.execute(sql, vals)
+        psycopg2.extras.execute_batch(cur, sql, rows, page_size=100)
     conn.commit()
     return len(features)
 
 
 def score_second_homes(conn):
-    """Apply heuristic scoring to flag likely second homes."""
     print("\nScoring second homes...")
     with conn.cursor() as cur:
-        # Reset scores
         cur.execute("UPDATE accounts SET second_home_score = 0, is_likely_second_home = FALSE;")
 
-        # Signal 1: Owner state != NM (+3)
         cur.execute("""
             UPDATE accounts SET second_home_score = second_home_score + 3
             WHERE TRIM(owner_state) != '' AND TRIM(owner_state) != 'NM'
@@ -207,7 +192,6 @@ def score_second_homes(conn):
         """)
         print(f"  +3 owner out-of-state: {cur.rowcount} rows")
 
-        # Signal 2: Owner city != situs city but in NM (+2)
         cur.execute("""
             UPDATE accounts SET second_home_score = second_home_score + 2
             WHERE TRIM(owner_state) = 'NM'
@@ -217,7 +201,6 @@ def score_second_homes(conn):
         """)
         print(f"  +2 owner different NM city: {cur.rowcount} rows")
 
-        # Signal 3: No head-of-family exemption on residential (+1)
         cur.execute("""
             UPDATE accounts SET second_home_score = second_home_score + 1
             WHERE property_class IN ('SRES', 'MRES', 'CRES')
@@ -225,15 +208,13 @@ def score_second_homes(conn):
         """)
         print(f"  +1 no head-of-family: {cur.rowcount} rows")
 
-        # Signal 4: Owner name looks like LLC/Trust/Corp (+2)
         cur.execute("""
             UPDATE accounts SET second_home_score = second_home_score + 2
-            WHERE owner_name ~* '(\\mLLC\\M|\\mINC\\M|\\mCORP\\M|\\mLTD\\M|\\mLP\\M|\\mTRUST\\M|\\mLLC\\M|\\mL\\.?L\\.?C|\\mREVOCABLE\\M|\\mIRREVOCABLE\\M|\\mESTATE\\M|\\mPROPERT(Y|IES)\\M|\\mINVEST\\M|\\mHOLDING\\M|\\mGROUP\\M|\\mPARTNERS\\M|\\mVENTURE\\M)'
+            WHERE owner_name ~* '(\\mLLC\\M|\\mINC\\M|\\mCORP\\M|\\mLTD\\M|\\mLP\\M|\\mTRUST\\M|\\mL\\.?L\\.?C|\\mREVOCABLE\\M|\\mIRREVOCABLE\\M|\\mESTATE\\M|\\mPROPERT(Y|IES)\\M|\\mINVEST\\M|\\mHOLDING\\M|\\mGROUP\\M|\\mPARTNERS\\M|\\mVENTURE\\M)'
               AND property_class IN ('SRES', 'MRES', 'CRES');
         """)
         print(f"  +2 entity ownership: {cur.rowcount} rows")
 
-        # Signal 5: High value property -- top quartile of residential (+1)
         cur.execute("""
             WITH q AS (
                 SELECT percentile_cont(0.75) WITHIN GROUP (ORDER BY COALESCE(current_market_imp_res,0) + COALESCE(current_market_land_res,0)) AS p75
@@ -247,7 +228,6 @@ def score_second_homes(conn):
         """)
         print(f"  +1 high value: {cur.rowcount} rows")
 
-        # Signal 6: Owner has multiple properties in the county (+2)
         cur.execute("""
             WITH multi AS (
                 SELECT UPPER(TRIM(owner_name)) AS oname
@@ -263,13 +243,11 @@ def score_second_homes(conn):
         """)
         print(f"  +2 multi-property owner: {cur.rowcount} rows")
 
-        # Set boolean flag
         cur.execute("""
             UPDATE accounts SET is_likely_second_home = (second_home_score >= 4);
         """)
         print(f"  Flagged likely second homes: {cur.rowcount} rows updated")
 
-        # Print summary
         cur.execute("""
             SELECT
                 COUNT(*) FILTER (WHERE second_home_score >= 6) AS very_likely,
@@ -295,8 +273,9 @@ def main():
 
     offset = 0
     total = 0
+    t0 = time.time()
     while True:
-        print(f"Fetching offset {offset}...")
+        print(f"Fetching offset {offset}...", end=" ", flush=True)
         data = fetch_page(offset)
         if data is None:
             break
@@ -306,9 +285,11 @@ def main():
             print("No more features.")
             break
 
+        t1 = time.time()
         count = insert_features(conn, features)
         total += count
-        print(f"  Inserted {count} records (total: {total})")
+        elapsed = time.time() - t1
+        print(f"inserted {count} in {elapsed:.1f}s (total: {total})")
 
         exceeded = data.get("exceededTransferLimit", False) or data.get(
             "properties", {}
@@ -318,9 +299,10 @@ def main():
             break
 
         offset += PAGE_SIZE
-        time.sleep(0.5)
+        time.sleep(0.3)
 
-    print(f"\nDone. Total records ingested: {total}")
+    total_time = time.time() - t0
+    print(f"\nDone. Total records ingested: {total} in {total_time:.0f}s")
 
     score_second_homes(conn)
     conn.close()
