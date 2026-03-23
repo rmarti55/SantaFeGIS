@@ -17,11 +17,15 @@ interface ParcelProperties {
   acreage: string;
   market_value: number;
   assessed_value: number;
-  is_head_of_family: number;
-  is_senior_freeze: number;
   neighborhood: string;
   score: number;
   is_likely_second_home: boolean;
+  score_out_of_state: number;
+  score_diff_city: number;
+  score_entity: number;
+  score_high_value: number;
+  score_multi_owner: number;
+  score_mailing_match: number;
 }
 
 interface Filters {
@@ -49,10 +53,49 @@ function formatCurrency(n: number): string {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
 }
 
-export default function Map() {
+function scoreBreakdownRows(p: ParcelProperties): string {
+  const factors: [string, number][] = [
+    ["Out-of-state owner", p.score_out_of_state],
+    ["Different NM city", p.score_diff_city],
+    ["Entity ownership", p.score_entity],
+    ["High property value", p.score_high_value],
+    ["Multi-property owner", p.score_multi_owner],
+    ["Mailing = situs addr", p.score_mailing_match],
+  ];
+  return factors
+    .filter(([, v]) => v !== 0)
+    .map(([label, v]) => {
+      const sign = v > 0 ? "+" : "";
+      const color = v > 0 ? "#dc2626" : "#16a34a";
+      return `<tr><td style="padding:2px 0;color:#374151">${label}</td><td style="text-align:right;padding:2px 0 2px 12px;font-weight:600;color:${color}">${sign}${v}</td></tr>`;
+    })
+    .join("");
+}
+
+const responseCache = new globalThis.Map<string, { data: unknown; ts: number }>();
+const CACHE_TTL = 60_000;
+
+function getCached(key: string) {
+  const entry = responseCache.get(key);
+  if (entry && Date.now() - entry.ts < CACHE_TTL) return entry.data;
+  return null;
+}
+
+function setCache(key: string, data: unknown) {
+  responseCache.set(key, { data, ts: Date.now() });
+  if (responseCache.size > 50) {
+    const oldest = responseCache.keys().next().value;
+    if (oldest) responseCache.delete(oldest);
+  }
+}
+
+export default function ParcelMap() {
   const mapRef = useRef<L.Map | null>(null);
   const layerRef = useRef<L.GeoJSON | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const lastLoadedKeyRef = useRef<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +111,7 @@ export default function Map() {
 
     const map = L.map(containerRef.current, {
       center: [35.687, -105.938],
-      zoom: 13,
+      zoom: 14,
       zoomControl: true,
     });
 
@@ -87,34 +130,68 @@ export default function Map() {
 
   const loadParcels = useCallback(async () => {
     if (!mapRef.current) return;
+
+    if (abortRef.current) abortRef.current.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     setLoading(true);
     setError(null);
 
-    const bounds = mapRef.current.getBounds();
-    const bbox = `${bounds.getWest()},${bounds.getSouth()},${bounds.getEast()},${bounds.getNorth()}`;
+    const map = mapRef.current;
+    const zoom = map.getZoom();
+    const bounds = map.getBounds();
+    const bbox = `${bounds.getWest().toFixed(4)},${bounds.getSouth().toFixed(4)},${bounds.getEast().toFixed(4)},${bounds.getNorth().toFixed(4)}`;
 
     const params = new URLSearchParams({
       bbox,
       minScore: String(filters.minScore),
       maxScore: String(filters.maxScore),
+      zoom: String(zoom),
     });
     if (filters.ownerState) params.set("ownerState", filters.ownerState);
     if (filters.propertyClass) params.set("propertyClass", filters.propertyClass);
 
-    try {
-      const resp = await fetch(`/api/parcels?${params}`);
-      if (!resp.ok) throw new Error(`API error: ${resp.status}`);
-      const geojson = await resp.json();
+    const cacheKey = params.toString();
+    const cached = getCached(cacheKey);
 
+    if (cacheKey === lastLoadedKeyRef.current && layerRef.current) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let geojson: any;
+      if (cached) {
+        geojson = cached;
+      } else {
+        const resp = await fetch(`/api/parcels?${params}`, { signal: controller.signal });
+        if (!resp.ok) throw new Error(`API error: ${resp.status}`);
+        geojson = await resp.json();
+        setCache(cacheKey, geojson);
+      }
+
+      if (controller.signal.aborted) return;
+
+      let openPopupObjectId: number | null = null;
       if (layerRef.current) {
-        mapRef.current!.removeLayer(layerRef.current);
+        layerRef.current.eachLayer((l) => {
+          if ((l as L.Layer & { isPopupOpen?: () => boolean }).isPopupOpen?.()) {
+            const feature = (l as L.Layer & { feature?: { properties?: ParcelProperties } }).feature;
+            if (feature?.properties?.objectid != null) {
+              openPopupObjectId = feature.properties.objectid;
+            }
+          }
+        });
+        map.removeLayer(layerRef.current);
       }
 
       const layer = L.geoJSON(geojson, {
         style: (feature) => ({
           color: scoreColor(feature?.properties?.score ?? 0),
-          weight: 1,
-          fillOpacity: 0.4,
+          weight: zoom >= 16 ? 2 : 1,
+          fillOpacity: zoom >= 16 ? 0.5 : 0.35,
           fillColor: scoreColor(feature?.properties?.score ?? 0),
         }),
         onEachFeature: (feature, layer) => {
@@ -141,35 +218,58 @@ export default function Map() {
                 <div>Market: ${formatCurrency(p.market_value)}</div>
                 <div>Assessed: ${formatCurrency(p.assessed_value)}</div>
               </div>
-              <div style="margin-top: 6px; color: #6b7280; font-size: 11px;">
-                Head of family: ${p.is_head_of_family ? "Yes" : "No"} &middot;
-                Senior freeze: ${p.is_senior_freeze ? "Yes" : "No"}
+              <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb;">
+                <div style="font-weight: 600; margin-bottom: 4px;">Score Breakdown</div>
+                <table style="width:100%; font-size: 12px; border-collapse: collapse;">
+                  ${scoreBreakdownRows(p) || '<tr><td style="color:#6b7280">No factors detected</td></tr>'}
+                  <tr style="border-top: 1px solid #e5e7eb;">
+                    <td style="padding:4px 0 0; font-weight:600; color:#374151">Total</td>
+                    <td style="text-align:right; padding:4px 0 0 12px; font-weight:700; color:${scoreColor(p.score)}">${p.score}</td>
+                  </tr>
+                </table>
               </div>
             </div>
           `, { maxWidth: 320 });
         },
       });
 
-      layer.addTo(mapRef.current!);
+      layer.addTo(map);
       layerRef.current = layer;
+      lastLoadedKeyRef.current = cacheKey;
       setCount(geojson.features?.length ?? 0);
+
+      if (openPopupObjectId != null) {
+        layer.eachLayer((l) => {
+          const feature = (l as L.Layer & { feature?: { properties?: ParcelProperties } }).feature;
+          if (feature?.properties?.objectid === openPopupObjectId) {
+            (l as L.Layer & { openPopup: () => void }).openPopup();
+          }
+        });
+      }
     } catch (e: unknown) {
+      if (e instanceof DOMException && e.name === "AbortError") return;
       setError(e instanceof Error ? e.message : "Failed to load parcels");
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) setLoading(false);
     }
   }, [filters]);
+
+  const debouncedLoad = useCallback(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(loadParcels, 400);
+  }, [loadParcels]);
 
   useEffect(() => {
     if (!mapRef.current) return;
     loadParcels();
 
     const map = mapRef.current;
-    map.on("moveend", loadParcels);
+    map.on("moveend", debouncedLoad);
     return () => {
-      map.off("moveend", loadParcels);
+      map.off("moveend", debouncedLoad);
+      if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [loadParcels]);
+  }, [loadParcels, debouncedLoad]);
 
   return (
     <div className="flex flex-col h-full">

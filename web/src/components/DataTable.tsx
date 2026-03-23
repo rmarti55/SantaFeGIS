@@ -30,6 +30,39 @@ interface TableResponse {
   totalPages: number;
 }
 
+interface OwnerByCount {
+  owner_name: string;
+  owner_state: string;
+  property_count: number;
+  total_value: number;
+}
+
+interface OwnerByValue {
+  owner_name: string;
+  owner_state: string;
+  property_count: number;
+  total_value: number;
+}
+
+interface ExpensiveProperty {
+  address: string;
+  owner_name: string;
+  owner_state: string;
+  property_class: string;
+  neighborhood: string;
+  market_value: number;
+  score: number;
+  is_likely_second_home: boolean;
+}
+
+interface LeaderboardData {
+  topByCount: OwnerByCount[];
+  topByValue: OwnerByValue[];
+  mostExpensive: ExpensiveProperty[];
+}
+
+type LeaderboardTab = "count" | "value" | "expensive";
+
 function scoreColor(score: number): string {
   if (score >= 6) return "text-red-600 bg-red-50";
   if (score >= 4) return "text-orange-600 bg-orange-50";
@@ -62,6 +95,20 @@ export default function DataTable() {
   const [propertyClass, setPropertyClass] = useState("");
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
+
+  const [leaderboard, setLeaderboard] = useState<LeaderboardData | null>(null);
+  const [lbOpen, setLbOpen] = useState(true);
+  const [lbTab, setLbTab] = useState<LeaderboardTab>("count");
+  const [lbLoading, setLbLoading] = useState(false);
+
+  useEffect(() => {
+    setLbLoading(true);
+    fetch("/api/leaderboard")
+      .then((r) => r.json())
+      .then(setLeaderboard)
+      .catch(console.error)
+      .finally(() => setLbLoading(false));
+  }, []);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -189,6 +236,136 @@ export default function DataTable() {
           {data && !loading && <span>{data.total.toLocaleString()} results</span>}
           {error && <span className="text-red-500">{error}</span>}
         </div>
+      </div>
+
+      {/* Leaderboard */}
+      <div className="bg-white border-b border-gray-200">
+        <button
+          onClick={() => setLbOpen((o) => !o)}
+          className="w-full px-4 py-2.5 flex items-center justify-between text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+        >
+          <span>Owner Leaderboards</span>
+          <span className="text-gray-400 text-xs">{lbOpen ? "Hide ▲" : "Show ▼"}</span>
+        </button>
+
+        {lbOpen && (
+          <div className="px-4 pb-4">
+            <div className="flex gap-1 mb-3">
+              {([
+                ["count", "Most Properties"],
+                ["value", "Highest Total Value"],
+                ["expensive", "Most Expensive Properties"],
+              ] as [LeaderboardTab, string][]).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setLbTab(key)}
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                    lbTab === key
+                      ? "bg-gray-900 text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {lbLoading && <div className="text-sm text-gray-400 animate-pulse py-4">Loading leaderboards...</div>}
+
+            {leaderboard && lbTab === "count" && (
+              <div className="overflow-auto max-h-64">
+                <table className="w-full text-sm">
+                  <thead className="sticky top-0 bg-white z-10">
+                    <tr className="text-left text-xs text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-1.5 w-8">#</th>
+                      <th className="px-2 py-1.5">Owner</th>
+                      <th className="px-2 py-1.5">State</th>
+                      <th className="px-2 py-1.5 text-right">Properties</th>
+                      <th className="px-2 py-1.5 text-right">Total Value</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {leaderboard.topByCount.map((row, i) => (
+                      <tr key={`${row.owner_name}-${row.owner_state}`} className="hover:bg-gray-50">
+                        <td className="px-2 py-1.5 text-gray-400 font-mono text-xs">{i + 1}</td>
+                        <td className="px-2 py-1.5 font-medium text-gray-800">{row.owner_name}</td>
+                        <td className="px-2 py-1.5 text-gray-500">{row.owner_state || "NM"}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold text-blue-600">{row.property_count}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-600 tabular-nums">{formatCurrency(row.total_value)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {leaderboard && lbTab === "value" && (
+              <div className="overflow-auto max-h-64">
+                <table className="w-full text-sm">
+                  <thead className="sticky top-0 bg-white z-10">
+                    <tr className="text-left text-xs text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-1.5 w-8">#</th>
+                      <th className="px-2 py-1.5">Owner</th>
+                      <th className="px-2 py-1.5">State</th>
+                      <th className="px-2 py-1.5 text-right">Total Value</th>
+                      <th className="px-2 py-1.5 text-right">Properties</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {leaderboard.topByValue.map((row, i) => (
+                      <tr key={`${row.owner_name}-${row.owner_state}`} className="hover:bg-gray-50">
+                        <td className="px-2 py-1.5 text-gray-400 font-mono text-xs">{i + 1}</td>
+                        <td className="px-2 py-1.5 font-medium text-gray-800">{row.owner_name}</td>
+                        <td className="px-2 py-1.5 text-gray-500">{row.owner_state || "NM"}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold text-green-600 tabular-nums">{formatCurrency(row.total_value)}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-600">{row.property_count}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {leaderboard && lbTab === "expensive" && (
+              <div className="overflow-auto max-h-64">
+                <table className="w-full text-sm">
+                  <thead className="sticky top-0 bg-white z-10">
+                    <tr className="text-left text-xs text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-1.5 w-8">#</th>
+                      <th className="px-2 py-1.5">Address</th>
+                      <th className="px-2 py-1.5">Owner</th>
+                      <th className="px-2 py-1.5">State</th>
+                      <th className="px-2 py-1.5 text-right">Market Value</th>
+                      <th className="px-2 py-1.5">Class</th>
+                      <th className="px-2 py-1.5">Neighborhood</th>
+                      <th className="px-2 py-1.5 text-center">2nd Home?</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {leaderboard.mostExpensive.map((row, i) => (
+                      <tr key={`${row.address}-${i}`} className="hover:bg-gray-50">
+                        <td className="px-2 py-1.5 text-gray-400 font-mono text-xs">{i + 1}</td>
+                        <td className="px-2 py-1.5 font-medium text-gray-800">{row.address || "N/A"}</td>
+                        <td className="px-2 py-1.5 text-gray-700">{row.owner_name}</td>
+                        <td className="px-2 py-1.5 text-gray-500">{row.owner_state || "NM"}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold text-green-600 tabular-nums">{formatCurrency(row.market_value)}</td>
+                        <td className="px-2 py-1.5 text-gray-500">{row.property_class}</td>
+                        <td className="px-2 py-1.5 text-gray-500">{row.neighborhood}</td>
+                        <td className="px-2 py-1.5 text-center">
+                          {row.is_likely_second_home ? (
+                            <span className="inline-block px-1.5 py-0.5 rounded text-xs font-semibold text-red-600 bg-red-50">Yes</span>
+                          ) : (
+                            <span className="text-xs text-gray-400">No</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Table */}

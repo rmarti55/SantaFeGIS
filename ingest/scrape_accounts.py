@@ -115,6 +115,14 @@ def init_db(conn):
         cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_situs_city ON accounts (situs_city);")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_property_class ON accounts (property_class);")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_score ON accounts (second_home_score);")
+
+        for col in [
+            "score_out_of_state", "score_diff_city", "score_entity",
+            "score_high_value", "score_multi_owner", "score_mailing_match",
+        ]:
+            cur.execute(f"""
+                ALTER TABLE accounts ADD COLUMN IF NOT EXISTS {col} INTEGER DEFAULT 0;
+            """)
     conn.commit()
     print("Database initialized.")
 
@@ -183,17 +191,24 @@ def insert_features(conn, features):
 def score_second_homes(conn):
     print("\nScoring second homes...")
     with conn.cursor() as cur:
-        cur.execute("UPDATE accounts SET second_home_score = 0, is_likely_second_home = FALSE;")
+        cur.execute("""
+            UPDATE accounts SET
+                second_home_score = 0, is_likely_second_home = FALSE,
+                score_out_of_state = 0, score_diff_city = 0, score_entity = 0,
+                score_high_value = 0, score_multi_owner = 0, score_mailing_match = 0;
+        """)
 
         cur.execute("""
-            UPDATE accounts SET second_home_score = second_home_score + 3
+            UPDATE accounts SET second_home_score = second_home_score + 3,
+                                score_out_of_state = 3
             WHERE TRIM(owner_state) != '' AND TRIM(owner_state) != 'NM'
               AND owner_state IS NOT NULL;
         """)
         print(f"  +3 owner out-of-state: {cur.rowcount} rows")
 
         cur.execute("""
-            UPDATE accounts SET second_home_score = second_home_score + 2
+            UPDATE accounts SET second_home_score = second_home_score + 2,
+                                score_diff_city = 2
             WHERE TRIM(owner_state) = 'NM'
               AND UPPER(TRIM(owner_city)) != UPPER(TRIM(situs_city))
               AND owner_city IS NOT NULL AND situs_city IS NOT NULL
@@ -202,14 +217,8 @@ def score_second_homes(conn):
         print(f"  +2 owner different NM city: {cur.rowcount} rows")
 
         cur.execute("""
-            UPDATE accounts SET second_home_score = second_home_score + 1
-            WHERE property_class IN ('SRES', 'MRES', 'CRES')
-              AND (is_head_of_family = 0 OR is_head_of_family IS NULL);
-        """)
-        print(f"  +1 no head-of-family: {cur.rowcount} rows")
-
-        cur.execute("""
-            UPDATE accounts SET second_home_score = second_home_score + 2
+            UPDATE accounts SET second_home_score = second_home_score + 2,
+                                score_entity = 2
             WHERE owner_name ~* '(\\mLLC\\M|\\mINC\\M|\\mCORP\\M|\\mLTD\\M|\\mLP\\M|\\mTRUST\\M|\\mL\\.?L\\.?C|\\mREVOCABLE\\M|\\mIRREVOCABLE\\M|\\mESTATE\\M|\\mPROPERT(Y|IES)\\M|\\mINVEST\\M|\\mHOLDING\\M|\\mGROUP\\M|\\mPARTNERS\\M|\\mVENTURE\\M)'
               AND property_class IN ('SRES', 'MRES', 'CRES');
         """)
@@ -221,7 +230,8 @@ def score_second_homes(conn):
                 FROM accounts
                 WHERE property_class IN ('SRES', 'MRES', 'CRES')
             )
-            UPDATE accounts SET second_home_score = second_home_score + 1
+            UPDATE accounts SET second_home_score = second_home_score + 1,
+                                score_high_value = 1
             FROM q
             WHERE property_class IN ('SRES', 'MRES', 'CRES')
               AND (COALESCE(current_market_imp_res,0) + COALESCE(current_market_land_res,0)) > q.p75;
@@ -236,12 +246,22 @@ def score_second_homes(conn):
                 GROUP BY UPPER(TRIM(owner_name))
                 HAVING COUNT(*) > 1
             )
-            UPDATE accounts SET second_home_score = second_home_score + 2
+            UPDATE accounts SET second_home_score = second_home_score + 2,
+                                score_multi_owner = 2
             FROM multi
             WHERE UPPER(TRIM(accounts.owner_name)) = multi.oname
               AND property_class IN ('SRES', 'MRES', 'CRES');
         """)
         print(f"  +2 multi-property owner: {cur.rowcount} rows")
+
+        cur.execute("""
+            UPDATE accounts SET second_home_score = GREATEST(second_home_score - 2, 0),
+                                score_mailing_match = -2
+            WHERE situs_line_1 IS NOT NULL AND owner_line_1 IS NOT NULL
+              AND TRIM(situs_line_1) != '' AND TRIM(owner_line_1) != ''
+              AND UPPER(TRIM(situs_line_1)) = UPPER(TRIM(owner_line_1));
+        """)
+        print(f"  -2 mailing matches situs: {cur.rowcount} rows")
 
         cur.execute("""
             UPDATE accounts SET is_likely_second_home = (second_home_score >= 4);

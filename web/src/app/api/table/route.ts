@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
   const orderCol = allowedSorts[sortBy] ?? "second_home_score";
 
   const conditions: string[] = [
-    "UPPER(TRIM(situs_city)) LIKE '%SANTA FE%'",
+    "TRIM(tax_district) LIKE 'CI%'",
     `second_home_score >= ${Number(minScore) || 0}`,
   ];
   const params: (string | number)[] = [];

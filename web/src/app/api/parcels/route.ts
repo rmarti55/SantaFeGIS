@@ -15,10 +15,21 @@ export async function GET(req: NextRequest) {
   const ownerState = searchParams.get("ownerState") ?? "";
   const propertyClass = searchParams.get("propertyClass") ?? "";
   const bbox = searchParams.get("bbox") ?? "";
+  const zoom = parseInt(searchParams.get("zoom") ?? "14", 10);
+
+  const tolerance = zoom >= 17 ? 0 : zoom >= 15 ? 0.00001 : zoom >= 13 ? 0.00005 : zoom >= 11 ? 0.0005 : 0.001;
+  const limit = zoom >= 15 ? 15000 : zoom >= 13 ? 8000 : zoom >= 11 ? 1500 : 500;
+
+  const usecentroid = zoom < 12;
+  const geomExpr = usecentroid
+    ? `ST_AsGeoJSON(ST_Centroid(geom))::json`
+    : tolerance > 0
+      ? `ST_AsGeoJSON(ST_SimplifyPreserveTopology(geom, ${tolerance}))::json`
+      : `ST_AsGeoJSON(geom)::json`;
 
   const conditions: string[] = [
     "geom IS NOT NULL",
-    "UPPER(TRIM(situs_city)) LIKE '%SANTA FE%'",
+    "TRIM(tax_district) LIKE 'CI%'",
     `second_home_score >= ${Number(minScore) || 0}`,
     `second_home_score <= ${Number(maxScore) || 99}`,
   ];
@@ -54,43 +65,49 @@ export async function GET(req: NextRequest) {
   const query = `
     SELECT json_build_object(
       'type', 'FeatureCollection',
-      'features', COALESCE(json_agg(
-        json_build_object(
-          'type', 'Feature',
-          'id', objectid,
-          'geometry', ST_AsGeoJSON(geom)::json,
-          'properties', json_build_object(
-            'objectid', objectid,
-            'address', situs_line_1,
-            'city', situs_city,
-            'zip', situs_zip,
-            'owner_name', owner_name,
-            'owner_city', owner_city,
-            'owner_state', owner_state,
-            'owner_zip', owner_zip,
-            'property_class', property_class,
-            'acreage', acreage,
-            'market_value', COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0),
-            'assessed_value', COALESCE(current_assessed_land,0) + COALESCE(current_assessed_imp,0),
-            'is_head_of_family', is_head_of_family,
-            'is_senior_freeze', is_senior_freeze,
-            'neighborhood', neighborhood_name,
-            'score', second_home_score,
-            'is_likely_second_home', is_likely_second_home
-          )
-        )
-      ), '[]')
+      'features', COALESCE(json_agg(sub.feat), '[]')
     ) AS geojson
-    FROM accounts
-    WHERE ${where}
-    LIMIT 50000
+    FROM (
+      SELECT json_build_object(
+        'type', 'Feature',
+        'id', objectid,
+        'geometry', ${geomExpr},
+        'properties', json_build_object(
+          'objectid', objectid,
+          'address', situs_line_1,
+          'city', situs_city,
+          'zip', situs_zip,
+          'owner_name', owner_name,
+          'owner_city', owner_city,
+          'owner_state', owner_state,
+          'owner_zip', owner_zip,
+          'property_class', property_class,
+          'acreage', acreage,
+          'market_value', COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0),
+          'assessed_value', COALESCE(current_assessed_land,0) + COALESCE(current_assessed_imp,0),
+          'neighborhood', neighborhood_name,
+          'score', second_home_score,
+          'is_likely_second_home', is_likely_second_home,
+          'score_out_of_state', COALESCE(score_out_of_state, 0),
+          'score_diff_city', COALESCE(score_diff_city, 0),
+          'score_entity', COALESCE(score_entity, 0),
+          'score_high_value', COALESCE(score_high_value, 0),
+          'score_multi_owner', COALESCE(score_multi_owner, 0),
+          'score_mailing_match', COALESCE(score_mailing_match, 0)
+        )
+      ) AS feat
+      FROM accounts
+      WHERE ${where}
+      ORDER BY objectid
+      LIMIT ${limit}
+    ) sub
   `;
 
   try {
     const rows = await sql.query(query, params) as Record<string, unknown>[];
     const geojson = rows[0]?.geojson;
     return NextResponse.json(geojson, {
-      headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" },
+      headers: { "Cache-Control": "public, s-maxage=120, stale-while-revalidate=300" },
     });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
