@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { formatOwnerName } from "@/lib/formatOwnerName";
 
 type ViewMode = "parcels" | "density";
 
@@ -82,7 +83,7 @@ function buildPopupHtml(p: ParcelProperties): string {
       </div>
       <div style="margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
         <div style="font-weight: 600;">Owner</div>
-        <div>${p.owner_name || "Unknown"}</div>
+        <div>${formatOwnerName(p.owner_name)}</div>
         <div>${p.owner_city || ""}, ${p.owner_state || ""} ${p.owner_zip || ""}</div>
       </div>
       <div>

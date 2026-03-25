@@ -119,10 +119,17 @@ def init_db(conn):
         for col in [
             "score_out_of_state", "score_diff_city", "score_entity",
             "score_high_value", "score_multi_owner", "score_mailing_match",
+            "score_head_of_family", "score_po_box",
         ]:
             cur.execute(f"""
                 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS {col} INTEGER DEFAULT 0;
             """)
+
+        cur.execute("ALTER TABLE accounts ADD COLUMN IF NOT EXISTS is_po_box BOOLEAN DEFAULT FALSE;")
+        cur.execute("ALTER TABLE accounts ADD COLUMN IF NOT EXISTS norm_situs TEXT;")
+        cur.execute("ALTER TABLE accounts ADD COLUMN IF NOT EXISTS norm_owner TEXT;")
+        cur.execute("ALTER TABLE accounts ADD COLUMN IF NOT EXISTS is_owner_occupied BOOLEAN;")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_owner_occupied ON accounts (is_owner_occupied);")
     conn.commit()
     print("Database initialized.")
 
@@ -188,98 +195,201 @@ def insert_features(conn, features):
     return len(features)
 
 
-def score_second_homes(conn):
-    print("\nScoring second homes...")
+NORMALIZE_SQL = r"""
+    TRIM(REGEXP_REPLACE(
+        REGEXP_REPLACE(
+            REGEXP_REPLACE(
+                UPPER(TRIM({})),
+                '\s*(UNIT|APT|STE|SUITE|#)\s*.*$', '', 'g'
+            ),
+            '\m(LN|LANE|ST|STREET|RD|ROAD|AVE|AVENUE|DR|DRIVE|PL|PLACE|CIR|CIRCLE|CT|COURT|TRL|TRAIL|WAY|BLVD|BOULEVARD|LOOP|PKWY|HWY)\M', '', 'g'
+        ),
+        '\s+', ' ', 'g'
+    ))
+"""
+
+
+def normalize_addresses(conn):
+    """Populate norm_situs, norm_owner, is_owner_occupied, and is_po_box columns."""
+    print("\nNormalizing addresses...")
     with conn.cursor() as cur:
         cur.execute("""
+            UPDATE accounts SET is_po_box = (
+                UPPER(TRIM(owner_line_1)) LIKE 'PO BOX%%'
+                OR UPPER(TRIM(owner_line_1)) LIKE 'P.O.%%'
+                OR UPPER(TRIM(owner_line_1)) LIKE 'P O BOX%%'
+            );
+        """)
+        print(f"  Flagged PO Box addresses: {cur.rowcount} rows evaluated")
+
+        cur.execute("""
+            SELECT COUNT(*) FROM accounts WHERE is_po_box = TRUE;
+        """)
+        po_count = cur.fetchone()[0]
+        print(f"  PO Box addresses found: {po_count}")
+
+        situs_expr = NORMALIZE_SQL.format("situs_line_1")
+        owner_expr = NORMALIZE_SQL.format("owner_line_1")
+
+        cur.execute(f"""
             UPDATE accounts SET
-                second_home_score = 0, is_likely_second_home = FALSE,
-                score_out_of_state = 0, score_diff_city = 0, score_entity = 0,
-                score_high_value = 0, score_multi_owner = 0, score_mailing_match = 0;
+                norm_situs = CASE
+                    WHEN situs_line_1 IS NOT NULL AND TRIM(situs_line_1) != ''
+                    THEN {situs_expr} ELSE NULL END,
+                norm_owner = CASE
+                    WHEN owner_line_1 IS NOT NULL AND TRIM(owner_line_1) != ''
+                    THEN {owner_expr} ELSE NULL END;
         """)
+        print(f"  Normalized {cur.rowcount} rows")
 
         cur.execute("""
-            UPDATE accounts SET second_home_score = 0, is_likely_second_home = FALSE
-            WHERE COALESCE(is_exempt_gov, 0) = 1;
+            UPDATE accounts SET is_owner_occupied = CASE
+                WHEN norm_situs IS NOT NULL AND norm_owner IS NOT NULL
+                     AND norm_situs = norm_owner
+                THEN TRUE
+                WHEN norm_situs IS NOT NULL AND norm_owner IS NOT NULL
+                     AND norm_situs != norm_owner
+                THEN FALSE
+                ELSE NULL
+            END;
         """)
-        print(f"  Zeroed gov-exempt parcels: {cur.rowcount} rows")
+        print(f"  Set is_owner_occupied on {cur.rowcount} rows")
 
         cur.execute("""
-            UPDATE accounts SET second_home_score = second_home_score + 3,
-                                score_out_of_state = 3
-            WHERE TRIM(owner_state) != '' AND TRIM(owner_state) != 'NM'
-              AND owner_state IS NOT NULL
-              AND COALESCE(is_exempt_gov, 0) != 1;
-        """)
-        print(f"  +3 owner out-of-state: {cur.rowcount} rows")
-
-        cur.execute("""
-            UPDATE accounts SET second_home_score = second_home_score + 2,
-                                score_diff_city = 2
-            WHERE TRIM(owner_state) = 'NM'
-              AND UPPER(TRIM(owner_city)) != UPPER(TRIM(situs_city))
-              AND owner_city IS NOT NULL AND situs_city IS NOT NULL
-              AND TRIM(owner_city) != ''
-              AND COALESCE(is_exempt_gov, 0) != 1;
-        """)
-        print(f"  +2 owner different NM city: {cur.rowcount} rows")
-
-        cur.execute("""
-            UPDATE accounts SET second_home_score = second_home_score + 2,
-                                score_entity = 2
-            WHERE owner_name ~* '(\\mLLC\\M|\\mINC\\M|\\mCORP\\M|\\mLTD\\M|\\mLP\\M|\\mTRUST\\M|\\mL\\.?L\\.?C|\\mREVOCABLE\\M|\\mIRREVOCABLE\\M|\\mESTATE\\M|\\mPROPERT(Y|IES)\\M|\\mINVEST\\M|\\mHOLDING\\M|\\mGROUP\\M|\\mPARTNERS\\M|\\mVENTURE\\M)'
-              AND property_class IN ('SRES', 'MRES', 'CRES')
-              AND COALESCE(is_exempt_gov, 0) != 1;
-        """)
-        print(f"  +2 entity ownership: {cur.rowcount} rows")
-
-        cur.execute("""
-            WITH q AS (
-                SELECT percentile_cont(0.75) WITHIN GROUP (ORDER BY COALESCE(current_market_imp_res,0) + COALESCE(current_market_land_res,0)) AS p75
-                FROM accounts
-                WHERE property_class IN ('SRES', 'MRES', 'CRES')
-            )
-            UPDATE accounts SET second_home_score = second_home_score + 1,
-                                score_high_value = 1
-            FROM q
+            SELECT
+                COUNT(*) AS total,
+                COUNT(*) FILTER (WHERE is_owner_occupied = TRUE) AS owner_occupied,
+                COUNT(*) FILTER (WHERE is_owner_occupied = FALSE) AS not_owner_occupied,
+                COUNT(*) FILTER (WHERE is_owner_occupied IS NULL) AS unknown
+            FROM accounts
             WHERE property_class IN ('SRES', 'MRES', 'CRES')
-              AND (COALESCE(current_market_imp_res,0) + COALESCE(current_market_land_res,0)) > q.p75
+              AND TRIM(tax_district) LIKE 'CI%%'
               AND COALESCE(is_exempt_gov, 0) != 1;
         """)
-        print(f"  +1 high value: {cur.rowcount} rows")
+        row = cur.fetchone()
+        print(f"\n  Residential (city, non-gov):")
+        print(f"    Owner-occupied:     {row[1]}")
+        print(f"    Not owner-occupied: {row[2]}")
+        print(f"    Unknown:            {row[3]}")
 
-        cur.execute("""
-            WITH multi AS (
-                SELECT UPPER(TRIM(owner_name)) AS oname
-                FROM accounts
-                WHERE owner_name IS NOT NULL AND TRIM(owner_name) != ''
-                GROUP BY UPPER(TRIM(owner_name))
-                HAVING COUNT(*) > 1
-            )
-            UPDATE accounts SET second_home_score = second_home_score + 2,
-                                score_multi_owner = 2
-            FROM multi
-            WHERE UPPER(TRIM(accounts.owner_name)) = multi.oname
-              AND property_class IN ('SRES', 'MRES', 'CRES')
-              AND COALESCE(is_exempt_gov, 0) != 1;
-        """)
-        print(f"  +2 multi-property owner: {cur.rowcount} rows")
+    conn.commit()
 
-        cur.execute("""
-            UPDATE accounts SET second_home_score = GREATEST(second_home_score - 2, 0),
-                                score_mailing_match = -2
-            WHERE situs_line_1 IS NOT NULL AND owner_line_1 IS NOT NULL
-              AND TRIM(situs_line_1) != '' AND TRIM(owner_line_1) != ''
-              AND UPPER(TRIM(situs_line_1)) = UPPER(TRIM(owner_line_1))
-              AND COALESCE(is_exempt_gov, 0) != 1;
-        """)
-        print(f"  -2 mailing matches situs: {cur.rowcount} rows")
 
-        cur.execute("""
-            UPDATE accounts SET is_likely_second_home = (second_home_score >= 4);
-        """)
-        print(f"  Flagged likely second homes: {cur.rowcount} rows updated")
+def _exec_step(conn, label, sql):
+    """Execute a scoring step and commit immediately to avoid WAL bloat."""
+    with conn.cursor() as cur:
+        cur.execute(sql)
+        count = cur.rowcount
+    conn.commit()
+    print(f"  {label}: {count} rows")
+    return count
 
+
+def score_second_homes(conn):
+    print("\nScoring second homes...")
+
+    _exec_step(conn, "Reset all scores", """
+        UPDATE accounts SET
+            second_home_score = 0, is_likely_second_home = FALSE,
+            score_out_of_state = 0, score_diff_city = 0, score_entity = 0,
+            score_high_value = 0, score_multi_owner = 0, score_mailing_match = 0,
+            score_head_of_family = 0, score_po_box = 0;
+    """)
+
+    _exec_step(conn, "Zeroed gov-exempt parcels", """
+        UPDATE accounts SET second_home_score = 0, is_likely_second_home = FALSE
+        WHERE COALESCE(is_exempt_gov, 0) = 1;
+    """)
+
+    _exec_step(conn, "+3 owner out-of-state", """
+        UPDATE accounts SET second_home_score = second_home_score + 3,
+                            score_out_of_state = 3
+        WHERE TRIM(owner_state) != '' AND TRIM(owner_state) != 'NM'
+          AND owner_state IS NOT NULL
+          AND COALESCE(is_exempt_gov, 0) != 1;
+    """)
+
+    _exec_step(conn, "+2 owner different NM city", """
+        UPDATE accounts SET second_home_score = second_home_score + 2,
+                            score_diff_city = 2
+        WHERE TRIM(owner_state) = 'NM'
+          AND UPPER(TRIM(owner_city)) != UPPER(TRIM(situs_city))
+          AND owner_city IS NOT NULL AND situs_city IS NOT NULL
+          AND TRIM(owner_city) != ''
+          AND COALESCE(is_exempt_gov, 0) != 1;
+    """)
+
+    _exec_step(conn, "+2 entity ownership", r"""
+        UPDATE accounts SET second_home_score = second_home_score + 2,
+                            score_entity = 2
+        WHERE owner_name ~* '(\mLLC\M|\mINC\M|\mCORP\M|\mLTD\M|\mLP\M|\mTRUST\M|\mL\.?L\.?C|\mREVOCABLE\M|\mIRREVOCABLE\M|\mESTATE\M|\mPROPERT(Y|IES)\M|\mINVEST\M|\mHOLDING\M|\mGROUP\M|\mPARTNERS\M|\mVENTURE\M)'
+          AND property_class IN ('SRES', 'MRES', 'CRES')
+          AND COALESCE(is_exempt_gov, 0) != 1;
+    """)
+
+    _exec_step(conn, "+1 high value", """
+        WITH q AS (
+            SELECT percentile_cont(0.75) WITHIN GROUP (ORDER BY COALESCE(current_market_imp_res,0) + COALESCE(current_market_land_res,0)) AS p75
+            FROM accounts
+            WHERE property_class IN ('SRES', 'MRES', 'CRES')
+        )
+        UPDATE accounts SET second_home_score = second_home_score + 1,
+                            score_high_value = 1
+        FROM q
+        WHERE property_class IN ('SRES', 'MRES', 'CRES')
+          AND (COALESCE(current_market_imp_res,0) + COALESCE(current_market_land_res,0)) > q.p75
+          AND COALESCE(is_exempt_gov, 0) != 1;
+    """)
+
+    _exec_step(conn, "+2 multi-property owner", """
+        WITH multi AS (
+            SELECT UPPER(TRIM(owner_name)) AS oname
+            FROM accounts
+            WHERE owner_name IS NOT NULL AND TRIM(owner_name) != ''
+            GROUP BY UPPER(TRIM(owner_name))
+            HAVING COUNT(*) > 1
+        )
+        UPDATE accounts SET second_home_score = second_home_score + 2,
+                            score_multi_owner = 2
+        FROM multi
+        WHERE UPPER(TRIM(accounts.owner_name)) = multi.oname
+          AND property_class IN ('SRES', 'MRES', 'CRES')
+          AND COALESCE(is_exempt_gov, 0) != 1;
+    """)
+
+    _exec_step(conn, "-2 mailing matches situs (normalized)", """
+        UPDATE accounts SET second_home_score = GREATEST(second_home_score - 2, 0),
+                            score_mailing_match = -2
+        WHERE norm_situs IS NOT NULL AND norm_owner IS NOT NULL
+          AND norm_situs = norm_owner
+          AND COALESCE(is_exempt_gov, 0) != 1;
+    """)
+
+    _exec_step(conn, "-3 residency exemption (HoF/senior/vet)", """
+        UPDATE accounts SET second_home_score = GREATEST(second_home_score - 3, 0),
+                            score_head_of_family = -3
+        WHERE (is_head_of_family = 1 OR is_senior_freeze = 1
+               OR is_veteran_1 = 1 OR is_veteran_2 = 1)
+          AND COALESCE(is_exempt_gov, 0) != 1;
+    """)
+
+    _exec_step(conn, "+1 PO Box without residency exemption", """
+        UPDATE accounts SET second_home_score = second_home_score + 1,
+                            score_po_box = 1
+        WHERE is_po_box = TRUE
+          AND is_head_of_family = 0
+          AND COALESCE(is_senior_freeze, 0) = 0
+          AND COALESCE(is_veteran_1, 0) = 0
+          AND COALESCE(is_veteran_2, 0) = 0
+          AND property_class IN ('SRES', 'MRES', 'CRES')
+          AND COALESCE(is_exempt_gov, 0) != 1;
+    """)
+
+    _exec_step(conn, "Flagged likely second homes", """
+        UPDATE accounts SET is_likely_second_home = (second_home_score >= 4);
+    """)
+
+    with conn.cursor() as cur:
         cur.execute("""
             SELECT
                 COUNT(*) FILTER (WHERE second_home_score >= 6) AS very_likely,
@@ -295,8 +405,6 @@ def score_second_homes(conn):
         print(f"    Likely (4-5):     {row[1]}")
         print(f"    Possible (2-3):   {row[2]}")
         print(f"    Unlikely (0-1):   {row[3]}")
-
-    conn.commit()
 
 
 def main():
@@ -336,6 +444,7 @@ def main():
     total_time = time.time() - t0
     print(f"\nDone. Total records ingested: {total} in {total_time:.0f}s")
 
+    normalize_addresses(conn)
     score_second_homes(conn)
     conn.close()
 

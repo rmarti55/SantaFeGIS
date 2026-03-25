@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { formatOwnerName } from "@/lib/formatOwnerName";
 
 interface Row {
   objectid: number;
@@ -288,7 +289,7 @@ export default function DataTable() {
                     {leaderboard.topByCount.map((row, i) => (
                       <tr key={`${row.owner_name}-${row.owner_state}`} className="hover:bg-gray-50">
                         <td className="px-2 py-1.5 text-gray-400 font-mono text-xs">{i + 1}</td>
-                        <td className="px-2 py-1.5 font-medium text-gray-800">{row.owner_name}</td>
+                        <td className="px-2 py-1.5 font-medium text-gray-800">{formatOwnerName(row.owner_name)}</td>
                         <td className="px-2 py-1.5 text-gray-500">{row.owner_state || "NM"}</td>
                         <td className="px-2 py-1.5 text-right font-semibold text-blue-600">{row.property_count}</td>
                         <td className="px-2 py-1.5 text-right text-gray-600 tabular-nums">{formatCurrency(row.total_value)}</td>
@@ -315,7 +316,7 @@ export default function DataTable() {
                     {leaderboard.topByValue.map((row, i) => (
                       <tr key={`${row.owner_name}-${row.owner_state}`} className="hover:bg-gray-50">
                         <td className="px-2 py-1.5 text-gray-400 font-mono text-xs">{i + 1}</td>
-                        <td className="px-2 py-1.5 font-medium text-gray-800">{row.owner_name}</td>
+                        <td className="px-2 py-1.5 font-medium text-gray-800">{formatOwnerName(row.owner_name)}</td>
                         <td className="px-2 py-1.5 text-gray-500">{row.owner_state || "NM"}</td>
                         <td className="px-2 py-1.5 text-right font-semibold text-green-600 tabular-nums">{formatCurrency(row.total_value)}</td>
                         <td className="px-2 py-1.5 text-right text-gray-600">{row.property_count}</td>
@@ -346,7 +347,7 @@ export default function DataTable() {
                       <tr key={`${row.address}-${i}`} className="hover:bg-gray-50">
                         <td className="px-2 py-1.5 text-gray-400 font-mono text-xs">{i + 1}</td>
                         <td className="px-2 py-1.5 font-medium text-gray-800">{row.address || "N/A"}</td>
-                        <td className="px-2 py-1.5 text-gray-700">{row.owner_name}</td>
+                        <td className="px-2 py-1.5 text-gray-700">{formatOwnerName(row.owner_name)}</td>
                         <td className="px-2 py-1.5 text-gray-500">{row.owner_state || "NM"}</td>
                         <td className="px-2 py-1.5 text-right font-semibold text-green-600 tabular-nums">{formatCurrency(row.market_value)}</td>
                         <td className="px-2 py-1.5 text-gray-500">{row.property_class}</td>
@@ -396,7 +397,7 @@ export default function DataTable() {
                   <div className="text-xs text-gray-500">{row.zip}</div>
                 </td>
                 <td className="px-3 py-2.5 text-sm text-gray-800">
-                  {row.owner_name || "Unknown"}
+                  {formatOwnerName(row.owner_name)}
                 </td>
                 <td className="px-3 py-2.5 text-sm text-gray-600">
                   <div>{row.owner_city}</div>

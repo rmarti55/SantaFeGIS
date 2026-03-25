@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.heat";
+import { formatOwnerName } from "@/lib/formatOwnerName";
 
 interface StrProperties {
   id: number;
@@ -77,17 +78,36 @@ const HEAT_GRADIENT = {
   1.0: "#dc2626",
 };
 
+const HISTORIC_DISTRICT_COLORS: Record<string, string> = {
+  "Don Gaspar Area HD": "#ffb8c1",
+  "Downtown And Eastside HD": "#ffe3b3",
+  "Historic Review HD": "#bdeeff",
+  "Historic Transition HD": "#c2ffc2",
+  "Westside-Guadalupe HD": "#b9d3ee",
+};
+
+const HISTORIC_DISTRICT_LABELS: { color: string; label: string }[] = [
+  { color: "#ffb8c1", label: "Don Gaspar Area" },
+  { color: "#ffe3b3", label: "Downtown & Eastside" },
+  { color: "#bdeeff", label: "Historic Review" },
+  { color: "#c2ffc2", label: "Historic Transition" },
+  { color: "#b9d3ee", label: "Westside-Guadalupe" },
+];
+
 export default function StrMap() {
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<L.LayerGroup | null>(null);
   const heatRef = useRef<L.Layer | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const geojsonCacheRef = useRef<GeoJSON.FeatureCollection | null>(null);
+  const historicLayerRef = useRef<L.GeoJSON | null>(null);
+  const historicDataRef = useRef<GeoJSON.FeatureCollection | null>(null);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("markers");
   const [colorMode, setColorMode] = useState<ColorMode>("ownership");
+  const [showHistoricDistricts, setShowHistoricDistricts] = useState(false);
 
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return;
@@ -142,7 +162,7 @@ export default function StrMap() {
                 <div style="font-weight:600;font-size:12px;color:${ownershipColor(p)};margin-bottom:2px;">
                   ${ownershipLabel(p)}${p.second_home_score != null ? ` (Score: ${p.second_home_score})` : ""}
                 </div>
-                <div><strong>Owner:</strong> ${p.owner_name || "N/A"}</div>
+                <div><strong>Owner:</strong> ${formatOwnerName(p.owner_name)}</div>
                 <div><strong>Owner Location:</strong> ${[p.owner_city, p.owner_state].filter(Boolean).join(", ") || "N/A"}</div>
                 ${p.is_head_of_family === 1 ? '<div style="color:#22c55e;font-size:11px;">Head of Family exemption claimed</div>' : ""}
               </div>`
@@ -267,6 +287,64 @@ export default function StrMap() {
     };
   }, [loadData]);
 
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    if (!showHistoricDistricts) {
+      if (historicLayerRef.current) {
+        map.removeLayer(historicLayerRef.current);
+        historicLayerRef.current = null;
+      }
+      return;
+    }
+
+    function addLayer(data: GeoJSON.FeatureCollection) {
+      if (!map) return;
+      if (historicLayerRef.current) {
+        map.removeLayer(historicLayerRef.current);
+      }
+      historicLayerRef.current = L.geoJSON(data, {
+        style: (feature) => {
+          const name = feature?.properties?.HDSTNAM ?? "";
+          return {
+            fillColor: HISTORIC_DISTRICT_COLORS[name] ?? "#6b7280",
+            fillOpacity: 0.35,
+            color: "#6b7280",
+            weight: 2,
+            dashArray: "6 4",
+          };
+        },
+        onEachFeature: (_feature, layer) => {
+          const name = _feature.properties?.HDSTNAM ?? "Historic District";
+          layer.bindTooltip(name, {
+            sticky: true,
+            className: "historic-district-tooltip",
+          });
+        },
+      }).addTo(map);
+      historicLayerRef.current.bringToBack();
+    }
+
+    if (historicDataRef.current) {
+      addLayer(historicDataRef.current);
+      return;
+    }
+
+    fetch("/api/historic-districts")
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then((geojson: GeoJSON.FeatureCollection) => {
+        historicDataRef.current = geojson;
+        if (showHistoricDistricts) addLayer(geojson);
+      })
+      .catch(() => {
+        /* silently ignore — overlay is optional */
+      });
+  }, [showHistoricDistricts]);
+
   return (
     <div className="flex flex-col h-full">
       {/* Filter bar */}
@@ -312,6 +390,16 @@ export default function StrMap() {
         >
           Refresh
         </button>
+
+        <label className="flex items-center gap-1.5 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={showHistoricDistricts}
+            onChange={(e) => setShowHistoricDistricts(e.target.checked)}
+            className="accent-indigo-600 w-3.5 h-3.5"
+          />
+          <span className="text-gray-600">Historic Districts</span>
+        </label>
 
         <div className="ml-auto flex items-center gap-3 text-gray-500">
           {loading && <span className="animate-pulse">Loading...</span>}
@@ -375,6 +463,23 @@ export default function StrMap() {
                 <span className="text-gray-600">{label}</span>
               </div>
             ))}
+          </>
+        )}
+
+        {showHistoricDistricts && (
+          <>
+            <div className="border-t border-gray-200 mt-2 pt-2">
+              <div className="font-semibold text-gray-700 mb-1.5">Historic Districts</div>
+              {HISTORIC_DISTRICT_LABELS.map(({ color, label }) => (
+                <div key={label} className="flex items-center gap-2 mb-1">
+                  <span
+                    className="w-3.5 h-2.5 rounded-sm inline-block shrink-0 border border-gray-400"
+                    style={{ backgroundColor: color, opacity: 0.7 }}
+                  />
+                  <span className="text-gray-600">{label}</span>
+                </div>
+              ))}
+            </div>
           </>
         )}
       </div>

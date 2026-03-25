@@ -92,7 +92,10 @@ export async function GET(req: NextRequest) {
           'score_entity', COALESCE(score_entity, 0),
           'score_high_value', COALESCE(score_high_value, 0),
           'score_multi_owner', COALESCE(score_multi_owner, 0),
-          'score_mailing_match', COALESCE(score_mailing_match, 0)
+          'score_mailing_match', COALESCE(score_mailing_match, 0),
+          'score_head_of_family', COALESCE(score_head_of_family, 0),
+          'score_po_box', COALESCE(score_po_box, 0),
+          'is_po_box', COALESCE(is_po_box, false)
         )`;
 
   const query = `
@@ -116,8 +119,8 @@ export async function GET(req: NextRequest) {
 
   try {
     const rows = await sql.query(query, params) as Record<string, unknown>[];
-    const geojson = rows[0]?.geojson;
-    const body = { ...geojson, mode: heatMode ? "heat" : "parcels" };
+    const geojson = rows[0]?.geojson as Record<string, unknown> | undefined;
+    const body = { ...(geojson ?? {}), mode: heatMode ? "heat" : "parcels" };
     return NextResponse.json(body, {
       headers: { "Cache-Control": "public, s-maxage=120, stale-while-revalidate=300" },
     });

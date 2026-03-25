@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import OccupancyCharts from "./OccupancyCharts";
 
 interface Stats {
   summary: {
@@ -43,6 +44,10 @@ export default function StatsPanel({ open, onClose }: { open: boolean; onClose: 
       </div>
 
       {loading && <div className="p-5 text-gray-500 animate-pulse">Loading statistics...</div>}
+
+      <div className="p-5 border-b border-gray-200">
+        <OccupancyCharts />
+      </div>
 
       {stats && (
         <div className="p-5 space-y-6">
