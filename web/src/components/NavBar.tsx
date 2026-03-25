@@ -9,6 +9,7 @@ const tabs = [
   { href: "/work-orders", label: "Work Orders" },
   { href: "/road-conditions", label: "Road Conditions" },
   { href: "/capital-projects", label: "Capital Projects" },
+  { href: "/zoning", label: "Zoning" },
 ];
 
 export default function NavBar() {

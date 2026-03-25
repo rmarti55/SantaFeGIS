@@ -64,8 +64,6 @@ export default function StrDataTable() {
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortKey>("address");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
-  const [status, setStatus] = useState("");
-  const [rentalType, setRentalType] = useState("");
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
 
@@ -78,8 +76,6 @@ export default function StrDataTable() {
       sortBy,
       sortDir,
     });
-    if (status) params.set("status", status);
-    if (rentalType) params.set("rentalType", rentalType);
     if (search) params.set("search", search);
 
     try {
@@ -92,7 +88,7 @@ export default function StrDataTable() {
     } finally {
       setLoading(false);
     }
-  }, [page, sortBy, sortDir, status, rentalType, search]);
+  }, [page, sortBy, sortDir, search]);
 
   useEffect(() => {
     loadData();
@@ -135,45 +131,6 @@ export default function StrDataTable() {
     <div className="flex flex-col h-full bg-gray-50">
       {/* Filter bar */}
       <div className="bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap items-center gap-3 text-sm">
-        <div className="font-semibold text-gray-700 mr-2">Filters:</div>
-
-        <label className="flex items-center gap-1.5">
-          <span className="text-gray-500">Status</span>
-          <select
-            className="border rounded px-2 py-1 text-gray-800 bg-white"
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-              setPage(1);
-            }}
-          >
-            <option value="">All</option>
-            <option value="Active">Active</option>
-            <option value="M">Renewed (M)</option>
-          </select>
-        </label>
-
-        <label className="flex items-center gap-1.5">
-          <span className="text-gray-500">Rental Type</span>
-          <select
-            className="border rounded px-2 py-1 text-gray-800 bg-white"
-            value={rentalType}
-            onChange={(e) => {
-              setRentalType(e.target.value);
-              setPage(1);
-            }}
-          >
-            <option value="">All</option>
-            <option value="Residential">Residential</option>
-            <option value="Residential Unit">Residential Unit</option>
-            <option value="Non-Residential">Non-Residential</option>
-            <option value="Accessory Dwelling">Accessory Dwelling</option>
-            <option value="Accessory Dwelling Unit">
-              Accessory Dwelling Unit
-            </option>
-          </select>
-        </label>
-
         <div className="flex items-center gap-1.5">
           <input
             type="text"

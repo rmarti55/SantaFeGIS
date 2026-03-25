@@ -17,11 +17,12 @@ export async function GET(req: NextRequest) {
   const bbox = searchParams.get("bbox") ?? "";
   const zoom = parseInt(searchParams.get("zoom") ?? "14", 10);
 
-  const tolerance = zoom >= 17 ? 0 : zoom >= 15 ? 0.00001 : zoom >= 13 ? 0.00005 : zoom >= 11 ? 0.0005 : 0.001;
-  const limit = zoom >= 15 ? 15000 : zoom >= 13 ? 8000 : zoom >= 11 ? 1500 : 500;
+  const forceHeat = searchParams.get("mode") === "heat";
+  const heatMode = forceHeat || zoom < 14;
+  const tolerance = zoom >= 17 ? 0 : zoom >= 15 ? 0.00001 : zoom >= 14 ? 0.00005 : 0;
+  const limit = heatMode ? 50000 : zoom >= 15 ? 10000 : 6000;
 
-  const usecentroid = zoom < 12;
-  const geomExpr = usecentroid
+  const geomExpr = heatMode
     ? `ST_AsGeoJSON(ST_Centroid(geom))::json`
     : tolerance > 0
       ? `ST_AsGeoJSON(ST_SimplifyPreserveTopology(geom, ${tolerance}))::json`
@@ -30,6 +31,7 @@ export async function GET(req: NextRequest) {
   const conditions: string[] = [
     "geom IS NOT NULL",
     "TRIM(tax_district) LIKE 'CI%'",
+    "COALESCE(is_exempt_gov, 0) != 1",
     `second_home_score >= ${Number(minScore) || 0}`,
     `second_home_score <= ${Number(maxScore) || 99}`,
   ];
@@ -46,6 +48,8 @@ export async function GET(req: NextRequest) {
     conditions.push(`property_class = $${paramIdx}`);
     params.push(propertyClass.toUpperCase());
     paramIdx++;
+  } else {
+    conditions.push("property_class IN ('SRES', 'MRES', 'CRES')");
   }
 
   if (bbox) {
@@ -62,17 +66,12 @@ export async function GET(req: NextRequest) {
 
   const where = conditions.join(" AND ");
 
-  const query = `
-    SELECT json_build_object(
-      'type', 'FeatureCollection',
-      'features', COALESCE(json_agg(sub.feat), '[]')
-    ) AS geojson
-    FROM (
-      SELECT json_build_object(
-        'type', 'Feature',
-        'id', objectid,
-        'geometry', ${geomExpr},
-        'properties', json_build_object(
+  const propsExpr = heatMode
+    ? `json_build_object(
+          'objectid', objectid,
+          'score', second_home_score
+        )`
+    : `json_build_object(
           'objectid', objectid,
           'address', situs_line_1,
           'city', situs_city,
@@ -94,7 +93,19 @@ export async function GET(req: NextRequest) {
           'score_high_value', COALESCE(score_high_value, 0),
           'score_multi_owner', COALESCE(score_multi_owner, 0),
           'score_mailing_match', COALESCE(score_mailing_match, 0)
-        )
+        )`;
+
+  const query = `
+    SELECT json_build_object(
+      'type', 'FeatureCollection',
+      'features', COALESCE(json_agg(sub.feat), '[]')
+    ) AS geojson
+    FROM (
+      SELECT json_build_object(
+        'type', 'Feature',
+        'id', objectid,
+        'geometry', ${geomExpr},
+        'properties', ${propsExpr}
       ) AS feat
       FROM accounts
       WHERE ${where}
@@ -106,7 +117,8 @@ export async function GET(req: NextRequest) {
   try {
     const rows = await sql.query(query, params) as Record<string, unknown>[];
     const geojson = rows[0]?.geojson;
-    return NextResponse.json(geojson, {
+    const body = { ...geojson, mode: heatMode ? "heat" : "parcels" };
+    return NextResponse.json(body, {
       headers: { "Cache-Control": "public, s-maxage=120, stale-while-revalidate=300" },
     });
   } catch (e: unknown) {

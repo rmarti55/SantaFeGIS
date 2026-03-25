@@ -199,10 +199,17 @@ def score_second_homes(conn):
         """)
 
         cur.execute("""
+            UPDATE accounts SET second_home_score = 0, is_likely_second_home = FALSE
+            WHERE COALESCE(is_exempt_gov, 0) = 1;
+        """)
+        print(f"  Zeroed gov-exempt parcels: {cur.rowcount} rows")
+
+        cur.execute("""
             UPDATE accounts SET second_home_score = second_home_score + 3,
                                 score_out_of_state = 3
             WHERE TRIM(owner_state) != '' AND TRIM(owner_state) != 'NM'
-              AND owner_state IS NOT NULL;
+              AND owner_state IS NOT NULL
+              AND COALESCE(is_exempt_gov, 0) != 1;
         """)
         print(f"  +3 owner out-of-state: {cur.rowcount} rows")
 
@@ -212,7 +219,8 @@ def score_second_homes(conn):
             WHERE TRIM(owner_state) = 'NM'
               AND UPPER(TRIM(owner_city)) != UPPER(TRIM(situs_city))
               AND owner_city IS NOT NULL AND situs_city IS NOT NULL
-              AND TRIM(owner_city) != '';
+              AND TRIM(owner_city) != ''
+              AND COALESCE(is_exempt_gov, 0) != 1;
         """)
         print(f"  +2 owner different NM city: {cur.rowcount} rows")
 
@@ -220,7 +228,8 @@ def score_second_homes(conn):
             UPDATE accounts SET second_home_score = second_home_score + 2,
                                 score_entity = 2
             WHERE owner_name ~* '(\\mLLC\\M|\\mINC\\M|\\mCORP\\M|\\mLTD\\M|\\mLP\\M|\\mTRUST\\M|\\mL\\.?L\\.?C|\\mREVOCABLE\\M|\\mIRREVOCABLE\\M|\\mESTATE\\M|\\mPROPERT(Y|IES)\\M|\\mINVEST\\M|\\mHOLDING\\M|\\mGROUP\\M|\\mPARTNERS\\M|\\mVENTURE\\M)'
-              AND property_class IN ('SRES', 'MRES', 'CRES');
+              AND property_class IN ('SRES', 'MRES', 'CRES')
+              AND COALESCE(is_exempt_gov, 0) != 1;
         """)
         print(f"  +2 entity ownership: {cur.rowcount} rows")
 
@@ -234,7 +243,8 @@ def score_second_homes(conn):
                                 score_high_value = 1
             FROM q
             WHERE property_class IN ('SRES', 'MRES', 'CRES')
-              AND (COALESCE(current_market_imp_res,0) + COALESCE(current_market_land_res,0)) > q.p75;
+              AND (COALESCE(current_market_imp_res,0) + COALESCE(current_market_land_res,0)) > q.p75
+              AND COALESCE(is_exempt_gov, 0) != 1;
         """)
         print(f"  +1 high value: {cur.rowcount} rows")
 
@@ -250,7 +260,8 @@ def score_second_homes(conn):
                                 score_multi_owner = 2
             FROM multi
             WHERE UPPER(TRIM(accounts.owner_name)) = multi.oname
-              AND property_class IN ('SRES', 'MRES', 'CRES');
+              AND property_class IN ('SRES', 'MRES', 'CRES')
+              AND COALESCE(is_exempt_gov, 0) != 1;
         """)
         print(f"  +2 multi-property owner: {cur.rowcount} rows")
 
@@ -259,7 +270,8 @@ def score_second_homes(conn):
                                 score_mailing_match = -2
             WHERE situs_line_1 IS NOT NULL AND owner_line_1 IS NOT NULL
               AND TRIM(situs_line_1) != '' AND TRIM(owner_line_1) != ''
-              AND UPPER(TRIM(situs_line_1)) = UPPER(TRIM(owner_line_1));
+              AND UPPER(TRIM(situs_line_1)) = UPPER(TRIM(owner_line_1))
+              AND COALESCE(is_exempt_gov, 0) != 1;
         """)
         print(f"  -2 mailing matches situs: {cur.rowcount} rows")
 

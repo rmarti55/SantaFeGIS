@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
+
+type ViewMode = "parcels" | "density";
 
 interface ParcelProperties {
   objectid: number;
@@ -26,13 +28,6 @@ interface ParcelProperties {
   score_high_value: number;
   score_multi_owner: number;
   score_mailing_match: number;
-}
-
-interface Filters {
-  minScore: number;
-  maxScore: number;
-  ownerState: string;
-  propertyClass: string;
 }
 
 function scoreColor(score: number): string {
@@ -72,6 +67,42 @@ function scoreBreakdownRows(p: ParcelProperties): string {
     .join("");
 }
 
+function buildPopupHtml(p: ParcelProperties): string {
+  return `
+    <div style="font-family: system-ui; font-size: 13px; line-height: 1.5; min-width: 240px;">
+      <div style="font-weight: 700; font-size: 14px; margin-bottom: 6px; color: ${scoreColor(p.score)};">
+        ${scoreLabel(p.score)} (Score: ${p.score})
+      </div>
+      <div style="margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
+        <div style="font-weight: 600;">Property</div>
+        <div>${p.address || "No address"}</div>
+        <div>${p.city || ""} ${p.zip || ""}</div>
+        <div style="color: #6b7280;">${p.property_class} &middot; ${p.acreage || "?"} acres</div>
+        <div style="color: #6b7280;">${p.neighborhood || ""}</div>
+      </div>
+      <div style="margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
+        <div style="font-weight: 600;">Owner</div>
+        <div>${p.owner_name || "Unknown"}</div>
+        <div>${p.owner_city || ""}, ${p.owner_state || ""} ${p.owner_zip || ""}</div>
+      </div>
+      <div>
+        <div style="font-weight: 600;">Value</div>
+        <div>Market: ${formatCurrency(p.market_value)}</div>
+        <div>Assessed: ${formatCurrency(p.assessed_value)}</div>
+      </div>
+      <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb;">
+        <div style="font-weight: 600; margin-bottom: 4px;">Score Breakdown</div>
+        <table style="width:100%; font-size: 12px; border-collapse: collapse;">
+          ${scoreBreakdownRows(p) || '<tr><td style="color:#6b7280">No factors detected</td></tr>'}
+          <tr style="border-top: 1px solid #e5e7eb;">
+            <td style="padding:4px 0 0; font-weight:600; color:#374151">Total</td>
+            <td style="text-align:right; padding:4px 0 0 12px; font-weight:700; color:${scoreColor(p.score)}">${p.score}</td>
+          </tr>
+        </table>
+      </div>
+    </div>`;
+}
+
 const responseCache = new globalThis.Map<string, { data: unknown; ts: number }>();
 const CACHE_TTL = 60_000;
 
@@ -89,47 +120,135 @@ function setCache(key: string, data: unknown) {
   }
 }
 
+const EMPTY_GEOJSON: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
+
 export default function ParcelMap() {
-  const mapRef = useRef<L.Map | null>(null);
-  const layerRef = useRef<L.GeoJSON | null>(null);
+  const mapRef = useRef<maplibregl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const lastLoadedKeyRef = useRef<string | null>(null);
+  const popupRef = useRef<maplibregl.Popup | null>(null);
+  const sourceReadyRef = useRef(false);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
+  const [viewMode, setViewMode] = useState<ViewMode>("parcels");
   const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<Filters>({
-    minScore: 0,
-    maxScore: 99,
-    ownerState: "",
-    propertyClass: "",
-  });
 
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return;
 
-    const map = L.map(containerRef.current, {
-      center: [35.687, -105.938],
+    const map = new maplibregl.Map({
+      container: containerRef.current,
+      style: {
+        version: 8,
+        sources: {
+          osm: {
+            type: "raster",
+            tiles: ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png"],
+            tileSize: 256,
+            attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
+          },
+        },
+        layers: [{ id: "osm", type: "raster", source: "osm" }],
+      },
+      center: [-105.938, 35.687],
       zoom: 14,
-      zoomControl: true,
     });
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
-      maxZoom: 19,
-    }).addTo(map);
+    map.addControl(new maplibregl.NavigationControl(), "top-right");
+
+    map.on("load", () => {
+      map.addSource("parcels", { type: "geojson", data: EMPTY_GEOJSON });
+      map.addSource("heatpoints", { type: "geojson", data: EMPTY_GEOJSON });
+
+      map.addLayer({
+        id: "parcels-fill",
+        type: "fill",
+        source: "parcels",
+        paint: {
+          "fill-color": [
+            "interpolate", ["linear"], ["coalesce", ["get", "score"], 0],
+            0, "#22c55e",
+            2, "#eab308",
+            4, "#f97316",
+            6, "#dc2626",
+          ],
+          "fill-opacity": ["interpolate", ["linear"], ["zoom"], 14, 0.35, 16, 0.5],
+        },
+      });
+
+      map.addLayer({
+        id: "parcels-outline",
+        type: "line",
+        source: "parcels",
+        paint: {
+          "line-color": [
+            "interpolate", ["linear"], ["coalesce", ["get", "score"], 0],
+            0, "#22c55e",
+            2, "#eab308",
+            4, "#f97316",
+            6, "#dc2626",
+          ],
+          "line-width": ["interpolate", ["linear"], ["zoom"], 14, 0.5, 16, 2],
+        },
+      });
+
+      map.addLayer({
+        id: "heatmap",
+        type: "heatmap",
+        source: "heatpoints",
+        paint: {
+          "heatmap-weight": ["interpolate", ["linear"], ["coalesce", ["get", "score"], 0], 0, 0.1, 4, 0.5, 8, 1],
+          "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 10, 0.5, 14, 1.5],
+          "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 10, 8, 14, 20],
+          "heatmap-opacity": 0.7,
+          "heatmap-color": [
+            "interpolate", ["linear"], ["heatmap-density"],
+            0, "rgba(34,197,94,0)",
+            0.2, "#22c55e",
+            0.4, "#eab308",
+            0.7, "#f97316",
+            1, "#dc2626",
+          ],
+        },
+        layout: { visibility: "none" },
+      });
+
+      sourceReadyRef.current = true;
+    });
+
+    map.on("click", "parcels-fill", (e) => {
+      if (!e.features?.length) return;
+      const p = e.features[0].properties as ParcelProperties;
+      if (!p.address && !p.owner_name) return;
+
+      if (popupRef.current) popupRef.current.remove();
+      popupRef.current = new maplibregl.Popup({ maxWidth: "340px" })
+        .setLngLat(e.lngLat)
+        .setHTML(buildPopupHtml(p))
+        .addTo(map);
+    });
+
+    map.on("mouseenter", "parcels-fill", () => {
+      map.getCanvas().style.cursor = "pointer";
+    });
+    map.on("mouseleave", "parcels-fill", () => {
+      map.getCanvas().style.cursor = "";
+    });
 
     mapRef.current = map;
 
     return () => {
       map.remove();
       mapRef.current = null;
+      sourceReadyRef.current = false;
     };
   }, []);
 
-  const loadParcels = useCallback(async () => {
-    if (!mapRef.current) return;
+  const loadParcels = useCallback(async (mode: ViewMode) => {
+    const map = mapRef.current;
+    if (!map || !sourceReadyRef.current) return;
 
     if (abortRef.current) abortRef.current.abort();
     const controller = new AbortController();
@@ -138,29 +257,28 @@ export default function ParcelMap() {
     setLoading(true);
     setError(null);
 
-    const map = mapRef.current;
-    const zoom = map.getZoom();
+    const zoom = Math.round(map.getZoom());
     const bounds = map.getBounds();
     const bbox = `${bounds.getWest().toFixed(4)},${bounds.getSouth().toFixed(4)},${bounds.getEast().toFixed(4)},${bounds.getNorth().toFixed(4)}`;
 
+    const wantHeat = mode === "density";
     const params = new URLSearchParams({
       bbox,
-      minScore: String(filters.minScore),
-      maxScore: String(filters.maxScore),
+      minScore: "0",
+      maxScore: "99",
       zoom: String(zoom),
+      ...(wantHeat ? { mode: "heat" } : {}),
     });
-    if (filters.ownerState) params.set("ownerState", filters.ownerState);
-    if (filters.propertyClass) params.set("propertyClass", filters.propertyClass);
 
     const cacheKey = params.toString();
-    const cached = getCached(cacheKey);
 
-    if (cacheKey === lastLoadedKeyRef.current && layerRef.current) {
+    if (cacheKey === lastLoadedKeyRef.current) {
       setLoading(false);
       return;
     }
 
     try {
+      const cached = getCached(cacheKey);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let geojson: any;
       if (cached) {
@@ -174,156 +292,98 @@ export default function ParcelMap() {
 
       if (controller.signal.aborted) return;
 
-      let openPopupObjectId: number | null = null;
-      if (layerRef.current) {
-        layerRef.current.eachLayer((l) => {
-          if ((l as L.Layer & { isPopupOpen?: () => boolean }).isPopupOpen?.()) {
-            const feature = (l as L.Layer & { feature?: { properties?: ParcelProperties } }).feature;
-            if (feature?.properties?.objectid != null) {
-              openPopupObjectId = feature.properties.objectid;
-            }
-          }
-        });
-        map.removeLayer(layerRef.current);
+      const isHeat = geojson.mode === "heat" || wantHeat;
+
+      if (isHeat) {
+        (map.getSource("heatpoints") as maplibregl.GeoJSONSource).setData(geojson);
+        (map.getSource("parcels") as maplibregl.GeoJSONSource).setData(EMPTY_GEOJSON);
+        map.setLayoutProperty("heatmap", "visibility", "visible");
+        map.setLayoutProperty("parcels-fill", "visibility", "none");
+        map.setLayoutProperty("parcels-outline", "visibility", "none");
+      } else {
+        (map.getSource("parcels") as maplibregl.GeoJSONSource).setData(geojson);
+        (map.getSource("heatpoints") as maplibregl.GeoJSONSource).setData(EMPTY_GEOJSON);
+        map.setLayoutProperty("heatmap", "visibility", "none");
+        map.setLayoutProperty("parcels-fill", "visibility", "visible");
+        map.setLayoutProperty("parcels-outline", "visibility", "visible");
       }
 
-      const layer = L.geoJSON(geojson, {
-        style: (feature) => ({
-          color: scoreColor(feature?.properties?.score ?? 0),
-          weight: zoom >= 16 ? 2 : 1,
-          fillOpacity: zoom >= 16 ? 0.5 : 0.35,
-          fillColor: scoreColor(feature?.properties?.score ?? 0),
-        }),
-        onEachFeature: (feature, layer) => {
-          const p: ParcelProperties = feature.properties;
-          layer.bindPopup(`
-            <div style="font-family: system-ui; font-size: 13px; line-height: 1.5; min-width: 240px;">
-              <div style="font-weight: 700; font-size: 14px; margin-bottom: 6px; color: ${scoreColor(p.score)};">
-                ${scoreLabel(p.score)} (Score: ${p.score})
-              </div>
-              <div style="margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
-                <div style="font-weight: 600;">Property</div>
-                <div>${p.address || "No address"}</div>
-                <div>${p.city || ""} ${p.zip || ""}</div>
-                <div style="color: #6b7280;">${p.property_class} &middot; ${p.acreage || "?"} acres</div>
-                <div style="color: #6b7280;">${p.neighborhood || ""}</div>
-              </div>
-              <div style="margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
-                <div style="font-weight: 600;">Owner</div>
-                <div>${p.owner_name || "Unknown"}</div>
-                <div>${p.owner_city || ""}, ${p.owner_state || ""} ${p.owner_zip || ""}</div>
-              </div>
-              <div>
-                <div style="font-weight: 600;">Value</div>
-                <div>Market: ${formatCurrency(p.market_value)}</div>
-                <div>Assessed: ${formatCurrency(p.assessed_value)}</div>
-              </div>
-              <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb;">
-                <div style="font-weight: 600; margin-bottom: 4px;">Score Breakdown</div>
-                <table style="width:100%; font-size: 12px; border-collapse: collapse;">
-                  ${scoreBreakdownRows(p) || '<tr><td style="color:#6b7280">No factors detected</td></tr>'}
-                  <tr style="border-top: 1px solid #e5e7eb;">
-                    <td style="padding:4px 0 0; font-weight:600; color:#374151">Total</td>
-                    <td style="text-align:right; padding:4px 0 0 12px; font-weight:700; color:${scoreColor(p.score)}">${p.score}</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          `, { maxWidth: 320 });
-        },
-      });
-
-      layer.addTo(map);
-      layerRef.current = layer;
       lastLoadedKeyRef.current = cacheKey;
       setCount(geojson.features?.length ?? 0);
-
-      if (openPopupObjectId != null) {
-        layer.eachLayer((l) => {
-          const feature = (l as L.Layer & { feature?: { properties?: ParcelProperties } }).feature;
-          if (feature?.properties?.objectid === openPopupObjectId) {
-            (l as L.Layer & { openPopup: () => void }).openPopup();
-          }
-        });
-      }
     } catch (e: unknown) {
       if (e instanceof DOMException && e.name === "AbortError") return;
       setError(e instanceof Error ? e.message : "Failed to load parcels");
     } finally {
       if (!controller.signal.aborted) setLoading(false);
     }
-  }, [filters]);
+  }, []);
+
+  const viewModeRef = useRef(viewMode);
+  viewModeRef.current = viewMode;
 
   const debouncedLoad = useCallback(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(loadParcels, 400);
+    debounceRef.current = setTimeout(() => loadParcels(viewModeRef.current), 400);
   }, [loadParcels]);
 
   useEffect(() => {
-    if (!mapRef.current) return;
-    loadParcels();
+    if (!mapRef.current || !sourceReadyRef.current) return;
+    lastLoadedKeyRef.current = null;
+    loadParcels(viewMode);
+  }, [viewMode, loadParcels]);
 
+  useEffect(() => {
     const map = mapRef.current;
+    if (!map) return;
+
     map.on("moveend", debouncedLoad);
     return () => {
       map.off("moveend", debouncedLoad);
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [loadParcels, debouncedLoad]);
+  }, [debouncedLoad]);
+
+  // Trigger initial load once map style is ready
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const onStyleLoad = () => {
+      if (sourceReadyRef.current) loadParcels(viewModeRef.current);
+    };
+    if (map.isStyleLoaded() && sourceReadyRef.current) {
+      loadParcels(viewModeRef.current);
+    } else {
+      map.on("load", onStyleLoad);
+      return () => { map.off("load", onStyleLoad); };
+    }
+  }, [loadParcels]);
 
   return (
     <div className="flex flex-col h-full">
-      {/* Filter bar */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap items-center gap-3 text-sm z-[1000] relative">
-        <div className="font-semibold text-gray-700 mr-2">Filters:</div>
-
-        <label className="flex items-center gap-1.5">
-          <span className="text-gray-500">Min Score</span>
-          <select
-            className="border rounded px-2 py-1 text-gray-800 bg-white"
-            value={filters.minScore}
-            onChange={(e) => setFilters((f) => ({ ...f, minScore: +e.target.value }))}
+      {/* Toolbar */}
+      <div className="bg-white border-b border-gray-200 px-4 py-2.5 flex items-center gap-3 text-sm z-[1000] relative">
+        <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-0.5">
+          <button
+            onClick={() => setViewMode("parcels")}
+            className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+              viewMode === "parcels"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
           >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-              <option key={n} value={n}>{n}</option>
-            ))}
-          </select>
-        </label>
-
-        <label className="flex items-center gap-1.5">
-          <span className="text-gray-500">Owner State</span>
-          <input
-            type="text"
-            maxLength={2}
-            placeholder="e.g. TX"
-            className="border rounded px-2 py-1 w-16 uppercase text-gray-800 bg-white"
-            value={filters.ownerState}
-            onChange={(e) => setFilters((f) => ({ ...f, ownerState: e.target.value.toUpperCase() }))}
-          />
-        </label>
-
-        <label className="flex items-center gap-1.5">
-          <span className="text-gray-500">Class</span>
-          <select
-            className="border rounded px-2 py-1 text-gray-800 bg-white"
-            value={filters.propertyClass}
-            onChange={(e) => setFilters((f) => ({ ...f, propertyClass: e.target.value }))}
+            Parcels
+          </button>
+          <button
+            onClick={() => setViewMode("density")}
+            className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+              viewMode === "density"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
           >
-            <option value="">All</option>
-            <option value="SRES">SRES (Single Res)</option>
-            <option value="MRES">MRES (Multi Res)</option>
-            <option value="CRES">CRES (Condo Res)</option>
-            <option value="COMM">COMM (Commercial)</option>
-            <option value="VAC">VAC (Vacant)</option>
-          </select>
-        </label>
-
-        <button
-          onClick={loadParcels}
-          className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors"
-        >
-          Refresh
-        </button>
+            Density
+          </button>
+        </div>
 
         <div className="ml-auto flex items-center gap-3 text-gray-500">
           {loading && <span className="animate-pulse">Loading...</span>}
@@ -334,18 +394,38 @@ export default function ParcelMap() {
 
       {/* Legend */}
       <div className="absolute bottom-6 left-4 bg-white/95 backdrop-blur rounded-lg shadow-lg px-4 py-3 z-[1000] text-xs">
-        <div className="font-semibold text-gray-700 mb-2">Second Home Likelihood</div>
-        {[
-          { color: "#dc2626", label: "Very Likely (6+)" },
-          { color: "#f97316", label: "Likely (4-5)" },
-          { color: "#eab308", label: "Possible (2-3)" },
-          { color: "#22c55e", label: "Primary (0-1)" },
-        ].map(({ color, label }) => (
-          <div key={label} className="flex items-center gap-2 mb-1">
-            <span className="w-4 h-3 rounded-sm inline-block" style={{ backgroundColor: color, opacity: 0.7 }} />
-            <span className="text-gray-600">{label}</span>
-          </div>
-        ))}
+        {viewMode === "density" ? (
+          <>
+            <div className="font-semibold text-gray-700 mb-2">Second Home Density</div>
+            <div className="flex items-center gap-1.5 mb-1">
+              <div
+                className="w-24 h-3 rounded"
+                style={{
+                  background: "linear-gradient(to right, #22c55e, #eab308, #f97316, #dc2626)",
+                }}
+              />
+            </div>
+            <div className="flex justify-between text-gray-500 w-24">
+              <span>Low</span>
+              <span>High</span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="font-semibold text-gray-700 mb-2">Second Home Likelihood</div>
+            {[
+              { color: "#dc2626", label: "Very Likely (6+)" },
+              { color: "#f97316", label: "Likely (4-5)" },
+              { color: "#eab308", label: "Possible (2-3)" },
+              { color: "#22c55e", label: "Primary (0-1)" },
+            ].map(({ color, label }) => (
+              <div key={label} className="flex items-center gap-2 mb-1">
+                <span className="w-4 h-3 rounded-sm inline-block" style={{ backgroundColor: color, opacity: 0.7 }} />
+                <span className="text-gray-600">{label}</span>
+              </div>
+            ))}
+          </>
+        )}
       </div>
 
       {/* Map container */}

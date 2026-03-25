@@ -28,11 +28,6 @@ interface StrProperties {
   parcel_matched: boolean;
 }
 
-interface Filters {
-  status: string;
-  rentalType: string;
-}
-
 type ColorMode = "rental_type" | "ownership";
 type ViewMode = "markers" | "heatmap";
 
@@ -93,10 +88,6 @@ export default function StrMap() {
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("markers");
   const [colorMode, setColorMode] = useState<ColorMode>("ownership");
-  const [filters, setFilters] = useState<Filters>({
-    status: "",
-    rentalType: "",
-  });
 
   useEffect(() => {
     if (mapRef.current || !containerRef.current) return;
@@ -243,8 +234,6 @@ export default function StrMap() {
     const bbox = `${bounds.getWest()},${bounds.getSouth()},${bounds.getEast()},${bounds.getNorth()}`;
 
     const params = new URLSearchParams({ bbox });
-    if (filters.status) params.set("status", filters.status);
-    if (filters.rentalType) params.set("rentalType", filters.rentalType);
 
     try {
       const resp = await fetch(`/api/str?${params}`);
@@ -259,7 +248,7 @@ export default function StrMap() {
     } finally {
       setLoading(false);
     }
-  }, [filters, viewMode, colorMode, applyView]);
+  }, [viewMode, colorMode, applyView]);
 
   useEffect(() => {
     if (geojsonCacheRef.current) {
@@ -282,39 +271,6 @@ export default function StrMap() {
     <div className="flex flex-col h-full">
       {/* Filter bar */}
       <div className="bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap items-center gap-3 text-sm z-[1000] relative">
-        <div className="font-semibold text-gray-700 mr-2">Filters:</div>
-
-        <label className="flex items-center gap-1.5">
-          <span className="text-gray-500">Status</span>
-          <select
-            className="border rounded px-2 py-1 text-gray-800 bg-white"
-            value={filters.status}
-            onChange={(e) =>
-              setFilters((f) => ({ ...f, status: e.target.value }))
-            }
-          >
-            <option value="">All</option>
-            <option value="Active">Active</option>
-            <option value="M">Renewed (M)</option>
-          </select>
-        </label>
-
-        <label className="flex items-center gap-1.5">
-          <span className="text-gray-500">Rental Type</span>
-          <select
-            className="border rounded px-2 py-1 text-gray-800 bg-white"
-            value={filters.rentalType}
-            onChange={(e) =>
-              setFilters((f) => ({ ...f, rentalType: e.target.value }))
-            }
-          >
-            <option value="">All</option>
-            <option value="Residential">Residential</option>
-            <option value="Residential Unit">Residential Unit</option>
-            <option value="Non-Residential">Non-Residential</option>
-          </select>
-        </label>
-
         <label className="flex items-center gap-1.5">
           <span className="text-gray-500">Color by</span>
           <select

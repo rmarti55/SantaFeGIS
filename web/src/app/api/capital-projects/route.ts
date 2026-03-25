@@ -9,16 +9,16 @@ export const runtime = "edge";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
-  const projtype = searchParams.get("projtype") ?? "";
-  const projphase = searchParams.get("projphase") ?? "";
+  const division = searchParams.get("projtype") ?? "";
+  const phase = searchParams.get("projphase") ?? "";
 
   const conditions: string[] = [];
 
-  if (projtype) {
-    conditions.push(`projtype = '${projtype.replace(/'/g, "''")}'`);
+  if (division) {
+    conditions.push(`Division = '${division.replace(/'/g, "''")}'`);
   }
-  if (projphase) {
-    conditions.push(`projphase = '${projphase.replace(/'/g, "''")}'`);
+  if (phase) {
+    conditions.push(`Phase = '${phase.replace(/'/g, "''")}'`);
   }
 
   const where = conditions.length > 0 ? conditions.join(" AND ") : "1=1";

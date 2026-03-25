@@ -7,7 +7,7 @@ import {
   PROJECT_TYPES,
   PROJECT_TYPE_COLORS,
   PROJECT_PHASES,
-  FUND_SOURCES,
+  FUNDED_STATUS,
 } from "@/lib/arcgis";
 
 export interface CapitalProjectFilterValues {
@@ -95,43 +95,46 @@ export default function CapitalProjectsMap({
 
       layerRef.current = L.geoJSON(geojson, {
         style: (feature) => {
-          const type = feature?.properties?.projtype ?? "Other";
+          const div = feature?.properties?.Division ?? "";
           return {
-            color: PROJECT_TYPE_COLORS[type] ?? "#94a3b8",
+            color: PROJECT_TYPE_COLORS[div] ?? "#94a3b8",
             weight: 2,
-            fillColor: PROJECT_TYPE_COLORS[type] ?? "#94a3b8",
+            fillColor: PROJECT_TYPE_COLORS[div] ?? "#94a3b8",
             fillOpacity: 0.35,
           };
         },
         onEachFeature: (feature, layer) => {
           const p = feature.properties;
-          const color = PROJECT_TYPE_COLORS[p.projtype] ?? "#333";
+          const color = PROJECT_TYPE_COLORS[p.Division] ?? "#333";
 
           layer.bindPopup(
             `<div style="font-family:system-ui;font-size:13px;line-height:1.5;min-width:260px;max-width:340px;">
               <div style="font-weight:700;font-size:15px;margin-bottom:4px;color:${color};">
-                ${p.projname ?? "Unnamed Project"}
+                ${p.Project_Title ?? "Unnamed Project"}
               </div>
-              ${p.projid ? `<div style="font-size:11px;color:#6b7280;margin-bottom:6px;">ID: ${p.projid}</div>` : ""}
-              ${p.projdesc ? `<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e5e7eb;">${p.projdesc}</div>` : ""}
+              ${p.MasterLedgerID ? `<div style="font-size:11px;color:#6b7280;margin-bottom:6px;">ID: ${p.MasterLedgerID}</div>` : ""}
+              ${p.Description ? `<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e5e7eb;">${p.Description}</div>` : ""}
               <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e5e7eb;">
-                <div><strong>Type:</strong> ${PROJECT_TYPES[p.projtype] ?? p.projtype}</div>
-                <div><strong>Phase:</strong> ${PROJECT_PHASES[p.projphase] ?? p.projphase ?? "N/A"}</div>
-                <div><strong>Status:</strong> ${p.projstatus ?? "N/A"}</div>
+                <div><strong>Division:</strong> ${PROJECT_TYPES[p.Division] ?? p.Division}</div>
+                <div><strong>Project Type:</strong> ${p.ProjectType ?? "N/A"}</div>
+                <div><strong>Phase:</strong> ${PROJECT_PHASES[p.Phase] ?? p.Phase ?? "N/A"}</div>
+                <div><strong>Funding:</strong> ${FUNDED_STATUS[p.Funded] ?? p.Funded ?? "N/A"}</div>
+                ${p.Facility ? `<div><strong>Facility:</strong> ${p.Facility}</div>` : ""}
+                ${p.Urgency ? `<div><strong>Urgency:</strong> ${p.Urgency === "H" ? "High" : p.Urgency === "M" ? "Medium" : p.Urgency === "L" ? "Low" : p.Urgency}</div>` : ""}
               </div>
               <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e5e7eb;">
-                <div><strong>Est. Cost:</strong> ${formatCurrency(p.estcost)}</div>
-                <div><strong>Funding:</strong> ${FUND_SOURCES[p.fundsource] ?? p.fundsource ?? "N/A"}</div>
-                <div><strong>Fiscal Year:</strong> ${p.fiscalyr ?? "N/A"}</div>
+                <div><strong>Total Cost:</strong> ${formatCurrency(p.TotalCost)}</div>
+                <div><strong>Design Cost:</strong> ${formatCurrency(p.DesignCost)}</div>
+                <div><strong>Construction Cost:</strong> ${formatCurrency(p.ConstructionCost)}</div>
+                ${p.FundedtoDate2 != null ? `<div><strong>Funded to Date:</strong> ${formatCurrency(p.FundedtoDate2)}</div>` : ""}
               </div>
-              <div style="margin-bottom:${p.pocname ? "8px;padding-bottom:8px;border-bottom:1px solid #e5e7eb" : "0"};">
-                <div><strong>Start:</strong> ${formatDate(p.planstart)}</div>
-                <div><strong>End:</strong> ${formatDate(p.planend)}</div>
+              <div style="margin-bottom:${p.PM ? "8px;padding-bottom:8px;border-bottom:1px solid #e5e7eb" : "0"};">
+                <div><strong>Est. Construction Start:</strong> ${formatDate(p.EstConstructionStart)}</div>
+                <div><strong>Operational Date:</strong> ${formatDate(p.OperationalDate)}</div>
+                ${p.UsefulLife ? `<div><strong>Useful Life:</strong> ${p.UsefulLife}</div>` : ""}
               </div>
-              ${p.pocname ? `<div style="font-size:12px;color:#6b7280;">
-                <div><strong>Contact:</strong> ${p.pocname}</div>
-                ${p.pocemail ? `<div>${p.pocemail}</div>` : ""}
-                ${p.pocphone ? `<div>${p.pocphone}</div>` : ""}
+              ${p.PM ? `<div style="font-size:12px;color:#6b7280;">
+                <div><strong>Project Manager:</strong> ${p.PM}</div>
               </div>` : ""}
             </div>`,
             { maxWidth: 360 }
@@ -168,7 +171,7 @@ export default function CapitalProjectsMap({
       )}
 
       <div className="absolute bottom-6 left-4 bg-white/95 backdrop-blur rounded-lg shadow-lg px-4 py-3 z-[1000] text-xs">
-        <div className="font-semibold text-gray-700 mb-2">Project Type</div>
+        <div className="font-semibold text-gray-700 mb-2">Division</div>
         {Object.entries(PROJECT_TYPES).map(([code, label]) => (
           <div key={code} className="flex items-center gap-2 mb-1">
             <span

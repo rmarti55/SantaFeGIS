@@ -2,19 +2,18 @@
 
 import dynamic from "next/dynamic";
 import { useState, useCallback } from "react";
-import CapitalProjectsFilters from "@/components/CapitalProjectsFilters";
-import CapitalProjectsStats from "@/components/CapitalProjectsStats";
-import type { CapitalProjectFilterValues } from "@/components/CapitalProjectsMap";
+import ZoningFilters from "@/components/ZoningFilters";
+import ZoningStats from "@/components/ZoningStats";
+import type { ZoningFilterValues } from "@/components/ZoningMap";
 
-const CapitalProjectsMap = dynamic(
-  () => import("@/components/CapitalProjectsMap"),
-  { ssr: false }
-);
+const ZoningMap = dynamic(() => import("@/components/ZoningMap"), {
+  ssr: false,
+});
 
-export default function CapitalProjectsPage() {
-  const [filters, setFilters] = useState<CapitalProjectFilterValues>({
-    projtype: "",
-    projphase: "",
+export default function ZoningPage() {
+  const [filters, setFilters] = useState<ZoningFilterValues>({
+    category: "",
+    viewMode: "simplified",
   });
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
@@ -28,7 +27,7 @@ export default function CapitalProjectsPage() {
     <div className="flex-1 flex flex-col relative">
       <div className="bg-gray-800 text-white px-5 py-2 flex items-center justify-between">
         <p className="text-xs text-gray-400">
-          City of Santa Fe Capital Improvement Projects
+          City of Santa Fe Official Zoning Map
         </p>
         <button
           onClick={() => setStatsOpen(!statsOpen)}
@@ -38,7 +37,7 @@ export default function CapitalProjectsPage() {
         </button>
       </div>
 
-      <CapitalProjectsFilters
+      <ZoningFilters
         filters={filters}
         onChange={setFilters}
         onRefresh={() => setRefreshKey((k) => k + 1)}
@@ -47,13 +46,13 @@ export default function CapitalProjectsPage() {
       />
 
       <div className="flex-1 relative">
-        <CapitalProjectsMap
+        <ZoningMap
           filters={filters}
           onCountChange={handleCountChange}
           onLoadingChange={handleLoadingChange}
           refreshKey={refreshKey}
         />
-        <CapitalProjectsStats
+        <ZoningStats
           open={statsOpen}
           onClose={() => setStatsOpen(false)}
         />

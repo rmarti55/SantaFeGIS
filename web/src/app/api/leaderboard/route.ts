@@ -15,6 +15,7 @@ export async function GET() {
         ROUND(SUM(COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0))) AS total_value
       FROM accounts
       WHERE TRIM(tax_district) LIKE 'CI%'
+        AND COALESCE(is_exempt_gov, 0) != 1
         AND owner_name IS NOT NULL AND TRIM(owner_name) != ''
       GROUP BY TRIM(owner_name), TRIM(owner_state)
       HAVING COUNT(*) >= 2
@@ -30,6 +31,7 @@ export async function GET() {
         ROUND(SUM(COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0))) AS total_value
       FROM accounts
       WHERE TRIM(tax_district) LIKE 'CI%'
+        AND COALESCE(is_exempt_gov, 0) != 1
         AND owner_name IS NOT NULL AND TRIM(owner_name) != ''
       GROUP BY TRIM(owner_name), TRIM(owner_state)
       HAVING SUM(COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0)) > 0
@@ -49,6 +51,7 @@ export async function GET() {
         is_likely_second_home
       FROM accounts
       WHERE TRIM(tax_district) LIKE 'CI%'
+        AND COALESCE(is_exempt_gov, 0) != 1
         AND (COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0)) > 0
       ORDER BY (COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0)) DESC
       LIMIT 25

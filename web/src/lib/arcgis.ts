@@ -5,7 +5,7 @@ const DISTRICTS_BASE =
   "https://services7.arcgis.com/p0Gk2nDbPs7KEqSZ/arcgis/rest/services/Council_Districts/FeatureServer/0";
 
 const CAPITAL_PROJECTS_BASE =
-  "https://services.arcgis.com/pEosvuftL1Kgj1UF/arcgis/rest/services/InfrastructureProjects_capitalimprovementplan_e8acc338ce634d5f9720588a9881f356/FeatureServer/0";
+  "https://services7.arcgis.com/p0Gk2nDbPs7KEqSZ/arcgis/rest/services/test_public_view_SantaFe_CP_gdb_20220906/FeatureServer/0";
 
 export interface ArcGISQueryParams {
   where?: string;
@@ -169,70 +169,67 @@ export interface CapitalProjectFeature {
   attributes: {
     OBJECTID: number;
     GlobalID: string;
-    projid: string | null;
-    projname: string | null;
-    projdesc: string | null;
-    rationale: string | null;
-    projtype: string;
-    safety: string | null;
-    mandate: string | null;
-    repair: string | null;
-    replace: string | null;
-    expand: string | null;
-    efficient: string | null;
-    fiscalyr: string | null;
-    fundsource: string | null;
-    planstart: number | null;
-    planend: number | null;
-    estcost: number | null;
-    pocname: string | null;
-    pocphone: string | null;
-    pocemail: string | null;
-    projstatus: string | null;
-    projphase: string | null;
+    MasterID: string | null;
+    Project_Title: string | null;
+    Division: string;
+    ProjectType: string | null;
+    Facility: string | null;
+    CityGoal: string | null;
+    Description: string | null;
+    Scope: string | null;
+    TotalCostQuality: string | null;
+    DesignCost: number | null;
+    ConstructionCost: number | null;
+    TotalCost: number | null;
+    Funded: string | null;
+    Phase: string | null;
+    PM: string | null;
+    EstConstructionStart: number | null;
+    OperationalDate: number | null;
+    UsefulLife: string | null;
+    Urgency: string | null;
+    FundedtoDate2: number | null;
+    MasterLedgerID: string | null;
+    ProjectSummaryLink: string | null;
   };
   geometry?: { rings: number[][][] };
 }
 
 export const PROJECT_TYPES: Record<string, string> = {
+  Airport: "Airport",
+  "Community Services": "Community Services",
   Facilities: "Facilities",
+  Fire: "Fire",
+  ITT: "ITT",
   Parks: "Parks",
-  "Sewer Collection": "Sewer Collection",
-  "Stormwater Drainage": "Stormwater Drainage",
-  Transportation: "Transportation",
-  "Water Distribution": "Water Distribution",
-  Other: "Other",
+  Railyard: "Railyard",
+  Stormwater: "Stormwater",
+  Streets: "Streets",
 };
 
 export const PROJECT_TYPE_COLORS: Record<string, string> = {
+  Airport: "#f59e0b",
+  "Community Services": "#ec4899",
   Facilities: "#6366f1",
+  Fire: "#ef4444",
+  ITT: "#8b5cf6",
   Parks: "#22c55e",
-  "Sewer Collection": "#a855f7",
-  "Stormwater Drainage": "#06b6d4",
-  Transportation: "#f59e0b",
-  "Water Distribution": "#3b82f6",
-  Other: "#94a3b8",
+  Railyard: "#a855f7",
+  Stormwater: "#06b6d4",
+  Streets: "#f97316",
 };
 
 export const PROJECT_PHASES: Record<string, string> = {
-  PreDesign: "Pre-Design",
+  Planning: "Planning",
   Design: "Design",
   Construction: "Construction",
-  Closeout: "Closeout",
   Complete: "Complete",
 };
 
-export const FUND_SOURCES: Record<string, string> = {
-  "Capital Fund": "Capital Fund",
-  "Connection Fee": "Connection Fee",
-  "General Fund": "General Fund",
-  Grant: "Grant",
-  "Impact Fee": "Impact Fee",
-  "Revenue Bond": "Revenue Bond",
-  "Special Fund": "Special Fund",
-  "Special Tax": "Special Tax",
-  "System Revenue": "System Revenue",
-  Other: "Other",
+export const FUNDED_STATUS: Record<string, string> = {
+  "Fully Funded": "Fully Funded",
+  "Partial Funding": "Partial Funding",
+  Unfunded: "Unfunded",
 };
 
 export function esriCapitalProjectsToGeoJSON(
@@ -251,14 +248,12 @@ export function esriCapitalProjectsToGeoJSON(
         },
         properties: {
           ...f.attributes,
-          projtype_label:
-            PROJECT_TYPES[f.attributes.projtype] ?? f.attributes.projtype,
-          projphase_label:
-            PROJECT_PHASES[f.attributes.projphase ?? ""] ??
-            f.attributes.projphase,
-          fundsource_label:
-            FUND_SOURCES[f.attributes.fundsource ?? ""] ??
-            f.attributes.fundsource,
+          division_label:
+            PROJECT_TYPES[f.attributes.Division] ?? f.attributes.Division,
+          phase_label:
+            PROJECT_PHASES[f.attributes.Phase ?? ""] ?? f.attributes.Phase,
+          funded_label:
+            FUNDED_STATUS[f.attributes.Funded ?? ""] ?? f.attributes.Funded,
         },
       })),
   };
@@ -406,6 +401,174 @@ export function esriPavementToGeoJSON(
           },
         };
       }),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// City Zoning (Zoning_MIL1 MapServer layer 6)
+// ---------------------------------------------------------------------------
+
+const ZONING_BASE =
+  "https://gis.santafenm.gov/server/rest/services/Zoning_MIL1/MapServer/6";
+
+export async function queryZoning(params: ArcGISQueryParams) {
+  return queryFeatureService(ZONING_BASE, params);
+}
+
+export interface ZoningFeature {
+  attributes: {
+    OBJECTID: number;
+    OBJECTID_1: number;
+    ZDESC: string;
+    ZORDNO: string | null;
+    ZCASNO: string | null;
+    DESC_: string | null;
+    ZAHyperlin: string | null;
+    COMMENTS: string | null;
+  };
+  geometry?: { rings: number[][][] };
+}
+
+export type ZoningCategory =
+  | "Single-Family Residential"
+  | "Multi-Family Residential"
+  | "Specialty Residential"
+  | "Commercial"
+  | "Industrial"
+  | "Mixed Use / Planned"
+  | "Other";
+
+const SF_RES_CODES = [
+  "RR", "R1", "R1PUD", "R2", "R2DT", "R2PUD", "R2AC",
+  "R3", "R3PUD", "R4", "R5", "R5PUD", "R5AC", "R5DT",
+  "R6", "R6PUD", "R7", "R7I", "R7PUD", "R8", "R8 ",
+];
+const MF_RES_CODES = [
+  "R10", "R10PUD", "R12", "R12PUD", "R21", "R21PUD",
+  "R29", "R29PUD", "R29AC",
+  "RC5", "RC5AC", "ACRC5", "AC/R2",
+  "RC8", "RC8AC", "ACRC8",
+];
+const SPECIALTY_RES_CODES = ["RAC", "MHP"];
+const COMMERCIAL_CODES = [
+  "C1", "C1PUD", "C2", "C2PUD", "C4",
+  "SC1", "SC2", "SC3",
+];
+const INDUSTRIAL_CODES = ["I1", "I1PUD", "I2", "BIP*"];
+const MIXED_CODES = [
+  "MU", "HZ", "PRC", "PRRC",
+  "BCD", "BCDBAR", "BCDLEN", "BCDRED", "BCDSTA", "BCDCER",
+  "BCDLOR", "BCDSAN", "BCDMAR", "BCDALA", "BCDOLD", "BCDEAS",
+  "BCDPLA", "BCDROS", "BCDMCK", "BCDDON", "BCDWES",
+];
+
+const categoryLookup = new Map<string, ZoningCategory>();
+SF_RES_CODES.forEach((c) => categoryLookup.set(c, "Single-Family Residential"));
+MF_RES_CODES.forEach((c) => categoryLookup.set(c, "Multi-Family Residential"));
+SPECIALTY_RES_CODES.forEach((c) => categoryLookup.set(c, "Specialty Residential"));
+COMMERCIAL_CODES.forEach((c) => categoryLookup.set(c, "Commercial"));
+INDUSTRIAL_CODES.forEach((c) => categoryLookup.set(c, "Industrial"));
+MIXED_CODES.forEach((c) => categoryLookup.set(c, "Mixed Use / Planned"));
+
+export function getZoningCategory(zdesc: string): ZoningCategory {
+  return categoryLookup.get(zdesc) ?? "Other";
+}
+
+export const ZONING_CATEGORY_COLORS: Record<ZoningCategory, string> = {
+  "Single-Family Residential": "#facc15",
+  "Multi-Family Residential": "#a0602c",
+  "Specialty Residential": "#fd8025",
+  "Commercial": "#ef4444",
+  "Industrial": "#a5a5a5",
+  "Mixed Use / Planned": "#a900e6",
+  "Other": "#6b7280",
+};
+
+export const ZONING_CATEGORY_LIST: ZoningCategory[] = [
+  "Single-Family Residential",
+  "Multi-Family Residential",
+  "Specialty Residential",
+  "Commercial",
+  "Industrial",
+  "Mixed Use / Planned",
+];
+
+export const ZONING_DETAILED_GROUPS: {
+  heading: string;
+  entries: { label: string; codes: string[]; color: string }[];
+}[] = [
+  {
+    heading: "Residential Districts",
+    entries: [
+      { label: "RR Rural Residential", codes: ["RR"], color: "#ffebaf" },
+      { label: "R1 Single-Family 1du/ac", codes: ["R1", "R1PUD"], color: "#fef9cc" },
+      { label: "R2 Single-Family 2du/ac", codes: ["R2", "R2DT", "R2PUD", "R2AC"], color: "#fdfbad" },
+      { label: "R3 Single-Family 3du/ac", codes: ["R3", "R3PUD"], color: "#ebfe90" },
+      { label: "R4 Single-Family 4du/ac", codes: ["R4"], color: "#dcf35b" },
+      { label: "R5/R6 Single-Family 5-6du/ac", codes: ["R5", "R5PUD", "R5AC", "R5DT", "R6", "R6PUD"], color: "#fdfa7c" },
+      { label: "R7/R8 Single-Family 7-8du/ac", codes: ["R7", "R7I", "R7PUD", "R8", "R8 "], color: "#b8fe00" },
+      { label: "RC5 Compound 5du/ac", codes: ["RC5", "RC5AC", "ACRC5", "AC/R2"], color: "#fcdec9" },
+      { label: "RC8 Compound 8du/ac", codes: ["RC8", "RC8AC", "ACRC8"], color: "#eb98cc" },
+      { label: "R10 Multi-Family 10du/ac", codes: ["R10", "R10PUD"], color: "#a0602c" },
+      { label: "R12 Multi-Family 12du/ac", codes: ["R12", "R12PUD"], color: "#aa6057" },
+      { label: "R21 Multi-Family 21du/ac", codes: ["R21", "R21PUD"], color: "#a0783b" },
+      { label: "R29 Multi-Family 29du/ac", codes: ["R29", "R29PUD", "R29AC"], color: "#a06632" },
+      { label: "RAC Residential Arts & Crafts", codes: ["RAC"], color: "#feac0f" },
+      { label: "MHP Mobile Home Park", codes: ["MHP"], color: "#fd8025" },
+    ],
+  },
+  {
+    heading: "Non-Residential & Mixed Use",
+    entries: [
+      { label: "C1 Office Commercial", codes: ["C1", "C1PUD"], color: "#b3aafd" },
+      { label: "C2 General Commercial", codes: ["C2", "C2PUD"], color: "#ff0000" },
+      { label: "C4 Limited Office/Retail", codes: ["C4"], color: "#a17adb" },
+      { label: "HZ Hospital Zone", codes: ["HZ"], color: "#91e2fe" },
+      { label: "BCD Business Capital District", codes: ["BCD", "BCDBAR", "BCDLEN", "BCDRED", "BCDSTA", "BCDCER", "BCDLOR", "BCDSAN", "BCDMAR", "BCDALA", "BCDOLD", "BCDEAS", "BCDPLA", "BCDROS", "BCDMCK", "BCDDON", "BCDWES"], color: "#966c6e" },
+      { label: "I1 Light Industrial", codes: ["I1", "I1PUD"], color: "#c8c2fe" },
+      { label: "I2 General Industrial", codes: ["I2"], color: "#a5a5a5" },
+      { label: "BIP Business Industrial Park", codes: ["BIP*"], color: "#770081" },
+      { label: "PRC/PRRC Planned Community", codes: ["PRC", "PRRC"], color: "#ada4fe" },
+      { label: "SC1-SC3 Shopping Center", codes: ["SC1", "SC2", "SC3"], color: "#f6a4fe" },
+      { label: "MU Mixed Use", codes: ["MU"], color: "#a900e6" },
+    ],
+  },
+];
+
+const detailedColorLookup = new Map<string, string>();
+for (const group of ZONING_DETAILED_GROUPS) {
+  for (const entry of group.entries) {
+    for (const code of entry.codes) {
+      detailedColorLookup.set(code, entry.color);
+    }
+  }
+}
+
+export function getZoningDetailedColor(zdesc: string): string {
+  return detailedColorLookup.get(zdesc) ?? "#6b7280";
+}
+
+export function esriZoningToGeoJSON(
+  features: ZoningFeature[]
+): GeoJSON.FeatureCollection {
+  return {
+    type: "FeatureCollection",
+    features: features
+      .filter((f) => f.geometry?.rings)
+      .map((f) => ({
+        type: "Feature" as const,
+        id: f.attributes.OBJECTID,
+        geometry: {
+          type: "Polygon" as const,
+          coordinates: f.geometry!.rings,
+        },
+        properties: {
+          ...f.attributes,
+          category: getZoningCategory(f.attributes.ZDESC),
+          detailed_color: getZoningDetailedColor(f.attributes.ZDESC),
+          category_color: ZONING_CATEGORY_COLORS[getZoningCategory(f.attributes.ZDESC)],
+        },
+      })),
   };
 }
 

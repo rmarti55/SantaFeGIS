@@ -8,7 +8,7 @@ export async function GET() {
     const [byType, byPhase, byFunding, totals] = await Promise.all([
       queryCapitalProjects({
         where: "1=1",
-        outFields: "projtype",
+        outFields: "Division",
         returnGeometry: false,
         outStatistics: [
           {
@@ -17,11 +17,11 @@ export async function GET() {
             statisticType: "count",
           },
         ],
-        groupByFieldsForStatistics: "projtype",
+        groupByFieldsForStatistics: "Division",
       }),
       queryCapitalProjects({
         where: "1=1",
-        outFields: "projphase",
+        outFields: "Phase",
         returnGeometry: false,
         outStatistics: [
           {
@@ -30,11 +30,11 @@ export async function GET() {
             statisticType: "count",
           },
         ],
-        groupByFieldsForStatistics: "projphase",
+        groupByFieldsForStatistics: "Phase",
       }),
       queryCapitalProjects({
         where: "1=1",
-        outFields: "fundsource",
+        outFields: "Funded",
         returnGeometry: false,
         outStatistics: [
           {
@@ -43,7 +43,7 @@ export async function GET() {
             statisticType: "count",
           },
         ],
-        groupByFieldsForStatistics: "fundsource",
+        groupByFieldsForStatistics: "Funded",
       }),
       queryCapitalProjects({
         where: "1=1",
@@ -55,12 +55,12 @@ export async function GET() {
             statisticType: "count",
           },
           {
-            onStatisticField: "estcost",
+            onStatisticField: "TotalCost",
             outStatisticFieldName: "total_cost",
             statisticType: "sum",
           },
           {
-            onStatisticField: "estcost",
+            onStatisticField: "TotalCost",
             outStatisticFieldName: "avg_cost",
             statisticType: "avg",
           },
@@ -70,8 +70,8 @@ export async function GET() {
 
     const byTypeData = (byType.features ?? [])
       .map(
-        (f: { attributes: { projtype: string; count: number } }) => ({
-          type: f.attributes.projtype,
+        (f: { attributes: { Division: string; count: number } }) => ({
+          type: f.attributes.Division,
           count: f.attributes.count,
         })
       )
@@ -81,8 +81,8 @@ export async function GET() {
 
     const byPhaseData = (byPhase.features ?? [])
       .map(
-        (f: { attributes: { projphase: string; count: number } }) => ({
-          phase: f.attributes.projphase,
+        (f: { attributes: { Phase: string; count: number } }) => ({
+          phase: f.attributes.Phase,
           count: f.attributes.count,
         })
       )
@@ -92,8 +92,8 @@ export async function GET() {
 
     const byFundingData = (byFunding.features ?? [])
       .map(
-        (f: { attributes: { fundsource: string; count: number } }) => ({
-          source: f.attributes.fundsource,
+        (f: { attributes: { Funded: string; count: number } }) => ({
+          source: f.attributes.Funded,
           count: f.attributes.count,
         })
       )

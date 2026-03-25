@@ -5,7 +5,7 @@ import {
   PROJECT_TYPES,
   PROJECT_TYPE_COLORS,
   PROJECT_PHASES,
-  FUND_SOURCES,
+  FUNDED_STATUS,
 } from "@/lib/arcgis";
 
 interface Stats {
@@ -92,7 +92,7 @@ export default function CapitalProjectsStats({
 
           <div>
             <h3 className="font-semibold text-gray-700 mb-2">
-              By Project Type
+              By Division
             </h3>
             <div className="space-y-1.5">
               {stats.byType.map((t) => {
@@ -152,7 +152,7 @@ export default function CapitalProjectsStats({
 
           <div>
             <h3 className="font-semibold text-gray-700 mb-2">
-              By Funding Source
+              By Funding Status
             </h3>
             <div className="space-y-1.5">
               {stats.byFunding.map((f) => {
@@ -160,7 +160,7 @@ export default function CapitalProjectsStats({
                 return (
                   <div key={f.source} className="flex items-center gap-2">
                     <span className="text-sm w-28 text-gray-600 truncate">
-                      {FUND_SOURCES[f.source] ?? f.source}
+                      {FUNDED_STATUS[f.source] ?? f.source}
                     </span>
                     <div className="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
                       <div

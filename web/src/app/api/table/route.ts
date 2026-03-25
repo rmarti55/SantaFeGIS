@@ -32,6 +32,7 @@ export async function GET(req: NextRequest) {
 
   const conditions: string[] = [
     "TRIM(tax_district) LIKE 'CI%'",
+    "COALESCE(is_exempt_gov, 0) != 1",
     `second_home_score >= ${Number(minScore) || 0}`,
   ];
   const params: (string | number)[] = [];
@@ -47,6 +48,8 @@ export async function GET(req: NextRequest) {
     conditions.push(`property_class = $${paramIdx}`);
     params.push(propertyClass.toUpperCase());
     paramIdx++;
+  } else {
+    conditions.push("property_class IN ('SRES', 'MRES', 'CRES')");
   }
 
   if (search && search.length >= 2) {
