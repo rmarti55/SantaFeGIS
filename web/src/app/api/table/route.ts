@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   const pageSize = Math.min(100, Math.max(10, parseInt(searchParams.get("pageSize") ?? "50", 10)));
   const sortBy = searchParams.get("sortBy") ?? "score";
   const sortDir = searchParams.get("sortDir") === "asc" ? "ASC" : "DESC";
-  const minScore = parseInt(searchParams.get("minScore") ?? "0", 10);
+  const secondHomesOnly = searchParams.get("secondHomesOnly") === "true";
   const ownerState = searchParams.get("ownerState") ?? "";
   const propertyClass = searchParams.get("propertyClass") ?? "";
   const search = searchParams.get("search") ?? "";
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
   const conditions: string[] = [
     "TRIM(tax_district) LIKE 'CI%'",
     "COALESCE(is_exempt_gov, 0) != 1",
-    `second_home_score >= ${Number(minScore) || 0}`,
+    ...(secondHomesOnly ? ["is_second_home = TRUE"] : []),
   ];
   const params: (string | number)[] = [];
   let paramIdx = 1;
@@ -80,7 +80,7 @@ export async function GET(req: NextRequest) {
       is_senior_freeze,
       neighborhood_name AS neighborhood,
       second_home_score AS score,
-      is_likely_second_home
+      is_second_home
     FROM accounts
     WHERE ${where}
     ORDER BY ${orderCol} ${sortDir}

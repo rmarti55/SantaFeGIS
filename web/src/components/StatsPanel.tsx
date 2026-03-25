@@ -7,8 +7,7 @@ interface Stats {
   summary: {
     total_parcels: number;
     total_residential: number;
-    likely_second_homes: number;
-    possible_second_homes: number;
+    second_homes: number;
     avg_value_second_home: number;
     avg_value_primary: number;
   };
@@ -58,17 +57,17 @@ export default function StatsPanel({ open, onClose }: { open: boolean; onClose: 
               <div className="text-xs text-gray-500">Residential Parcels</div>
             </div>
             <div className="bg-red-50 rounded-lg p-3">
-              <div className="text-2xl font-bold text-red-600">{stats.summary.likely_second_homes?.toLocaleString()}</div>
-              <div className="text-xs text-gray-500">Likely Second Homes</div>
+              <div className="text-2xl font-bold text-red-600">{stats.summary.second_homes?.toLocaleString()}</div>
+              <div className="text-xs text-gray-500">Second Homes</div>
             </div>
-            <div className="bg-yellow-50 rounded-lg p-3">
-              <div className="text-2xl font-bold text-yellow-600">{stats.summary.possible_second_homes?.toLocaleString()}</div>
-              <div className="text-xs text-gray-500">Possible Second Homes</div>
+            <div className="bg-green-50 rounded-lg p-3">
+              <div className="text-2xl font-bold text-green-600">{((stats.summary.total_residential ?? 0) - (stats.summary.second_homes ?? 0)).toLocaleString()}</div>
+              <div className="text-xs text-gray-500">Not Second Homes</div>
             </div>
             <div className="bg-blue-50 rounded-lg p-3">
               <div className="text-2xl font-bold text-blue-600">
                 {stats.summary.total_residential
-                  ? ((stats.summary.likely_second_homes / stats.summary.total_residential) * 100).toFixed(1)
+                  ? ((stats.summary.second_homes / stats.summary.total_residential) * 100).toFixed(1)
                   : 0}%
               </div>
               <div className="text-xs text-gray-500">Second Home Rate</div>

@@ -11,10 +11,9 @@ export async function GET() {
       SELECT
         COUNT(*) AS total_parcels,
         COUNT(*) FILTER (WHERE property_class IN ('SRES','MRES','CRES')) AS total_residential,
-        COUNT(*) FILTER (WHERE is_likely_second_home = true) AS likely_second_homes,
-        COUNT(*) FILTER (WHERE second_home_score BETWEEN 2 AND 3 AND property_class IN ('SRES','MRES','CRES')) AS possible_second_homes,
-        ROUND(AVG(COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0)) FILTER (WHERE is_likely_second_home = true)) AS avg_value_second_home,
-        ROUND(AVG(COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0)) FILTER (WHERE is_likely_second_home = false AND property_class IN ('SRES','MRES','CRES'))) AS avg_value_primary
+        COUNT(*) FILTER (WHERE is_second_home = true AND property_class IN ('SRES','MRES','CRES')) AS second_homes,
+        ROUND(AVG(COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0)) FILTER (WHERE is_second_home = true AND property_class IN ('SRES','MRES','CRES'))) AS avg_value_second_home,
+        ROUND(AVG(COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0)) FILTER (WHERE is_second_home = false AND property_class IN ('SRES','MRES','CRES'))) AS avg_value_primary
       FROM accounts
       WHERE TRIM(tax_district) LIKE 'CI%'
         AND COALESCE(is_exempt_gov, 0) != 1
@@ -25,7 +24,7 @@ export async function GET() {
       FROM accounts
       WHERE TRIM(tax_district) LIKE 'CI%'
         AND COALESCE(is_exempt_gov, 0) != 1
-        AND is_likely_second_home = true
+        AND is_second_home = true
         AND TRIM(owner_state) != 'NM' AND TRIM(owner_state) != ''
         AND owner_state IS NOT NULL
       GROUP BY TRIM(owner_state)
@@ -37,8 +36,8 @@ export async function GET() {
       SELECT
         TRIM(neighborhood_name) AS neighborhood,
         COUNT(*) AS total,
-        COUNT(*) FILTER (WHERE is_likely_second_home = true) AS second_homes,
-        ROUND(100.0 * COUNT(*) FILTER (WHERE is_likely_second_home = true) / NULLIF(COUNT(*), 0), 1) AS pct
+        COUNT(*) FILTER (WHERE is_second_home = true) AS second_homes,
+        ROUND(100.0 * COUNT(*) FILTER (WHERE is_second_home = true) / NULLIF(COUNT(*), 0), 1) AS pct
       FROM accounts
       WHERE TRIM(tax_district) LIKE 'CI%'
         AND COALESCE(is_exempt_gov, 0) != 1

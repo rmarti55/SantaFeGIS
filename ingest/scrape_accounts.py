@@ -129,7 +129,9 @@ def init_db(conn):
         cur.execute("ALTER TABLE accounts ADD COLUMN IF NOT EXISTS norm_situs TEXT;")
         cur.execute("ALTER TABLE accounts ADD COLUMN IF NOT EXISTS norm_owner TEXT;")
         cur.execute("ALTER TABLE accounts ADD COLUMN IF NOT EXISTS is_owner_occupied BOOLEAN;")
+        cur.execute("ALTER TABLE accounts ADD COLUMN IF NOT EXISTS is_second_home BOOLEAN DEFAULT FALSE;")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_owner_occupied ON accounts (is_owner_occupied);")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_accounts_second_home ON accounts (is_second_home);")
     conn.commit()
     print("Database initialized.")
 
@@ -301,9 +303,9 @@ def score_second_homes(conn):
         WHERE COALESCE(is_exempt_gov, 0) = 1;
     """)
 
-    _exec_step(conn, "+3 owner out-of-state", """
-        UPDATE accounts SET second_home_score = second_home_score + 3,
-                            score_out_of_state = 3
+    _exec_step(conn, "+4 owner out-of-state", """
+        UPDATE accounts SET second_home_score = second_home_score + 4,
+                            score_out_of_state = 4
         WHERE TRIM(owner_state) != '' AND TRIM(owner_state) != 'NM'
           AND owner_state IS NOT NULL
           AND COALESCE(is_exempt_gov, 0) != 1;
@@ -385,26 +387,68 @@ def score_second_homes(conn):
           AND COALESCE(is_exempt_gov, 0) != 1;
     """)
 
-    _exec_step(conn, "Flagged likely second homes", """
+    _exec_step(conn, "Legacy flag (is_likely_second_home)", """
         UPDATE accounts SET is_likely_second_home = (second_home_score >= 4);
+    """)
+
+    _exec_step(conn, "Binary: reset is_second_home", """
+        UPDATE accounts SET is_second_home = FALSE;
+    """)
+
+    _exec_step(conn, "Binary: out-of-state owner = second home", """
+        UPDATE accounts SET is_second_home = TRUE
+        WHERE TRIM(owner_state) != '' AND TRIM(owner_state) != 'NM'
+          AND owner_state IS NOT NULL
+          AND COALESCE(is_exempt_gov, 0) != 1
+          AND property_class IN ('SRES', 'MRES', 'CRES');
+    """)
+
+    _exec_step(conn, "Binary: NM different city = second home", """
+        UPDATE accounts SET is_second_home = TRUE
+        WHERE TRIM(owner_state) = 'NM'
+          AND UPPER(TRIM(owner_city)) != UPPER(TRIM(situs_city))
+          AND owner_city IS NOT NULL AND situs_city IS NOT NULL
+          AND TRIM(owner_city) != ''
+          AND COALESCE(is_exempt_gov, 0) != 1
+          AND property_class IN ('SRES', 'MRES', 'CRES');
+    """)
+
+    _exec_step(conn, "Binary: entity-owned = second home", r"""
+        UPDATE accounts SET is_second_home = TRUE
+        WHERE owner_name ~* '(\mLLC\M|\mINC\M|\mCORP\M|\mLTD\M|\mLP\M|\mTRUST\M|\mL\.?L\.?C|\mREVOCABLE\M|\mIRREVOCABLE\M|\mESTATE\M|\mPROPERT(Y|IES)\M|\mINVEST\M|\mHOLDING\M|\mGROUP\M|\mPARTNERS\M|\mVENTURE\M)'
+          AND COALESCE(is_exempt_gov, 0) != 1
+          AND property_class IN ('SRES', 'MRES', 'CRES');
+    """)
+
+    _exec_step(conn, "Binary: override — address match = NOT second home", """
+        UPDATE accounts SET is_second_home = FALSE
+        WHERE is_owner_occupied = TRUE
+          AND property_class IN ('SRES', 'MRES', 'CRES');
+    """)
+
+    _exec_step(conn, "Binary: override — residency exemption = NOT second home", """
+        UPDATE accounts SET is_second_home = FALSE
+        WHERE (is_head_of_family = 1 OR is_senior_freeze = 1
+               OR is_veteran_1 = 1 OR is_veteran_2 = 1)
+          AND property_class IN ('SRES', 'MRES', 'CRES');
     """)
 
     with conn.cursor() as cur:
         cur.execute("""
             SELECT
-                COUNT(*) FILTER (WHERE second_home_score >= 6) AS very_likely,
-                COUNT(*) FILTER (WHERE second_home_score BETWEEN 4 AND 5) AS likely,
-                COUNT(*) FILTER (WHERE second_home_score BETWEEN 2 AND 3) AS possible,
-                COUNT(*) FILTER (WHERE second_home_score <= 1) AS unlikely
+                COUNT(*) AS total,
+                COUNT(*) FILTER (WHERE is_second_home = TRUE) AS second_homes,
+                COUNT(*) FILTER (WHERE is_second_home = FALSE) AS not_second_homes
             FROM accounts
-            WHERE property_class IN ('SRES', 'MRES', 'CRES');
+            WHERE property_class IN ('SRES', 'MRES', 'CRES')
+              AND TRIM(tax_district) LIKE 'CI%%'
+              AND COALESCE(is_exempt_gov, 0) != 1;
         """)
         row = cur.fetchone()
-        print(f"\n  Results (residential only):")
-        print(f"    Very likely (6+): {row[0]}")
-        print(f"    Likely (4-5):     {row[1]}")
-        print(f"    Possible (2-3):   {row[2]}")
-        print(f"    Unlikely (0-1):   {row[3]}")
+        print(f"\n  Results (residential, city, non-gov):")
+        print(f"    Total:            {row[0]}")
+        print(f"    Second Homes:     {row[1]}")
+        print(f"    Not Second Homes: {row[2]}")
 
 
 def main():

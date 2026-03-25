@@ -6,28 +6,25 @@ interface Overview {
   total_str: number;
   matched: number;
   unmatched: number;
-  likely_second_home: number;
-  likely_primary: number;
-  possible_second_home: number;
+  second_home: number;
+  not_second_home: number;
   head_of_family: number;
   out_of_state_owner: number;
   in_state_owner: number;
   pct_second_home: number;
-  pct_primary: number;
+  pct_not_second_home: number;
 }
 
 interface ScoreBreakdown {
-  very_likely: number;
-  likely: number;
-  possible: number;
-  unlikely: number;
+  second_home: number;
+  not_second_home: number;
 }
 
 interface ByRentalType {
   rental_type: string;
   total: number;
   second_home: number;
-  primary_home: number;
+  not_second_home: number;
   unmatched: number;
 }
 
@@ -88,8 +85,8 @@ export default function StrOwnershipStats({
 
   const o = data?.overview;
   const sb = data?.scoreBreakdown;
-  const maxScore = sb
-    ? Math.max(sb.very_likely, sb.likely, sb.possible, sb.unlikely, 1)
+  const maxSb = sb
+    ? Math.max(sb.second_home, sb.not_second_home, 1)
     : 1;
 
   return (
@@ -132,8 +129,8 @@ export default function StrOwnershipStats({
           <div className="grid grid-cols-2 gap-3">
             <Card label="Total STR Permits" value={o.total_str} />
             <Card label="Matched to Parcels" value={o.matched} sub={`${pct(o.matched, o.total_str)}%`} />
-            <Card label="Likely Second Home" value={o.likely_second_home} color="text-red-600" />
-            <Card label="Likely Primary Res." value={o.likely_primary} color="text-green-600" />
+            <Card label="Second Home" value={o.second_home} color="text-red-600" />
+            <Card label="Not Second Home" value={o.not_second_home} color="text-green-600" />
             <Card label="Out-of-State Owner" value={o.out_of_state_owner} color="text-orange-600" />
             <Card label="Head of Family Exemption" value={o.head_of_family} color="text-green-600" />
           </div>
@@ -141,18 +138,16 @@ export default function StrOwnershipStats({
           {/* Score breakdown */}
           <div>
             <h3 className="font-semibold text-gray-700 mb-3">
-              Second Home Score Distribution
+              STR Property Classification
             </h3>
             <div className="space-y-2">
               {[
-                { label: "Very Likely (6+)", value: sb.very_likely, color: "#ef4444" },
-                { label: "Likely (4-5)", value: sb.likely, color: "#f97316" },
-                { label: "Possible (2-3)", value: sb.possible, color: "#f59e0b" },
-                { label: "Unlikely (0-1)", value: sb.unlikely, color: "#22c55e" },
+                { label: "Second Home", value: sb.second_home, color: "#ef4444" },
+                { label: "Not Second Home", value: sb.not_second_home, color: "#22c55e" },
               ].map((row) => (
                 <div key={row.label} className="flex items-center gap-3 text-sm">
                   <span className="w-28 text-gray-600 shrink-0">{row.label}</span>
-                  <Bar value={row.value} max={maxScore} color={row.color} />
+                  <Bar value={row.value} max={maxSb} color={row.color} />
                   <span className="w-10 text-right font-medium text-gray-700">
                     {row.value}
                   </span>
@@ -181,7 +176,7 @@ export default function StrOwnershipStats({
                         {r.second_home} 2nd home
                       </span>
                       <span className="text-green-600">
-                        {r.primary_home} primary
+                        {r.not_second_home} not 2nd
                       </span>
                       {r.unmatched > 0 && (
                         <span className="text-gray-400">

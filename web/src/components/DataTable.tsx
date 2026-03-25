@@ -20,7 +20,7 @@ interface Row {
   is_senior_freeze: number;
   neighborhood: string;
   score: number;
-  is_likely_second_home: boolean;
+  is_second_home: boolean;
 }
 
 interface TableResponse {
@@ -53,7 +53,7 @@ interface ExpensiveProperty {
   neighborhood: string;
   market_value: number;
   score: number;
-  is_likely_second_home: boolean;
+  is_second_home: boolean;
 }
 
 interface LeaderboardData {
@@ -64,18 +64,10 @@ interface LeaderboardData {
 
 type LeaderboardTab = "count" | "value" | "expensive";
 
-function scoreColor(score: number): string {
-  if (score >= 6) return "text-red-600 bg-red-50";
-  if (score >= 4) return "text-orange-600 bg-orange-50";
-  if (score >= 2) return "text-yellow-700 bg-yellow-50";
-  return "text-green-600 bg-green-50";
-}
-
-function scoreBadge(score: number): string {
-  if (score >= 6) return "Very Likely";
-  if (score >= 4) return "Likely";
-  if (score >= 2) return "Possible";
-  return "Primary";
+function classBadge(isSecondHome: boolean): { classes: string; label: string } {
+  return isSecondHome
+    ? { classes: "text-red-600 bg-red-50", label: "Second Home" }
+    : { classes: "text-green-600 bg-green-50", label: "Not Second Home" };
 }
 
 function formatCurrency(n: number): string {
@@ -91,7 +83,7 @@ export default function DataTable() {
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortKey>("score");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
-  const [minScore, setMinScore] = useState(0);
+  const [secondHomesOnly, setSecondHomesOnly] = useState(false);
   const [ownerState, setOwnerState] = useState("");
   const [propertyClass, setPropertyClass] = useState("");
   const [search, setSearch] = useState("");
@@ -119,7 +111,7 @@ export default function DataTable() {
       pageSize: "50",
       sortBy,
       sortDir,
-      minScore: String(minScore),
+      ...(secondHomesOnly ? { secondHomesOnly: "true" } : {}),
     });
     if (ownerState) params.set("ownerState", ownerState);
     if (propertyClass) params.set("propertyClass", propertyClass);
@@ -135,7 +127,7 @@ export default function DataTable() {
     } finally {
       setLoading(false);
     }
-  }, [page, sortBy, sortDir, minScore, ownerState, propertyClass, search]);
+  }, [page, sortBy, sortDir, secondHomesOnly, ownerState, propertyClass, search]);
 
   useEffect(() => {
     loadData();
@@ -174,17 +166,14 @@ export default function DataTable() {
       <div className="bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap items-center gap-3 text-sm">
         <div className="font-semibold text-gray-700 mr-2">Filters:</div>
 
-        <label className="flex items-center gap-1.5">
-          <span className="text-gray-500">Min Score</span>
-          <select
-            className="border rounded px-2 py-1 text-gray-800 bg-white"
-            value={minScore}
-            onChange={(e) => { setMinScore(+e.target.value); setPage(1); }}
-          >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-              <option key={n} value={n}>{n}</option>
-            ))}
-          </select>
+        <label className="flex items-center gap-1.5 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={secondHomesOnly}
+            onChange={(e) => { setSecondHomesOnly(e.target.checked); setPage(1); }}
+            className="accent-red-600 w-3.5 h-3.5"
+          />
+          <span className="text-gray-600">Second Homes Only</span>
         </label>
 
         <label className="flex items-center gap-1.5">
@@ -353,7 +342,7 @@ export default function DataTable() {
                         <td className="px-2 py-1.5 text-gray-500">{row.property_class}</td>
                         <td className="px-2 py-1.5 text-gray-500">{row.neighborhood}</td>
                         <td className="px-2 py-1.5 text-center">
-                          {row.is_likely_second_home ? (
+                          {row.is_second_home ? (
                             <span className="inline-block px-1.5 py-0.5 rounded text-xs font-semibold text-red-600 bg-red-50">Yes</span>
                           ) : (
                             <span className="text-xs text-gray-400">No</span>
@@ -388,8 +377,8 @@ export default function DataTable() {
             {data?.rows.map((row) => (
               <tr key={row.objectid} className="hover:bg-gray-50 transition-colors">
                 <td className="px-3 py-2.5">
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${scoreColor(row.score)}`}>
-                    {row.score} - {scoreBadge(row.score)}
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${classBadge(row.is_second_home).classes}`}>
+                    {classBadge(row.is_second_home).label}
                   </span>
                 </td>
                 <td className="px-3 py-2.5 text-sm text-gray-800">

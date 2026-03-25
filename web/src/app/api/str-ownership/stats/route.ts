@@ -18,12 +18,12 @@ export async function GET() {
           a.owner_state,
           a.is_head_of_family,
           a.second_home_score,
-          a.is_likely_second_home,
+          a.is_second_home,
           (a.objectid IS NOT NULL) AS parcel_matched
         FROM short_term_rentals s
         LEFT JOIN LATERAL (
           SELECT a2.objectid, a2.owner_name, a2.owner_city, a2.owner_state,
-                 a2.is_head_of_family, a2.second_home_score, a2.is_likely_second_home
+                 a2.is_head_of_family, a2.second_home_score, a2.is_second_home
           FROM accounts a2
           WHERE a2.geom IS NOT NULL
             AND ST_DWithin(s.geom, a2.geom, 0.0003)
@@ -36,14 +36,13 @@ export async function GET() {
         COUNT(*) AS total_str,
         COUNT(*) FILTER (WHERE parcel_matched) AS matched,
         COUNT(*) FILTER (WHERE NOT parcel_matched) AS unmatched,
-        COUNT(*) FILTER (WHERE is_likely_second_home = true) AS likely_second_home,
-        COUNT(*) FILTER (WHERE parcel_matched AND is_likely_second_home = false) AS likely_primary,
-        COUNT(*) FILTER (WHERE parcel_matched AND second_home_score BETWEEN 2 AND 3) AS possible_second_home,
+        COUNT(*) FILTER (WHERE is_second_home = true) AS second_home,
+        COUNT(*) FILTER (WHERE parcel_matched AND is_second_home = false) AS not_second_home,
         COUNT(*) FILTER (WHERE parcel_matched AND is_head_of_family = 1) AS head_of_family,
         COUNT(*) FILTER (WHERE parcel_matched AND TRIM(owner_state) != 'NM' AND TRIM(owner_state) != '' AND owner_state IS NOT NULL) AS out_of_state_owner,
         COUNT(*) FILTER (WHERE parcel_matched AND TRIM(owner_state) = 'NM') AS in_state_owner,
-        ROUND(100.0 * COUNT(*) FILTER (WHERE is_likely_second_home = true) / NULLIF(COUNT(*) FILTER (WHERE parcel_matched), 0), 1) AS pct_second_home,
-        ROUND(100.0 * COUNT(*) FILTER (WHERE parcel_matched AND is_likely_second_home = false) / NULLIF(COUNT(*) FILTER (WHERE parcel_matched), 0), 1) AS pct_primary
+        ROUND(100.0 * COUNT(*) FILTER (WHERE is_second_home = true) / NULLIF(COUNT(*) FILTER (WHERE parcel_matched), 0), 1) AS pct_second_home,
+        ROUND(100.0 * COUNT(*) FILTER (WHERE parcel_matched AND is_second_home = false) / NULLIF(COUNT(*) FILTER (WHERE parcel_matched), 0), 1) AS pct_not_second_home
       FROM matched
     `;
 
@@ -71,23 +70,21 @@ export async function GET() {
 
     const scoreBreakdown = await sql`
       WITH matched AS (
-        SELECT a.second_home_score
+        SELECT a.is_second_home
         FROM short_term_rentals s
         LEFT JOIN LATERAL (
-          SELECT a2.second_home_score
+          SELECT a2.is_second_home
           FROM accounts a2
           WHERE a2.geom IS NOT NULL
             AND ST_DWithin(s.geom, a2.geom, 0.0003)
           ORDER BY ST_Distance(s.geom, a2.geom)
           LIMIT 1
         ) a ON true
-        WHERE s.geom IS NOT NULL AND a.second_home_score IS NOT NULL
+        WHERE s.geom IS NOT NULL AND a.is_second_home IS NOT NULL
       )
       SELECT
-        COUNT(*) FILTER (WHERE second_home_score >= 6) AS very_likely,
-        COUNT(*) FILTER (WHERE second_home_score BETWEEN 4 AND 5) AS likely,
-        COUNT(*) FILTER (WHERE second_home_score BETWEEN 2 AND 3) AS possible,
-        COUNT(*) FILTER (WHERE second_home_score <= 1) AS unlikely
+        COUNT(*) FILTER (WHERE is_second_home = true) AS second_home,
+        COUNT(*) FILTER (WHERE is_second_home = false) AS not_second_home
       FROM matched
     `;
 
@@ -95,11 +92,11 @@ export async function GET() {
       WITH matched AS (
         SELECT
           s.rental_type,
-          a.is_likely_second_home,
+          a.is_second_home,
           (a.objectid IS NOT NULL) AS parcel_matched
         FROM short_term_rentals s
         LEFT JOIN LATERAL (
-          SELECT a2.objectid, a2.is_likely_second_home
+          SELECT a2.objectid, a2.is_second_home
           FROM accounts a2
           WHERE a2.geom IS NOT NULL
             AND ST_DWithin(s.geom, a2.geom, 0.0003)
@@ -111,8 +108,8 @@ export async function GET() {
       SELECT
         COALESCE(rental_type, 'Unknown') AS rental_type,
         COUNT(*) AS total,
-        COUNT(*) FILTER (WHERE is_likely_second_home = true) AS second_home,
-        COUNT(*) FILTER (WHERE parcel_matched AND is_likely_second_home = false) AS primary_home,
+        COUNT(*) FILTER (WHERE is_second_home = true) AS second_home,
+        COUNT(*) FILTER (WHERE parcel_matched AND is_second_home = false) AS not_second_home,
         COUNT(*) FILTER (WHERE NOT parcel_matched) AS unmatched
       FROM matched
       GROUP BY rental_type

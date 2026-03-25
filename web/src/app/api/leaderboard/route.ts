@@ -48,7 +48,7 @@ export async function GET() {
         neighborhood_name AS neighborhood,
         COALESCE(current_market_land_res,0) + COALESCE(current_market_imp_res,0) AS market_value,
         second_home_score AS score,
-        is_likely_second_home
+        is_second_home
       FROM accounts
       WHERE TRIM(tax_district) LIKE 'CI%'
         AND COALESCE(is_exempt_gov, 0) != 1

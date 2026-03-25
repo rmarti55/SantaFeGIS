@@ -25,7 +25,7 @@ interface StrProperties {
   owner_state: string | null;
   is_head_of_family: number | null;
   second_home_score: number | null;
-  is_likely_second_home: boolean | null;
+  is_second_home: boolean | null;
   parcel_matched: boolean;
 }
 
@@ -45,16 +45,14 @@ function markerColor(rentalType: string | null): string {
 
 function ownershipColor(p: StrProperties): string {
   if (!p.parcel_matched) return "#94a3b8";
-  if (p.is_likely_second_home) return "#ef4444";
-  if (p.second_home_score != null && p.second_home_score >= 2) return "#f59e0b";
+  if (p.is_second_home) return "#ef4444";
   return "#22c55e";
 }
 
 function ownershipLabel(p: StrProperties): string {
   if (!p.parcel_matched) return "No parcel match";
-  if (p.is_likely_second_home) return "Likely Second Home";
-  if (p.second_home_score != null && p.second_home_score >= 2) return "Possible Second Home";
-  return "Likely Primary Residence";
+  if (p.is_second_home) return "Second Home";
+  return "Not a Second Home";
 }
 
 function formatDate(iso: string | null): string {
@@ -433,9 +431,8 @@ export default function StrMap() {
           <>
             <div className="font-semibold text-gray-700 mb-2">Owner Status</div>
             {[
-              { color: "#22c55e", label: "Likely Primary Residence" },
-              { color: "#f59e0b", label: "Possible Second Home" },
-              { color: "#ef4444", label: "Likely Second Home" },
+              { color: "#ef4444", label: "Second Home" },
+              { color: "#22c55e", label: "Not a Second Home" },
               { color: "#94a3b8", label: "No Parcel Match" },
             ].map(({ color, label }) => (
               <div key={label} className="flex items-center gap-2 mb-1">

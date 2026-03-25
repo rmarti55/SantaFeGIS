@@ -22,7 +22,7 @@ interface ParcelProperties {
   assessed_value: number;
   neighborhood: string;
   score: number;
-  is_likely_second_home: boolean;
+  is_second_home: boolean;
   score_out_of_state: number;
   score_diff_city: number;
   score_entity: number;
@@ -31,18 +31,12 @@ interface ParcelProperties {
   score_mailing_match: number;
 }
 
-function scoreColor(score: number): string {
-  if (score >= 6) return "#dc2626";
-  if (score >= 4) return "#f97316";
-  if (score >= 2) return "#eab308";
-  return "#22c55e";
+function classColor(isSecondHome: boolean): string {
+  return isSecondHome ? "#dc2626" : "#22c55e";
 }
 
-function scoreLabel(score: number): string {
-  if (score >= 6) return "Very Likely Second Home";
-  if (score >= 4) return "Likely Second Home";
-  if (score >= 2) return "Possible Second Home";
-  return "Likely Primary Residence";
+function classLabel(isSecondHome: boolean): string {
+  return isSecondHome ? "Second Home" : "Not a Second Home";
 }
 
 function formatCurrency(n: number): string {
@@ -71,8 +65,8 @@ function scoreBreakdownRows(p: ParcelProperties): string {
 function buildPopupHtml(p: ParcelProperties): string {
   return `
     <div style="font-family: system-ui; font-size: 13px; line-height: 1.5; min-width: 240px;">
-      <div style="font-weight: 700; font-size: 14px; margin-bottom: 6px; color: ${scoreColor(p.score)};">
-        ${scoreLabel(p.score)} (Score: ${p.score})
+      <div style="font-weight: 700; font-size: 14px; margin-bottom: 6px; color: ${classColor(p.is_second_home)};">
+        ${classLabel(p.is_second_home)}
       </div>
       <div style="margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb;">
         <div style="font-weight: 600;">Property</div>
@@ -97,7 +91,7 @@ function buildPopupHtml(p: ParcelProperties): string {
           ${scoreBreakdownRows(p) || '<tr><td style="color:#6b7280">No factors detected</td></tr>'}
           <tr style="border-top: 1px solid #e5e7eb;">
             <td style="padding:4px 0 0; font-weight:600; color:#374151">Total</td>
-            <td style="text-align:right; padding:4px 0 0 12px; font-weight:700; color:${scoreColor(p.score)}">${p.score}</td>
+            <td style="text-align:right; padding:4px 0 0 12px; font-weight:700; color:${classColor(p.is_second_home)}">${p.score}</td>
           </tr>
         </table>
       </div>
@@ -169,11 +163,9 @@ export default function ParcelMap() {
         source: "parcels",
         paint: {
           "fill-color": [
-            "interpolate", ["linear"], ["coalesce", ["get", "score"], 0],
-            0, "#22c55e",
-            2, "#eab308",
-            4, "#f97316",
-            6, "#dc2626",
+            "case",
+            ["==", ["get", "is_second_home"], true], "#dc2626",
+            "#22c55e",
           ],
           "fill-opacity": ["interpolate", ["linear"], ["zoom"], 14, 0.35, 16, 0.5],
         },
@@ -185,11 +177,9 @@ export default function ParcelMap() {
         source: "parcels",
         paint: {
           "line-color": [
-            "interpolate", ["linear"], ["coalesce", ["get", "score"], 0],
-            0, "#22c55e",
-            2, "#eab308",
-            4, "#f97316",
-            6, "#dc2626",
+            "case",
+            ["==", ["get", "is_second_home"], true], "#dc2626",
+            "#22c55e",
           ],
           "line-width": ["interpolate", ["linear"], ["zoom"], 14, 0.5, 16, 2],
         },
@@ -200,16 +190,16 @@ export default function ParcelMap() {
         type: "heatmap",
         source: "heatpoints",
         paint: {
-          "heatmap-weight": ["interpolate", ["linear"], ["coalesce", ["get", "score"], 0], 0, 0.1, 4, 0.5, 8, 1],
-          "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 10, 0.5, 14, 1.5],
-          "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 10, 8, 14, 20],
+          "heatmap-weight": ["interpolate", ["linear"], ["coalesce", ["get", "score"], 0], 0, 0.05, 4, 0.5, 8, 1],
+          "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 10, 0.3, 13, 1.0, 15, 0.6, 17, 0.3],
+          "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 10, 8, 13, 15, 15, 10, 17, 4],
           "heatmap-opacity": 0.7,
           "heatmap-color": [
             "interpolate", ["linear"], ["heatmap-density"],
             0, "rgba(34,197,94,0)",
-            0.2, "#22c55e",
-            0.4, "#eab308",
-            0.7, "#f97316",
+            0.3, "#22c55e",
+            0.55, "#eab308",
+            0.85, "#f97316",
             1, "#dc2626",
           ],
         },
@@ -265,8 +255,6 @@ export default function ParcelMap() {
     const wantHeat = mode === "density";
     const params = new URLSearchParams({
       bbox,
-      minScore: "0",
-      maxScore: "99",
       zoom: String(zoom),
       ...(wantHeat ? { mode: "heat" } : {}),
     });
@@ -413,12 +401,10 @@ export default function ParcelMap() {
           </>
         ) : (
           <>
-            <div className="font-semibold text-gray-700 mb-2">Second Home Likelihood</div>
+            <div className="font-semibold text-gray-700 mb-2">Property Classification</div>
             {[
-              { color: "#dc2626", label: "Very Likely (6+)" },
-              { color: "#f97316", label: "Likely (4-5)" },
-              { color: "#eab308", label: "Possible (2-3)" },
-              { color: "#22c55e", label: "Primary (0-1)" },
+              { color: "#dc2626", label: "Second Home" },
+              { color: "#22c55e", label: "Not a Second Home" },
             ].map(({ color, label }) => (
               <div key={label} className="flex items-center gap-2 mb-1">
                 <span className="w-4 h-3 rounded-sm inline-block" style={{ backgroundColor: color, opacity: 0.7 }} />

@@ -10,8 +10,7 @@ export async function GET(req: NextRequest) {
   const sql = neon(url, { fullResults: false });
   const { searchParams } = new URL(req.url);
 
-  const minScore = parseInt(searchParams.get("minScore") ?? "0", 10);
-  const maxScore = parseInt(searchParams.get("maxScore") ?? "99", 10);
+  const secondHomesOnly = searchParams.get("secondHomesOnly") === "true";
   const ownerState = searchParams.get("ownerState") ?? "";
   const propertyClass = searchParams.get("propertyClass") ?? "";
   const bbox = searchParams.get("bbox") ?? "";
@@ -32,8 +31,7 @@ export async function GET(req: NextRequest) {
     "geom IS NOT NULL",
     "TRIM(tax_district) LIKE 'CI%'",
     "COALESCE(is_exempt_gov, 0) != 1",
-    `second_home_score >= ${Number(minScore) || 0}`,
-    `second_home_score <= ${Number(maxScore) || 99}`,
+    ...(secondHomesOnly ? ["is_second_home = TRUE"] : []),
   ];
   const params: (string | number)[] = [];
   let paramIdx = 1;
@@ -86,7 +84,7 @@ export async function GET(req: NextRequest) {
           'assessed_value', COALESCE(current_assessed_land,0) + COALESCE(current_assessed_imp,0),
           'neighborhood', neighborhood_name,
           'score', second_home_score,
-          'is_likely_second_home', is_likely_second_home,
+          'is_second_home', COALESCE(is_second_home, false),
           'score_out_of_state', COALESCE(score_out_of_state, 0),
           'score_diff_city', COALESCE(score_diff_city, 0),
           'score_entity', COALESCE(score_entity, 0),

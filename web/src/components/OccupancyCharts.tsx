@@ -218,8 +218,8 @@ export default function OccupancyCharts() {
             <BarChart data={ownerOccBars} layout="vertical" margin={{ left: 10, right: 10 }}>
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="name" width={140} tick={{ fontSize: 11, fill: "#6b7280" }} />
-              <Tooltip contentStyle={CUSTOM_TOOLTIP_STYLE} // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              formatter={(v: any) => fmt(Number(v))} />
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              <Tooltip contentStyle={CUSTOM_TOOLTIP_STYLE} formatter={(v: any) => fmt(Number(v))} />
               <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                 {ownerOccBars.map((b) => (
                   <Cell key={b.name} fill={b.fill} />
@@ -250,13 +250,13 @@ export default function OccupancyCharts() {
             <BarChart data={notOwnerBars} layout="vertical" margin={{ left: 10, right: 10 }}>
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 11, fill: "#6b7280" }} />
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <Tooltip
                 contentStyle={CUSTOM_TOOLTIP_STYLE}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              formatter={(v: any) => fmt(Number(v))}
-                labelFormatter={(label: string) => {
-                  const row = notOwnerBars.find((r) => r.name === label);
-                  if (!row) return label;
+                formatter={(v: any) => fmt(Number(v))}
+                labelFormatter={(label: any) => {
+                  const row = notOwnerBars.find((r) => r.name === String(label));
+                  if (!row) return String(label);
                   return `${label} (${fmt(row.value)})`;
                 }}
               />
@@ -291,8 +291,8 @@ export default function OccupancyCharts() {
             <BarChart data={entityBars} layout="vertical" margin={{ left: 10, right: 10 }}>
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 11, fill: "#6b7280" }} />
-              <Tooltip contentStyle={CUSTOM_TOOLTIP_STYLE} // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              formatter={(v: any) => fmt(Number(v))} />
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              <Tooltip contentStyle={CUSTOM_TOOLTIP_STYLE} formatter={(v: any) => fmt(Number(v))} />
               <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                 {entityBars.map((b) => (
                   <Cell key={b.name} fill={b.fill} />
@@ -313,8 +313,8 @@ export default function OccupancyCharts() {
             <BarChart data={stateBars} layout="vertical" margin={{ left: 10, right: 10 }}>
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="name" width={40} tick={{ fontSize: 11, fill: "#6b7280" }} />
-              <Tooltip contentStyle={CUSTOM_TOOLTIP_STYLE} // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              formatter={(v: any) => fmt(Number(v))} />
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              <Tooltip contentStyle={CUSTOM_TOOLTIP_STYLE} formatter={(v: any) => fmt(Number(v))} />
               <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                 {stateBars.map((b) => (
                   <Cell key={b.name} fill={b.fill} />

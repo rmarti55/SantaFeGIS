@@ -74,14 +74,14 @@ export async function GET(req: NextRequest) {
           'owner_state', TRIM(a.owner_state),
           'is_head_of_family', a.is_head_of_family,
           'second_home_score', a.second_home_score,
-          'is_likely_second_home', a.is_likely_second_home,
+          'is_second_home', COALESCE(a.is_second_home, false),
           'parcel_matched', (a.objectid IS NOT NULL)
         )
       ) AS feat
       FROM short_term_rentals s
       LEFT JOIN LATERAL (
         SELECT a2.objectid, a2.owner_name, a2.owner_city, a2.owner_state,
-               a2.is_head_of_family, a2.second_home_score, a2.is_likely_second_home
+               a2.is_head_of_family, a2.second_home_score, a2.is_second_home
         FROM accounts a2
         WHERE a2.geom IS NOT NULL
           AND ST_DWithin(s.geom, a2.geom, 0.0003)
