@@ -101,6 +101,14 @@ export const PROBLEM_TYPES: Record<string, string> = {
   other: "Other",
 };
 
+export const FLAT_PROBLEM_TYPES = new Set([
+  "abandonedvehicle",
+  "encampments",
+  "parking",
+  "streetlights",
+  "transit",
+]);
+
 export const PROBLEM_TYPE_COLORS: Record<string, string> = {
   graffiti: "#ed5151",
   trash: "#149ece",
@@ -118,6 +126,225 @@ export const PROBLEM_TYPE_COLORS: Record<string, string> = {
   streetlights: "#f0c800",
   utilities: "#6baed6",
 };
+
+// Reclassify sub-problems that the city CRM filed under the wrong top-level
+// problemtype (mostly dumped into "other"). Maps Problem text -> correct type code.
+export const PROBLEM_RECLASSIFY: Record<string, string> = {
+  "Encampment": "encampments",
+  "Homeless complaint": "encampments",
+  "Homeless Camp / Nuisance List": "encampments",
+  "Homeless Camp in Culvert": "encampments",
+  "Illegal Dumping": "dumping",
+  "Litter": "dumping",
+  "Litter and Debris": "dumping",
+  "Shopping Cart": "dumping",
+  "Shopping Carts": "dumping",
+  "Abandoned vehicle": "abandonedvehicle",
+  "Abandoned vehicle on street": "abandonedvehicle",
+  "Abandoned Vehicle - Assigned to parking": "abandonedvehicle",
+  "City Buses": "transit",
+  "Transit": "transit",
+  "RTD Bus Complaint": "transit",
+  "Street lights": "streetlights",
+  "LED Street Light": "streetlights",
+  "Overhead Street Light - PNM": "streetlights",
+  "Lighting": "streetlights",
+  "Illegal Parking": "parking",
+  "Parking": "parking",
+  "Parking Ticket": "parking",
+  "Parking Appeal": "parking",
+  "Parking Garage": "parking",
+  "Parking Spaces": "parking",
+  "No Parking Signage": "parking",
+  "Drag Racing / Mufflers": "roads",
+  "Drag Racing": "roads",
+  "Loud Mufflers or Street Racing": "roads",
+  "Mufflers/Speeding": "roads",
+  "Speeding Issue": "roads",
+  "Speeding Vehicles": "roads",
+  "Speed Bumps": "roads",
+  "Traffic Light": "roads",
+  "Traffic Hazard": "roads",
+  "Traffic Violations": "roads",
+  "Traffic Engineer Study": "roads",
+  "Pothole / Cracks": "roads",
+  "Sidewalk Damage": "roads",
+  "Sidewalk Violation": "roads",
+  "Stop sign blocked by weeds": "roads",
+  "Stop Sign knocked down": "roads",
+  "Grading": "roads",
+  "Broken Bridge": "roads",
+  "Orange Barrel": "roads",
+  "No Signage": "roads",
+  "Trailhead Signage": "roads",
+  "Fire Hydrant": "utilities",
+  "Leaking Fire Hydrant": "utilities",
+  "Blocked Fire Hydrant": "utilities",
+  "Water Department": "utilities",
+  "Water Department / T&D": "utilities",
+  "Water Shut Off": "utilities",
+  "Dirty Water": "utilities",
+  "Wastewater Complaint": "utilities",
+  "PNM - Powerlines": "utilities",
+  "PNM / Electrical Inspection": "utilities",
+  "PNM Outage": "utilities",
+  "Cable Wires": "utilities",
+  "Meter Issue": "utilities",
+  "Irrigation": "utilities",
+  "Drainage": "utilities",
+  "Stormwater Drain": "utilities",
+  "Clogged Culvert": "utilities",
+  "Short Term Rental": "property",
+  "Short-term rental property complaints": "property",
+  "Short Term Rental / COVID Issue": "property",
+  "STR": "property",
+  "Councilor Lindell email - STR Complaint": "property",
+  "PODS unit in front yard": "property",
+  "Noise": "property",
+  "Firework complaint": "property",
+  "Fireworks": "property",
+  "Air Quality": "property",
+  "Marijuana Complaint": "property",
+  "Covid-19 Violations": "property",
+  "COVID Signage": "property",
+  "COVID Issue": "property",
+  "Mask Violations - COVID": "property",
+  "City Staff / Mask Violation / COVID": "property",
+  "ATVs": "roads",
+  "RV": "parking",
+  "vehicle in an Emergency Exit": "parking",
+  "Weeds and Litter": "weeds",
+  "Tree Limbs/Weeds": "weeds",
+  "Tree Removal": "weeds",
+  "Overgrown Weeds": "weeds",
+  "Dead Animal": "property",
+  "Dog Feces": "property",
+  "Barking dog": "property",
+  "Loose or unrestrained animal": "property",
+  "Animal welfare check": "property",
+  "Colonia Prisma Park": "parks",
+  "City Park": "parks",
+  "City trail": "parks",
+  "Airport Complaint": "other",
+  "Airport Noise": "other",
+  "Graffiti in park or playground": "graffiti",
+  "Graffiti on public property": "graffiti",
+  "Graffiti on private property": "graffiti",
+  "Graffiti on sign (stop sign, speed limit sign, etc.)": "graffiti",
+  "Graffiti in park, playground, trail, or open space": "graffiti",
+  "Needles": "encampments",
+  "Needles or sharps": "encampments",
+  "Obelisk Damage": "property",
+};
+
+export function reclassifyProblemType(
+  problemtype: string,
+  problem: string | null
+): string {
+  if (!problem) return problemtype;
+  return PROBLEM_RECLASSIFY[problem] ?? problemtype;
+}
+
+// Merge duplicate / near-duplicate sub-problem names into canonical labels.
+// Raw Problem values not listed here pass through unchanged.
+export const SUB_PROBLEM_CONSOLIDATE: Record<string, string> = {
+  // --- "Other" catch-all variants (appear across many categories) ---
+  "Other (city easements, alley clean ups, etc.)": "Other",
+  "Other (stormwater drains and culvert cleanouts, etc.)": "Other",
+  "Other (damaged street signs, sidewalk/curb repair, stormwater drains, etc.)": "Other",
+  "Other (historic district concerns, murals, illegal signs, etc.)": "Other",
+  "Other (historic district concerns, murals, outdoor lighting, illegal signs, etc.)": "Other",
+  "Other (special collections route/refuse bag delivery, new service, property damage assessment, etc.)": "Other",
+  "Other Illegal Dumping Material": "Other",
+  "Other weeds issue": "Other",
+  "Other utilities issue": "Other",
+  "Orange Barrel EMCO Complaint": "Other",
+  "Right of Way Violation": "Other",
+  "Missing Sign": "Other",
+  "Permits for Signage": "Other",
+  "Professional dog trainer": "Other",
+  "Special Service / Commercial Pickup": "Other",
+  "Residential (house)": "Other",
+
+  // --- Roads: Pothole ---
+  "Pothole / Cracks": "Pothole",
+
+  // --- Roads: Signage (5 variants -> 1) ---
+  "Signage (stop signs, speed limit signs, road signs, etc.)": "Signage",
+  "Signage (stop signs, speed limit signs, street signs, etc.)": "Signage",
+  "Signage (new, replacment, etc.)": "Signage",
+  "Yellow Curb / Signage": "Signage",
+
+  // --- Roads: Grading ---
+  "Grading": "Street grading",
+
+  // --- Roads: Sidewalk ---
+  "Sidewalk Damage": "Sidewalk or curb repair",
+
+  // --- Roads: Drainage (5 variants -> 1) ---
+  "Stormwater Drain": "Drainage / Culvert",
+  "Clogged Culvert": "Drainage / Culvert",
+  "Culvert/Stormwater Drainage Cleanout": "Drainage / Culvert",
+  "Drainage": "Drainage / Culvert",
+  "Gutter": "Drainage / Culvert",
+
+  // --- Trash ---
+  "Missed trash pickup": "Missed trash or recycling pickup",
+  "Missed recycling pickup": "Missed trash or recycling pickup",
+  "Missing Trash Bin": "Trash or recycling receptacle repair or replacement",
+  "Overflowing trash": "Trash or recycling receptacle repair or replacement",
+
+  // --- Property ---
+  "Building without a permit": "Construction/building without a permit",
+  "Junk Vehicle": "Nuisance or blighted property",
+  "Junk Trailer": "Nuisance or blighted property",
+  "Trailer parked on sidewalk": "Nuisance or blighted property",
+  "Possible Litter and Debris from construction": "Nuisance or blighted property",
+  "litter and debris": "Nuisance or blighted property",
+  "Short Term Rental  / COVID Issue": "Short-term rental property complaints",
+  "STR": "Short-term rental property complaints",
+  "Lighting": "Outdoor Lighting",
+  "Noise": "Loud Noise",
+  "Loose or unrestrained animal": "Animal welfare check",
+
+  // --- Parks ---
+  "Broken equipment": "Broken equipment (playground, bench, etc.)",
+  "Graffiti in park or playground": "Graffiti in park, playground, trail, or open space",
+  "Refill dog bags": "Refill dog bags / request dog receptacle station",
+
+  // --- Dumping ---
+  "Shopping Cart": "Shopping Carts",
+  "Furniture": "Furniture (couch, mattress, box springs, etc.)",
+
+  // --- Weeds ---
+  "On a sidewalk": "Weeds on the sidewalk - obstructing the walkway",
+  "Overgrown weeds on the sidewalk": "Weeds on the sidewalk - obstructing the walkway",
+  "Overgrown weeds": "Weeds on private property",
+  "Overgrown Weeds": "Weeds on private property",
+  "On a medians": "Weeds on medians",
+  "On private property": "Weeds on private property",
+  "In a park, trail or openspace": "Weeds in park or playground",
+  "Weeds on private property / Signage": "Weeds on private property",
+};
+
+export function consolidateSubProblem(raw: string): string {
+  return SUB_PROBLEM_CONSOLIDATE[raw] ?? raw;
+}
+
+// Reverse lookup: given a (possibly consolidated) name, return all raw Problem
+// values that map to it, so ArcGIS queries can use an IN clause.
+const _reverseMap = new Map<string, string[]>();
+for (const [raw, canonical] of Object.entries(SUB_PROBLEM_CONSOLIDATE)) {
+  const arr = _reverseMap.get(canonical) ?? [];
+  arr.push(raw);
+  _reverseMap.set(canonical, arr);
+}
+
+export function expandSubProblem(name: string): string[] {
+  const rawValues = _reverseMap.get(name);
+  if (!rawValues) return [name];
+  return [name, ...rawValues];
+}
 
 export const STATUS_VALUES = [
   "Submitted",
@@ -142,22 +369,29 @@ export function esriToGeoJSON(
     type: "FeatureCollection",
     features: features
       .filter((f) => f.geometry)
-      .map((f) => ({
-        type: "Feature" as const,
-        id: f.attributes.objectid,
-        geometry: {
-          type: "Point" as const,
-          coordinates: [f.geometry!.x, f.geometry!.y],
-        },
-        properties: {
-          ...f.attributes,
-          problemtype_label:
-            PROBLEM_TYPES[f.attributes.problemtype] ??
-            f.attributes.problemtype,
-          status_label:
-            STATUS_LABELS[f.attributes.status] ?? f.attributes.status,
-        },
-      })),
+      .map((f) => {
+        const effectiveType = reclassifyProblemType(
+          f.attributes.problemtype,
+          f.attributes.Problem
+        );
+        return {
+          type: "Feature" as const,
+          id: f.attributes.objectid,
+          geometry: {
+            type: "Point" as const,
+            coordinates: [f.geometry!.x, f.geometry!.y],
+          },
+          properties: {
+            ...f.attributes,
+            problemtype: effectiveType,
+            problemtype_original: f.attributes.problemtype,
+            problemtype_label:
+              PROBLEM_TYPES[effectiveType] ?? effectiveType,
+            status_label:
+              STATUS_LABELS[f.attributes.status] ?? f.attributes.status,
+          },
+        };
+      }),
   };
 }
 

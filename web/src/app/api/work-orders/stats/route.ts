@@ -1,11 +1,18 @@
-import { NextResponse } from "next/server";
-import { queryCRM } from "@/lib/arcgis";
+import { NextRequest, NextResponse } from "next/server";
+import { queryCRM, consolidateSubProblem } from "@/lib/arcgis";
 
 export const runtime = "edge";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const problemtype = searchParams.get("problemtype") ?? "";
+
+  const baseWhere = problemtype
+    ? `problemtype = '${problemtype.replace(/'/g, "''")}'`
+    : "1=1";
+
   try {
-    const [byType, byStatus, totals] = await Promise.all([
+    const queries: Promise<Record<string, unknown>>[] = [
       queryCRM({
         where: "1=1",
         outFields: "problemtype",
@@ -20,7 +27,7 @@ export async function GET() {
         groupByFieldsForStatistics: "problemtype",
       }),
       queryCRM({
-        where: "1=1",
+        where: baseWhere,
         outFields: "status",
         returnGeometry: false,
         outStatistics: [
@@ -33,7 +40,7 @@ export async function GET() {
         groupByFieldsForStatistics: "status",
       }),
       queryCRM({
-        where: "1=1",
+        where: baseWhere,
         returnGeometry: false,
         outStatistics: [
           {
@@ -48,25 +55,67 @@ export async function GET() {
           },
         ],
       }),
-    ]);
+      queryCRM({
+        where: baseWhere,
+        outFields: "Problem",
+        returnGeometry: false,
+        outStatistics: [
+          {
+            onStatisticField: "objectid",
+            outStatisticFieldName: "count",
+            statisticType: "count",
+          },
+        ],
+        groupByFieldsForStatistics: "Problem",
+      }),
+    ];
 
-    const byTypeData = (byType.features ?? []).map(
-      (f: { attributes: { problemtype: string; count: number } }) => ({
+    const [byType, byStatus, totals, byProblem] = await Promise.all(queries);
+
+    type Feature<T> = { attributes: T };
+
+    const byTypeData = (
+      (byType as { features?: Feature<{ problemtype: string; count: number }>[] }).features ?? []
+    )
+      .map((f) => ({
         type: f.attributes.problemtype,
         count: f.attributes.count,
-      })
-    ).sort(
-      (a: { count: number }, b: { count: number }) => b.count - a.count
-    );
+      }))
+      .sort((a, b) => b.count - a.count);
 
-    const byStatusData = (byStatus.features ?? []).map(
-      (f: { attributes: { status: string; count: number } }) => ({
-        status: f.attributes.status,
+    const byStatusData = (
+      (byStatus as { features?: Feature<{ status: string | null; count: number }>[] }).features ?? []
+    )
+      .filter((f) => {
+        const s = f.attributes.status;
+        return s != null && s !== "" && s !== "null" && s.trim() !== "";
+      })
+      .map((f) => ({
+        status: f.attributes.status!,
         count: f.attributes.count,
-      })
-    );
+      }))
+      .sort((a, b) => b.count - a.count);
 
-    const summary = totals.features?.[0]?.attributes ?? {};
+    const byProblemRaw = (
+      (byProblem as { features?: Feature<{ Problem: string | null; count: number }>[] }).features ?? []
+    )
+      .filter((f) => f.attributes.Problem && f.attributes.Problem !== "null")
+      .map((f) => ({
+        problem: consolidateSubProblem(f.attributes.Problem!),
+        count: f.attributes.count,
+      }));
+
+    const byProblemMerged = new Map<string, number>();
+    for (const { problem, count } of byProblemRaw) {
+      byProblemMerged.set(problem, (byProblemMerged.get(problem) ?? 0) + count);
+    }
+    const byProblemData = [...byProblemMerged.entries()]
+      .map(([problem, count]) => ({ problem, count }))
+      .sort((a, b) => b.count - a.count);
+
+    const summary =
+      ((totals as { features?: Feature<{ total_count: number; avg_resolve_days: number }>[] }).features ?? [])[0]
+        ?.attributes ?? { total_count: 0, avg_resolve_days: 0 };
 
     return NextResponse.json(
       {
@@ -74,6 +123,7 @@ export async function GET() {
         avgResolveDays: Math.round(summary.avg_resolve_days ?? 0),
         byType: byTypeData,
         byStatus: byStatusData,
+        byProblem: byProblemData,
       },
       {
         headers: {

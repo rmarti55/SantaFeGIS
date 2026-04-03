@@ -101,6 +101,7 @@ export default function WorkOrderMap({
 
     const params = new URLSearchParams({ bbox });
     if (filters.problemtype) params.set("problemtype", filters.problemtype);
+    if (filters.problem) params.set("problem", filters.problem);
     if (filters.status) params.set("status", filters.status);
     if (filters.dateFrom) params.set("dateFrom", filters.dateFrom);
     if (filters.dateTo) params.set("dateTo", filters.dateTo);

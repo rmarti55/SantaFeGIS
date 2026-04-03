@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { queryCRM, esriToGeoJSON } from "@/lib/arcgis";
+import { queryCRM, esriToGeoJSON, expandSubProblem } from "@/lib/arcgis";
 
 export const runtime = "edge";
 
@@ -7,6 +7,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
   const problemtype = searchParams.get("problemtype") ?? "";
+  const problem = searchParams.get("problem") ?? "";
   const status = searchParams.get("status") ?? "";
   const dateFrom = searchParams.get("dateFrom") ?? "";
   const dateTo = searchParams.get("dateTo") ?? "";
@@ -18,6 +19,15 @@ export async function GET(req: NextRequest) {
 
   if (problemtype) {
     conditions.push(`problemtype = '${problemtype.replace(/'/g, "''")}'`);
+  }
+  if (problem) {
+    const expanded = expandSubProblem(problem);
+    if (expanded.length === 1) {
+      conditions.push(`Problem = '${expanded[0].replace(/'/g, "''")}'`);
+    } else {
+      const inList = expanded.map((v) => `'${v.replace(/'/g, "''")}'`).join(",");
+      conditions.push(`Problem IN (${inList})`);
+    }
   }
   if (status) {
     conditions.push(`status = '${status.replace(/'/g, "''")}'`);

@@ -10,6 +10,9 @@ const tabs = [
   { href: "/road-conditions", label: "Road Conditions" },
   { href: "/capital-projects", label: "Capital Projects" },
   { href: "/zoning", label: "Zoning" },
+  { href: "/budget", label: "Budget" },
+  { href: "/kpis", label: "KPIs" },
+  { href: "/salaries", label: "Salaries" },
 ];
 
 export default function NavBar() {
