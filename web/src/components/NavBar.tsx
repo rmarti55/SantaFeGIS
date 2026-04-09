@@ -13,6 +13,7 @@ const tabs = [
   { href: "/budget", label: "Budget" },
   { href: "/kpis", label: "KPIs" },
   { href: "/salaries", label: "Salaries" },
+  { href: "/org-tree", label: "City Org Tree" },
 ];
 
 export default function NavBar() {

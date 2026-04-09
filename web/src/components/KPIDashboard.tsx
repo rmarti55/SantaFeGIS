@@ -451,7 +451,7 @@ export default function KPIDashboard() {
                 outerRadius={130}
                 paddingAngle={2}
                 label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
+                  `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
                 }
                 labelLine={true}
               >
@@ -535,7 +535,7 @@ export default function KPIDashboard() {
               />
               <Tooltip
                 contentStyle={TOOLTIP_STYLE}
-                formatter={(v: number) => fmtM(v)}
+                formatter={(v) => fmtM(Number(v ?? 0))}
               />
               <Bar dataKey="ratio" name="$/KPI" radius={[0, 4, 4, 0]}>
                 {ratioData.map((entry, i) => (
