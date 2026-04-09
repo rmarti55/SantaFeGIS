@@ -1,0 +1,53 @@
+{
+  "elected": {
+    "mayor": {
+      "name": "Michael J. Garcia",
+      "title": "Mayor",
+      "term": "1/1/2026 - 12/31/2029",
+      "note": "Elected citywide, 4-year term. Chief executive."
+    },
+    "council": [
+      { "district": 1, "name": "Alma Castro", "term": "01/01/2024 - 12/31/2027" },
+      { "district": 1, "name": "Patricia Feghali", "term": "1/1/2026 - 12/31/2029" },
+      { "district": 2, "name": "Elizabeth Barrett", "term": "1/1/2026 - 12/31/2029" },
+      { "district": 2, "name": "Paul C. Bustamante", "term": "01/01/2026 - 12/31/2029" },
+      { "district": 3, "name": "Pilar F.H. Faulkner", "term": "01/01/2024 - 12/31/2027" },
+      { "district": 3, "name": "Lee Garcia", "term": "1/1/2026 - 12/31/2029", "role": "Mayor Pro Tem" },
+      { "district": 4, "name": "Jamie Cassutt", "term": "01/01/2024 - 12/31/2027" },
+      { "district": 4, "name": "Amanda Chavez", "term": "1/1/2026 - 12/31/2029" }
+    ]
+  },
+  "appointed": {
+    "cityManager": {
+      "name": "Brian Moya",
+      "title": "Interim City Manager",
+      "note": "Appointed by Mayor, approved by Governing Body. Chief administrative officer."
+    },
+    "cityAttorney": {
+      "name": "Marcos Martinez",
+      "title": "City Attorney",
+      "note": "Appointed permanent March 2026. Previously senior assistant city attorney since 2019."
+    },
+    "cityClerk": {
+      "name": "Geralyn Cardenas",
+      "title": "City Clerk",
+      "note": "Appointed permanent March 2026. Also oversees Community Engagement Department."
+    }
+  },
+  "departmentDirectorMap": {
+    "City Attorney's Office": "Marcos Martinez",
+    "Community Engagement / City Clerk": "Geralyn Cardenas",
+    "Community Development Department": "Elisa Montoya",
+    "Community Health and Safety Department": "Henri Hammond-Paul",
+    "Finance Department": "Emily Oster",
+    "Fire Department": "Brian Moya",
+    "Human Resources Department": "Sarah Bolleter-Gonzales",
+    "Information Technology Department": "Eric Candelaria",
+    "Police Department": "Paul Joye",
+    "Public Utilities Department": "Jesse Roach",
+    "Public Works Department": "Sam Burnett",
+    "Risk and Safety Office": "Andrea Phillips",
+    "Santa Fe Regional Airport": "Jimmy Gunn",
+    "Santa Fe Municipal Court": "Judge Chad Chittum"
+  }
+}

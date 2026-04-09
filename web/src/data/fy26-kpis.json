@@ -1,0 +1,475 @@
+{
+  "departments": [
+    {
+      "id": "police",
+      "name": "Police Department",
+      "director": "Chief Paul Joye",
+      "budgetDeptNames": ["Police"],
+      "goals": [
+        {
+          "id": "police-g1",
+          "title": "Reduce Violent Crime and Improve Public Safety",
+          "objectives": [
+            {
+              "id": "police-g1-o1",
+              "description": "Reduce violent crime incidents by 8% compared to FY25 baseline",
+              "targetDate": "June 2026",
+              "kpis": [
+                { "metric": "Violent crime rate per 1,000 residents", "target": "< 4.2", "unit": "count", "category": "compliance" },
+                { "metric": "Part I crime clearance rate", "target": "≥ 45", "unit": "%", "category": "compliance" }
+              ]
+            },
+            {
+              "id": "police-g1-o2",
+              "description": "Achieve average Priority 1 response time under 5 minutes",
+              "kpis": [
+                { "metric": "Priority 1 avg response time", "target": "< 5:00", "unit": "min", "category": "response_time" },
+                { "metric": "Priority 2 avg response time", "target": "< 9:00", "unit": "min", "category": "response_time" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "police-g2",
+          "title": "Strengthen Community Relationships and Trust",
+          "objectives": [
+            {
+              "id": "police-g2-o1",
+              "description": "Increase community engagement events to 48 per year",
+              "kpis": [
+                { "metric": "Community engagement events held", "target": "48", "unit": "count", "category": "satisfaction" },
+                { "metric": "Citizen satisfaction rating", "target": "≥ 75", "unit": "%", "category": "satisfaction" }
+              ]
+            },
+            {
+              "id": "police-g2-o2",
+              "description": "Maintain fully staffed patrol divisions at 92% or above",
+              "kpis": [
+                { "metric": "Patrol staffing level", "target": "≥ 92", "unit": "%", "category": "staffing" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fire",
+      "name": "Fire Department",
+      "director": "Chief Brian Moya",
+      "budgetDeptNames": ["Fire"],
+      "goals": [
+        {
+          "id": "fire-g1",
+          "title": "Provide Rapid Emergency Response",
+          "objectives": [
+            {
+              "id": "fire-g1-o1",
+              "description": "Maintain average fire response time under 6 minutes citywide",
+              "kpis": [
+                { "metric": "Fire response time (avg)", "target": "< 6:00", "unit": "min", "category": "response_time" },
+                { "metric": "EMS response time (avg)", "target": "< 7:00", "unit": "min", "category": "response_time" }
+              ]
+            },
+            {
+              "id": "fire-g1-o2",
+              "description": "Achieve ISO Class 2 rating or better",
+              "kpis": [
+                { "metric": "ISO classification rating", "target": "≤ 2", "unit": "count", "category": "compliance" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fire-g2",
+          "title": "Enhance Firefighter Health, Safety, and Retention",
+          "objectives": [
+            {
+              "id": "fire-g2-o1",
+              "description": "Reduce on-duty injuries by 10% year-over-year",
+              "kpis": [
+                { "metric": "On-duty injury rate reduction", "target": "≥ 10", "unit": "%", "category": "staffing" },
+                { "metric": "Firefighter retention rate", "target": "≥ 90", "unit": "%", "category": "staffing" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "public-works",
+      "name": "Public Works Department",
+      "director": "Director David Catanach",
+      "budgetDeptNames": ["Public Works"],
+      "goals": [
+        {
+          "id": "pw-g1",
+          "title": "Maintain and Improve City Infrastructure",
+          "objectives": [
+            {
+              "id": "pw-g1-o1",
+              "description": "Resurface at least 25 lane-miles of roadway per fiscal year",
+              "kpis": [
+                { "metric": "Lane-miles resurfaced", "target": "≥ 25", "unit": "miles", "category": "infrastructure" },
+                { "metric": "Pavement condition index (PCI)", "target": "≥ 70", "unit": "count", "category": "infrastructure" }
+              ]
+            },
+            {
+              "id": "pw-g1-o2",
+              "description": "Complete 90% of pothole repairs within 48 hours of report",
+              "kpis": [
+                { "metric": "Pothole repair within 48 hrs", "target": "≥ 90", "unit": "%", "category": "response_time" },
+                { "metric": "Work orders completed on time", "target": "≥ 85", "unit": "%", "category": "service_delivery" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "pw-g2",
+          "title": "Improve Fleet Efficiency and Sustainability",
+          "objectives": [
+            {
+              "id": "pw-g2-o1",
+              "description": "Increase fleet electric/hybrid vehicle share to 15%",
+              "kpis": [
+                { "metric": "EV/hybrid fleet share", "target": "≥ 15", "unit": "%", "category": "infrastructure" },
+                { "metric": "Fleet utilization rate", "target": "≥ 80", "unit": "%", "category": "financial" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "public-utilities",
+      "name": "Public Utilities Department",
+      "director": "Director Jesse Roach",
+      "budgetDeptNames": ["Public Utilities"],
+      "goals": [
+        {
+          "id": "pu-g1",
+          "title": "Ensure Reliable and Safe Water Delivery",
+          "objectives": [
+            {
+              "id": "pu-g1-o1",
+              "description": "Maintain drinking water quality at 100% EPA compliance",
+              "kpis": [
+                { "metric": "EPA drinking water compliance", "target": "100", "unit": "%", "category": "compliance" },
+                { "metric": "Water main breaks per 100 miles", "target": "< 15", "unit": "count", "category": "infrastructure" }
+              ]
+            },
+            {
+              "id": "pu-g1-o2",
+              "description": "Reduce per-capita water consumption by 3% annually",
+              "kpis": [
+                { "metric": "Per-capita gallons per day", "target": "< 110", "unit": "gpd", "category": "infrastructure" },
+                { "metric": "System water loss rate", "target": "< 10", "unit": "%", "category": "financial" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "pu-g2",
+          "title": "Expand Wastewater Treatment Capacity",
+          "objectives": [
+            {
+              "id": "pu-g2-o1",
+              "description": "Complete Phase II wastewater treatment plant expansion",
+              "targetDate": "December 2026",
+              "kpis": [
+                { "metric": "Treatment plant capacity utilization", "target": "< 85", "unit": "%", "category": "infrastructure" },
+                { "metric": "NPDES permit compliance", "target": "100", "unit": "%", "category": "compliance" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "community-dev",
+      "name": "Community Development Department",
+      "director": "Director Tamara Baer",
+      "budgetDeptNames": ["Community Development"],
+      "goals": [
+        {
+          "id": "cd-g1",
+          "title": "Streamline Permitting and Inspection Processes",
+          "objectives": [
+            {
+              "id": "cd-g1-o1",
+              "description": "Reduce average permit processing time to under 10 business days",
+              "kpis": [
+                { "metric": "Avg permit processing time", "target": "< 10", "unit": "days", "category": "response_time" },
+                { "metric": "Online permit submissions", "target": "≥ 70", "unit": "%", "category": "service_delivery" }
+              ]
+            },
+            {
+              "id": "cd-g1-o2",
+              "description": "Achieve 95% inspection completion within scheduled window",
+              "kpis": [
+                { "metric": "On-time inspection rate", "target": "≥ 95", "unit": "%", "category": "service_delivery" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "parks-rec",
+      "name": "Parks & Recreation Department",
+      "director": "Director Judith Amer",
+      "budgetDeptNames": ["Parks & Recreation"],
+      "goals": [
+        {
+          "id": "pr-g1",
+          "title": "Increase Community Access to Parks and Programs",
+          "objectives": [
+            {
+              "id": "pr-g1-o1",
+              "description": "Achieve 85% resident satisfaction with parks and recreation facilities",
+              "kpis": [
+                { "metric": "Resident satisfaction rate", "target": "≥ 85", "unit": "%", "category": "satisfaction" },
+                { "metric": "Program participation (annual)", "target": "≥ 42,000", "unit": "count", "category": "service_delivery" }
+              ]
+            },
+            {
+              "id": "pr-g1-o2",
+              "description": "Complete trail connectivity plan milestones on schedule",
+              "targetDate": "June 2026",
+              "kpis": [
+                { "metric": "Trail miles maintained", "target": "≥ 80", "unit": "miles", "category": "infrastructure" },
+                { "metric": "Capital project on-time completion", "target": "≥ 90", "unit": "%", "category": "service_delivery" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "Finance Department",
+      "director": "Director Mary Ann Gonzales",
+      "budgetDeptNames": ["Finance"],
+      "goals": [
+        {
+          "id": "fin-g1",
+          "title": "Strengthen Fiscal Management and Transparency",
+          "objectives": [
+            {
+              "id": "fin-g1-o1",
+              "description": "Maintain unmodified audit opinion and GFOA budget award",
+              "kpis": [
+                { "metric": "Clean audit opinion", "target": "Unmodified", "category": "compliance" },
+                { "metric": "GFOA Distinguished Budget Award", "target": "Received", "category": "compliance" }
+              ]
+            },
+            {
+              "id": "fin-g1-o2",
+              "description": "Process vendor payments within 30 days 95% of the time",
+              "kpis": [
+                { "metric": "Vendor payments within 30 days", "target": "≥ 95", "unit": "%", "category": "financial" },
+                { "metric": "Revenue forecast accuracy", "target": "± 3", "unit": "%", "category": "financial" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "it",
+      "name": "Information Technology Department",
+      "director": "Director John Blair",
+      "budgetDeptNames": ["Information Technology"],
+      "goals": [
+        {
+          "id": "it-g1",
+          "title": "Modernize Technology Infrastructure and Cybersecurity",
+          "objectives": [
+            {
+              "id": "it-g1-o1",
+              "description": "Achieve 99.9% uptime for critical city systems",
+              "kpis": [
+                { "metric": "Critical system uptime", "target": "≥ 99.9", "unit": "%", "category": "service_delivery" },
+                { "metric": "Help desk ticket resolution (avg)", "target": "< 24", "unit": "hours", "category": "response_time" }
+              ]
+            },
+            {
+              "id": "it-g1-o2",
+              "description": "Complete cybersecurity framework assessment and remediation",
+              "targetDate": "March 2026",
+              "kpis": [
+                { "metric": "Security incidents (critical)", "target": "0", "unit": "count", "category": "compliance" },
+                { "metric": "Employee cybersecurity training completion", "target": "≥ 95", "unit": "%", "category": "compliance" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "housing",
+      "name": "Housing Department",
+      "director": "Director Alexandra Ladd",
+      "budgetDeptNames": ["Housing"],
+      "goals": [
+        {
+          "id": "hsg-g1",
+          "title": "Expand Affordable Housing Inventory",
+          "objectives": [
+            {
+              "id": "hsg-g1-o1",
+              "description": "Add 200 new affordable housing units through city programs",
+              "targetDate": "June 2026",
+              "kpis": [
+                { "metric": "New affordable units added", "target": "≥ 200", "unit": "count", "category": "service_delivery" },
+                { "metric": "Housing voucher utilization rate", "target": "≥ 95", "unit": "%", "category": "financial" }
+              ]
+            },
+            {
+              "id": "hsg-g1-o2",
+              "description": "Reduce average housing application processing time to 15 days",
+              "kpis": [
+                { "metric": "Application processing time", "target": "< 15", "unit": "days", "category": "response_time" },
+                { "metric": "Applicant satisfaction score", "target": "≥ 80", "unit": "%", "category": "satisfaction" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "transit",
+      "name": "Transit Department",
+      "director": "Director Mark Tibbetts",
+      "budgetDeptNames": ["Transit"],
+      "goals": [
+        {
+          "id": "tr-g1",
+          "title": "Improve Transit Reliability and Ridership",
+          "objectives": [
+            {
+              "id": "tr-g1-o1",
+              "description": "Increase annual ridership by 5% over FY25 levels",
+              "kpis": [
+                { "metric": "Annual ridership growth", "target": "≥ 5", "unit": "%", "category": "service_delivery" },
+                { "metric": "On-time performance rate", "target": "≥ 88", "unit": "%", "category": "service_delivery" }
+              ]
+            },
+            {
+              "id": "tr-g1-o2",
+              "description": "Maintain cost per passenger trip below $8.50",
+              "kpis": [
+                { "metric": "Cost per passenger trip", "target": "< $8.50", "unit": "$", "category": "financial" },
+                { "metric": "Farebox recovery ratio", "target": "≥ 18", "unit": "%", "category": "financial" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "library",
+      "name": "Library Department",
+      "director": "Director Patricia Hodapp",
+      "budgetDeptNames": ["Library"],
+      "goals": [
+        {
+          "id": "lib-g1",
+          "title": "Expand Access to Library Programs and Resources",
+          "objectives": [
+            {
+              "id": "lib-g1-o1",
+              "description": "Increase annual library visits by 8% and digital checkouts by 12%",
+              "kpis": [
+                { "metric": "Annual library visits growth", "target": "≥ 8", "unit": "%", "category": "service_delivery" },
+                { "metric": "Digital checkouts growth", "target": "≥ 12", "unit": "%", "category": "service_delivery" },
+                { "metric": "Program attendance (annual)", "target": "≥ 28,000", "unit": "count", "category": "satisfaction" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "land-use",
+      "name": "Land Use Department",
+      "director": "Director Tamara Baer",
+      "budgetDeptNames": ["Land Use"],
+      "goals": [
+        {
+          "id": "lu-g1",
+          "title": "Guide Sustainable Growth and Code Compliance",
+          "objectives": [
+            {
+              "id": "lu-g1-o1",
+              "description": "Process zoning applications within 60 days 90% of the time",
+              "kpis": [
+                { "metric": "Zoning app processing within 60 days", "target": "≥ 90", "unit": "%", "category": "response_time" },
+                { "metric": "Code compliance case resolution rate", "target": "≥ 80", "unit": "%", "category": "compliance" }
+              ]
+            },
+            {
+              "id": "lu-g1-o2",
+              "description": "Complete updates to the General Plan land use map",
+              "targetDate": "December 2026",
+              "kpis": [
+                { "metric": "General Plan milestones completed", "target": "≥ 4", "unit": "count", "category": "service_delivery" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "economic-dev",
+      "name": "Economic Development Office",
+      "director": "Director Rich Brown",
+      "budgetDeptNames": ["Economic Development"],
+      "goals": [
+        {
+          "id": "ed-g1",
+          "title": "Diversify the Local Economy and Support Small Business",
+          "objectives": [
+            {
+              "id": "ed-g1-o1",
+              "description": "Assist 150 small businesses through city programs",
+              "kpis": [
+                { "metric": "Small businesses assisted", "target": "≥ 150", "unit": "count", "category": "service_delivery" },
+                { "metric": "New business licenses issued", "target": "≥ 300", "unit": "count", "category": "service_delivery" }
+              ]
+            },
+            {
+              "id": "ed-g1-o2",
+              "description": "Attract $25M in private capital investment to target corridors",
+              "targetDate": "June 2026",
+              "kpis": [
+                { "metric": "Private capital investment attracted", "target": "≥ $25M", "unit": "$", "category": "financial" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arts-culture",
+      "name": "Arts & Culture Department",
+      "director": "Director Leroy Pacheco",
+      "budgetDeptNames": ["Arts & Culture"],
+      "goals": [
+        {
+          "id": "ac-g1",
+          "title": "Promote Arts and Cultural Vitality",
+          "objectives": [
+            {
+              "id": "ac-g1-o1",
+              "description": "Fund 40 community arts grants and serve 15,000 residents",
+              "kpis": [
+                { "metric": "Community arts grants awarded", "target": "≥ 40", "unit": "count", "category": "service_delivery" },
+                { "metric": "Residents served by arts programs", "target": "≥ 15,000", "unit": "count", "category": "satisfaction" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
