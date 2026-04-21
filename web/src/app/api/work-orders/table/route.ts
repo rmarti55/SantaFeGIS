@@ -1,21 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  queryCRM,
   PROBLEM_TYPES,
   STATUS_LABELS,
   reclassifyProblemType,
   expandSubProblem,
 } from "@/lib/arcgis";
-
-export const runtime = "edge";
+import { getDb } from "@/lib/db";
 
 const ALLOWED_SORTS: Record<string, string> = {
-  CreationDate: "CreationDate",
-  problemtype: "problemtype",
-  Problem: "Problem",
-  status: "status",
-  time_to_resolve: "time_to_resolve",
-  resolved_on: "resolved_on",
+  CreationDate: '"CreationDate"',
+  problemtype: "problemtype_from_extra",
+  Problem: '"What_is_the_problem_you_are_reporting_"',
+  status: "status_from_extra",
+  time_to_resolve: '"Days_to_Resolve"',
+  resolved_on: '"Resolved_on"',
 };
 
 export async function GET(req: NextRequest) {
@@ -35,94 +33,108 @@ export async function GET(req: NextRequest) {
   const dateFrom = searchParams.get("dateFrom") ?? "";
   const dateTo = searchParams.get("dateTo") ?? "";
 
-  const orderField = ALLOWED_SORTS[sortByParam] ?? "CreationDate";
+  const orderField = ALLOWED_SORTS[sortByParam] ?? '"CreationDate"';
 
-  const conditions: string[] = [];
+  const whereClauses: string[] = [];
+  const params: (string | number)[] = [];
+  let paramIndex = 1;
 
   if (problemtype) {
-    conditions.push(`problemtype = '${problemtype.replace(/'/g, "''")}'`);
-  }
-  if (problem) {
-    const expanded = expandSubProblem(problem);
-    if (expanded.length === 1) {
-      conditions.push(`Problem = '${expanded[0].replace(/'/g, "''")}'`);
-    } else {
-      const inList = expanded.map((v) => `'${v.replace(/'/g, "''")}'`).join(",");
-      conditions.push(`Problem IN (${inList})`);
-    }
-  }
-  if (status) {
-    conditions.push(`status = '${status.replace(/'/g, "''")}'`);
-  }
-  if (dateFrom) {
-    conditions.push(
-      `CreationDate >= timestamp '${dateFrom.replace(/'/g, "")} 00:00:00'`
-    );
-  }
-  if (dateTo) {
-    conditions.push(
-      `CreationDate <= timestamp '${dateTo.replace(/'/g, "")} 23:59:59'`
-    );
-  }
-  if (search && search.length >= 2) {
-    const escaped = search.replace(/'/g, "''").replace(/%/g, "\\%");
-    conditions.push(`Problem LIKE '%${escaped}%'`);
+    whereClauses.push(`LOWER(problemtype_from_extra) = $${paramIndex}`);
+    params.push(problemtype.toLowerCase());
+    paramIndex++;
   }
 
-  const where = conditions.length > 0 ? conditions.join(" AND ") : "1=1";
+  if (problem) {
+    const expanded = expandSubProblem(problem);
+    const placeholders = expanded
+      .map(() => `$${paramIndex++}`)
+      .join(",");
+    whereClauses.push(`"What_is_the_problem_you_are_reporting_" IN (${placeholders})`);
+    params.push(...expanded);
+  }
+
+  if (status) {
+    whereClauses.push(`LOWER(status_from_extra) = $${paramIndex}`);
+    params.push(status.toLowerCase());
+    paramIndex++;
+  }
+
+  if (dateFrom) {
+    whereClauses.push(`"CreationDate" >= $${paramIndex}`);
+    params.push(new Date(dateFrom).getTime());
+    paramIndex++;
+  }
+
+  if (dateTo) {
+    const endOfDay = new Date(dateTo);
+    endOfDay.setHours(23, 59, 59, 999);
+    whereClauses.push(`"CreationDate" <= $${paramIndex}`);
+    params.push(endOfDay.getTime());
+    paramIndex++;
+  }
+
+  if (search && search.length >= 2) {
+    whereClauses.push(`"What_is_the_problem_you_are_reporting_" ILIKE $${paramIndex}`);
+    params.push(`%${search}%`);
+    paramIndex++;
+  }
+
+  // Exclude rows with null objectid to prevent duplicate React keys
+  whereClauses.push("objectid IS NOT NULL");
+
+  const whereClause = whereClauses.length > 0 ? whereClauses.join(" AND ") : "1=1";
   const offset = (page - 1) * pageSize;
 
   try {
-    const [dataResult, countResult] = await Promise.all([
-      queryCRM({
-        where,
-        outFields: "*",
-        returnGeometry: false,
-        orderByFields: `${orderField} ${sortDir}`,
-        resultOffset: offset,
-        resultRecordCount: pageSize,
-      }),
-      queryCRM({
-        where,
-        returnGeometry: false,
-        returnCountOnly: true,
-      }),
-    ]);
+    const db = getDb();
+    const query = `
+      SELECT
+        objectid, problemtype_from_extra, status_from_extra,
+        "What_is_the_problem_you_are_reporting_" AS problem,
+        "CreationDate", "Resolved_on" AS resolved_on,
+        "Days_to_Resolve" AS time_to_resolve,
+        COUNT(*) OVER() AS total_count
+      FROM crm_full
+      WHERE ${whereClause}
+      ORDER BY ${orderField} ${sortDir}
+      LIMIT ${pageSize} OFFSET ${offset}
+    `;
 
-    interface CRMRow {
+    const rows = await db.query(query, params) as Array<{
       objectid: number;
-      problemtype: string;
-      Problem: string | null;
-      status: string;
+      problemtype_from_extra: string | null;
+      status_from_extra: string | null;
+      problem: string | null;
       CreationDate: number;
       resolved_on: number | null;
       time_to_resolve: number | null;
-    }
+      total_count: number;
+    }>;
 
-    const rows = (dataResult.features ?? []).map(
-      (f: { attributes: CRMRow }) => {
-        const a = f.attributes;
-        const effectiveType = reclassifyProblemType(a.problemtype, a.Problem);
-        return {
-          objectid: a.objectid,
-          problemtype: effectiveType,
-          problemtype_original: a.problemtype,
-          problemtype_label: PROBLEM_TYPES[effectiveType] ?? effectiveType,
-          problem: a.Problem ?? null,
-          status: a.status,
-          status_label: STATUS_LABELS[a.status] ?? a.status,
-          created: a.CreationDate,
-          resolved: a.resolved_on,
-          days_to_resolve: a.time_to_resolve,
-        };
-      }
-    );
+    const total = rows.length > 0 ? Number(rows[0].total_count) : 0;
 
-    const total = countResult.count ?? 0;
+    const mappedRows = rows.map((row) => {
+      const rawProblemtype = row.problemtype_from_extra || "other";
+      const effectiveType = reclassifyProblemType(rawProblemtype, row.problem || "");
+
+      return {
+        objectid: row.objectid,
+        problemtype: effectiveType,
+        problemtype_original: rawProblemtype,
+        problemtype_label: PROBLEM_TYPES[effectiveType as keyof typeof PROBLEM_TYPES] ?? effectiveType,
+        problem: row.problem ?? null,
+        status: row.status_from_extra,
+        status_label: STATUS_LABELS[row.status_from_extra as keyof typeof STATUS_LABELS] ?? row.status_from_extra,
+        created: Number(row.CreationDate),
+        resolved: row.resolved_on != null ? Number(row.resolved_on) : null,
+        days_to_resolve: row.time_to_resolve != null ? Number(row.time_to_resolve) : null,
+      };
+    });
 
     return NextResponse.json(
       {
-        rows,
+        rows: mappedRows,
         total,
         page,
         pageSize,

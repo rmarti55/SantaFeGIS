@@ -1,20 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { PROBLEM_TYPES, STATUS_LABELS, FLAT_PROBLEM_TYPES } from "@/lib/arcgis";
+import { STATUS_LABELS } from "@/lib/arcgis";
 
 export interface WorkOrderFilterValues {
-  problemtype: string;
-  problem: string;
   status: string;
-  dateFrom: string;
-  dateTo: string;
-}
-
-interface SubProblem {
-  code: string;
-  name: string;
-  count: number;
+  dateRange: "7d" | "14d" | "30d" | "60d" | "90d" | "180d" | "365d" | "730d";
+  problem: string;
 }
 
 interface Props {
@@ -32,86 +23,9 @@ export default function WorkOrderFilters({
   loading,
   count,
 }: Props) {
-  const [typeCounts, setTypeCounts] = useState<Record<string, number>>({});
-  const [subProblems, setSubProblems] = useState<SubProblem[]>([]);
-  const [loadingSub, setLoadingSub] = useState(false);
-
-  const isFlat = FLAT_PROBLEM_TYPES.has(filters.problemtype);
-
-  useEffect(() => {
-    fetch("/api/work-orders/stats")
-      .then((r) => r.json())
-      .then((data) => {
-        if (Array.isArray(data.byType)) {
-          const counts: Record<string, number> = {};
-          for (const t of data.byType) counts[t.type] = t.count;
-          setTypeCounts(counts);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    if (!filters.problemtype || isFlat) {
-      setSubProblems([]);
-      return;
-    }
-    setLoadingSub(true);
-    fetch(`/api/work-orders/problems?problemtype=${filters.problemtype}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (Array.isArray(data)) setSubProblems(data);
-      })
-      .catch(() => setSubProblems([]))
-      .finally(() => setLoadingSub(false));
-  }, [filters.problemtype, isFlat]);
-
   return (
     <div className="bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap items-center gap-3 text-sm z-[1000] relative">
       <div className="font-semibold text-gray-700 mr-2">Filters:</div>
-
-      <label className="flex items-center gap-1.5">
-        <span className="text-gray-500">Type</span>
-        <select
-          className="border rounded px-2 py-1 text-gray-800 bg-white"
-          value={filters.problemtype}
-          onChange={(e) =>
-            onChange({ ...filters, problemtype: e.target.value, problem: "" })
-          }
-        >
-          <option value="">All Types</option>
-          {Object.entries(PROBLEM_TYPES).map(([code, label]) => (
-            <option key={code} value={code}>
-              {label}{typeCounts[code] != null ? ` (${typeCounts[code].toLocaleString()})` : ""}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      {!isFlat && (
-        <label className="flex items-center gap-1.5">
-          <span className="text-gray-500">Problem</span>
-          <select
-            className="border rounded px-2 py-1 text-gray-800 bg-white max-w-[220px]"
-            value={filters.problem}
-            disabled={!filters.problemtype || loadingSub}
-            onChange={(e) => onChange({ ...filters, problem: e.target.value })}
-          >
-            <option value="">
-              {!filters.problemtype
-                ? "Select a type first"
-                : loadingSub
-                  ? "Loading..."
-                  : "All Problems"}
-            </option>
-            {subProblems.map((sp) => (
-              <option key={sp.code} value={sp.code}>
-                {sp.name} ({sp.count.toLocaleString()})
-              </option>
-            ))}
-          </select>
-        </label>
-      )}
 
       <label className="flex items-center gap-1.5">
         <span className="text-gray-500">Status</span>
@@ -130,23 +44,26 @@ export default function WorkOrderFilters({
       </label>
 
       <label className="flex items-center gap-1.5">
-        <span className="text-gray-500">From</span>
-        <input
-          type="date"
+        <span className="text-gray-500">Date Range</span>
+        <select
           className="border rounded px-2 py-1 text-gray-800 bg-white"
-          value={filters.dateFrom}
-          onChange={(e) => onChange({ ...filters, dateFrom: e.target.value })}
-        />
-      </label>
-
-      <label className="flex items-center gap-1.5">
-        <span className="text-gray-500">To</span>
-        <input
-          type="date"
-          className="border rounded px-2 py-1 text-gray-800 bg-white"
-          value={filters.dateTo}
-          onChange={(e) => onChange({ ...filters, dateTo: e.target.value })}
-        />
+          value={filters.dateRange}
+          onChange={(e) =>
+            onChange({
+              ...filters,
+              dateRange: e.target.value as WorkOrderFilterValues["dateRange"],
+            })
+          }
+        >
+          <option value="7d">Last week</option>
+          <option value="14d">Last 2 weeks</option>
+          <option value="30d">Last 30 days</option>
+          <option value="60d">Last 2 months</option>
+          <option value="90d">Last 3 months</option>
+          <option value="180d">Last 6 months</option>
+          <option value="365d">Last year</option>
+          <option value="730d">Last 2 years</option>
+        </select>
       </label>
 
       <button

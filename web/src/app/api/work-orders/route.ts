@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { queryCRM, esriToGeoJSON, expandSubProblem } from "@/lib/arcgis";
-
-export const runtime = "edge";
+import {
+  reclassifyProblemType,
+  expandSubProblem,
+  STATUS_LABELS,
+  PROBLEM_TYPES,
+} from "@/lib/arcgis";
+import { getDb } from "@/lib/db";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -13,85 +17,120 @@ export async function GET(req: NextRequest) {
   const dateTo = searchParams.get("dateTo") ?? "";
   const bbox = searchParams.get("bbox") ?? "";
   const offset = parseInt(searchParams.get("offset") ?? "0", 10);
-  const limit = parseInt(searchParams.get("limit") ?? "2000", 10);
+  const limit = Math.min(parseInt(searchParams.get("limit") ?? "2000", 10), 2000);
 
-  const conditions: string[] = [];
+  const whereClauses: string[] = ["x IS NOT NULL AND y IS NOT NULL"];
+  const params: (string | number)[] = [];
+  let paramIndex = 1;
 
   if (problemtype) {
-    conditions.push(`problemtype = '${problemtype.replace(/'/g, "''")}'`);
-  }
-  if (problem) {
-    const expanded = expandSubProblem(problem);
-    if (expanded.length === 1) {
-      conditions.push(`Problem = '${expanded[0].replace(/'/g, "''")}'`);
-    } else {
-      const inList = expanded.map((v) => `'${v.replace(/'/g, "''")}'`).join(",");
-      conditions.push(`Problem IN (${inList})`);
-    }
-  }
-  if (status) {
-    conditions.push(`status = '${status.replace(/'/g, "''")}'`);
-  }
-  if (dateFrom) {
-    conditions.push(
-      `CreationDate >= timestamp '${dateFrom.replace(/'/g, "")} 00:00:00'`
-    );
-  }
-  if (dateTo) {
-    conditions.push(
-      `CreationDate <= timestamp '${dateTo.replace(/'/g, "")} 23:59:59'`
-    );
+    whereClauses.push(`LOWER(problemtype_from_extra) = $${paramIndex}`);
+    params.push(problemtype.toLowerCase());
+    paramIndex++;
   }
 
-  let geometryFilter = "";
+  if (problem) {
+    const expanded = expandSubProblem(problem);
+    const placeholders = expanded
+      .map(() => `$${paramIndex++}`)
+      .join(",");
+    whereClauses.push(`"What_is_the_problem_you_are_reporting_" IN (${placeholders})`);
+    params.push(...expanded);
+  }
+
+  if (status) {
+    whereClauses.push(`LOWER(status_from_extra) = $${paramIndex}`);
+    params.push(status.toLowerCase());
+    paramIndex++;
+  }
+
+  if (dateFrom) {
+    whereClauses.push(`"CreationDate" >= $${paramIndex}`);
+    params.push(new Date(dateFrom).getTime());
+    paramIndex++;
+  }
+
+  if (dateTo) {
+    const endOfDay = new Date(dateTo);
+    endOfDay.setHours(23, 59, 59, 999);
+    whereClauses.push(`"CreationDate" <= $${paramIndex}`);
+    params.push(endOfDay.getTime());
+    paramIndex++;
+  }
+
   if (bbox) {
     const parts = bbox.split(",").map(Number);
     if (parts.length === 4 && parts.every((n) => !isNaN(n))) {
       const [west, south, east, north] = parts;
-      geometryFilter = JSON.stringify({
-        xmin: west,
-        ymin: south,
-        xmax: east,
-        ymax: north,
-        spatialReference: { wkid: 4326 },
-      });
+      whereClauses.push(`x BETWEEN $${paramIndex} AND $${paramIndex + 1}`);
+      whereClauses.push(`y BETWEEN $${paramIndex + 2} AND $${paramIndex + 3}`);
+      params.push(west, east, south, north);
+      paramIndex += 4;
     }
   }
 
-  const where = conditions.length > 0 ? conditions.join(" AND ") : "1=1";
+  const whereClause = whereClauses.join(" AND ");
 
   try {
-    const url = new URL(
-      "https://services7.arcgis.com/p0Gk2nDbPs7KEqSZ/arcgis/rest/services/Public_CRM/FeatureServer/0/query"
-    );
-    url.searchParams.set("f", "json");
-    url.searchParams.set("where", where);
-    url.searchParams.set("outFields", "*");
-    url.searchParams.set("returnGeometry", "true");
-    url.searchParams.set("outSR", "4326");
-    url.searchParams.set("resultOffset", String(offset));
-    url.searchParams.set("resultRecordCount", String(Math.min(limit, 2000)));
-    url.searchParams.set("orderByFields", "CreationDate desc");
-    url.searchParams.set("spatialRel", "esriSpatialRelIntersects");
+    const db = getDb();
+    const query = `
+      SELECT
+        id, objectid, globalid, problemtype_from_extra, status_from_extra,
+        "What_is_the_problem_you_are_reporting_" AS "Problem",
+        "CreationDate", "Resolved_on", "Days_to_Resolve", x, y
+      FROM crm_full
+      WHERE ${whereClause}
+      ORDER BY "CreationDate" DESC
+      LIMIT ${limit} OFFSET ${offset}
+    `;
 
-    if (geometryFilter) {
-      url.searchParams.set("geometry", geometryFilter);
-      url.searchParams.set("geometryType", "esriGeometryEnvelope");
-      url.searchParams.set("inSR", "4326");
-    }
+    const rows = await db.query(query, params) as Array<{
+      id: number;
+      objectid: number;
+      globalid: string;
+      problemtype_from_extra: string | null;
+      status_from_extra: string | null;
+      Problem: string | null;
+      CreationDate: number;
+      Resolved_on: number | null;
+      Days_to_Resolve: number | null;
+      x: number;
+      y: number;
+    }>;
 
-    const resp = await fetch(url.toString());
-    if (!resp.ok) throw new Error(`ArcGIS error: ${resp.status}`);
-    const data = await resp.json();
+    // Convert to GeoJSON FeatureCollection
+    const features = rows.map((row) => {
+      const rawProblemtype = row.problemtype_from_extra || "other";
+      const reclassified = reclassifyProblemType(rawProblemtype, row.Problem || "");
 
-    if (data.error) {
-      return NextResponse.json(
-        { error: data.error.message },
-        { status: 500 }
-      );
-    }
+      return {
+        type: "Feature",
+        id: row.id,
+        geometry: {
+          type: "Point",
+          coordinates: [Number(row.x), Number(row.y)],
+        },
+        properties: {
+          id: row.id,
+          objectid: row.objectid,
+          globalid: row.globalid,
+          problemtype: reclassified,
+          problemtype_original: rawProblemtype,
+          problemtype_label: PROBLEM_TYPES[reclassified as keyof typeof PROBLEM_TYPES] || rawProblemtype,
+          Problem: row.Problem,
+          status: row.status_from_extra,
+          status_label: STATUS_LABELS[row.status_from_extra as keyof typeof STATUS_LABELS] || row.status_from_extra,
+          resolved_on: row.Resolved_on != null ? Number(row.Resolved_on) : null,
+          CreationDate: Number(row.CreationDate),
+          time_to_resolve: row.Days_to_Resolve != null ? Number(row.Days_to_Resolve) : null,
+        },
+      };
+    });
 
-    const geojson = esriToGeoJSON(data.features ?? []);
+    const geojson = {
+      type: "FeatureCollection",
+      features,
+    };
 
     return NextResponse.json(geojson, {
       headers: {

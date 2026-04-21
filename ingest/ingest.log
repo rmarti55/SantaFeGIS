@@ -1,0 +1,1638 @@
+🔄 Ingesting full CRM snapshot (CRM___01122026)...
+✓ Created crm_full table
+  Fetching records at offset 0... ✓ 1000 records
+  Fetching records at offset 1000... ✓ 1000 records
+  Fetching records at offset 2000... ✓ 1000 records
+  Fetching records at offset 3000... ✓ 1000 records
+  Fetching records at offset 4000... ✓ 1000 records
+  Fetching records at offset 5000... ✓ 1000 records
+  Fetching records at offset 6000... ✓ 1000 records
+  Fetching records at offset 7000... ✓ 1000 records
+  Fetching records at offset 8000... ✓ 1000 records
+  Fetching records at offset 9000... ✓ 1000 records
+  Fetching records at offset 10000... ✓ 1000 records
+  Fetching records at offset 11000... ✓ 1000 records
+  Fetching records at offset 12000... ✓ 1000 records
+  Fetching records at offset 13000... ✓ 1000 records
+  Fetching records at offset 14000... ✓ 1000 records
+  Fetching records at offset 15000... ✓ 1000 records
+  Fetching records at offset 16000... ✓ 1000 records
+  Fetching records at offset 17000... ✓ 1000 records
+  Fetching records at offset 18000... ✓ 1000 records
+  Fetching records at offset 19000... ✓ 1000 records
+  Fetching records at offset 20000... ✓ 1000 records
+  Fetching records at offset 21000... ✓ 1000 records
+  Fetching records at offset 22000... ✓ 1000 records
+  Fetching records at offset 23000... ✓ 1000 records
+  Fetching records at offset 24000... ✓ 1000 records
+  Fetching records at offset 25000... ✓ 1000 records
+  Fetching records at offset 26000... ✓ 1000 records
+  Fetching records at offset 27000... ✓ 1000 records
+  Fetching records at offset 28000... ✓ 1000 records
+  Fetching records at offset 29000... ✓ 1000 records
+  Fetching records at offset 30000... ✓ 1000 records
+  Fetching records at offset 31000... ✓ 1000 records
+  Fetching records at offset 32000... ✓ 1000 records
+  Fetching records at offset 33000... ✓ 1000 records
+  Fetching records at offset 34000... ✓ 1000 records
+  Fetching records at offset 35000... ✓ 1000 records
+  Fetching records at offset 36000... ✓ 867 records
+
+✅ Phase 1 complete: 36867 records from snapshot
+🔄 Phase 2: Ingesting live open tickets (CRM_Report_a_Problem_Received_In_progress)...
+  Fetching live open tickets at offset 0... 
+Error upserting record de90da31-9b18-4af9-8c33-216dd414fb25: not all arguments converted during string formatting
+
+Error upserting record 28e9be27-2fe0-40ae-81ce-05ada5b2aab7: not all arguments converted during string formatting
+
+Error upserting record 7c016afb-8b8f-4ab5-826c-1d8ccf81efe8: not all arguments converted during string formatting
+
+Error upserting record 45cec5f0-6842-4e30-8abc-4a0ee69d0d48: not all arguments converted during string formatting
+
+Error upserting record 06c6eda3-ea1d-46c8-8b63-62efaf5ecfbc: not all arguments converted during string formatting
+
+Error upserting record 7dca00da-99b1-4b61-80eb-be0e38e1339a: not all arguments converted during string formatting
+
+Error upserting record d765231f-370b-4a7e-8245-f0e2da7feb07: not all arguments converted during string formatting
+
+Error upserting record fbb8af1e-334a-41b7-88e8-1fb8236349b3: not all arguments converted during string formatting
+
+Error upserting record d131be45-34f8-4b67-8bd7-ea3cbc9804e7: not all arguments converted during string formatting
+
+Error upserting record 4e67fec8-6449-4255-8459-c09c6d403cda: not all arguments converted during string formatting
+
+Error upserting record 23a733e2-e334-4e1f-b0d5-7b5bc83aee5d: not all arguments converted during string formatting
+
+Error upserting record b3be437b-b9b8-4627-99dd-9767f0113302: not all arguments converted during string formatting
+
+Error upserting record 80ba839d-dfe3-4cdb-b40d-92c4defdcbd4: not all arguments converted during string formatting
+
+Error upserting record 9e8c4142-5409-4408-95ca-9822dd3ba188: not all arguments converted during string formatting
+
+Error upserting record 3ebfab84-deb6-4aa1-99f3-b8cf1edd5041: not all arguments converted during string formatting
+
+Error upserting record d0e291c9-61b1-41f4-ba1a-fc6464b81c02: not all arguments converted during string formatting
+
+Error upserting record 0f53bf97-2591-4168-bf86-24b49950ff4d: not all arguments converted during string formatting
+
+Error upserting record fe43775f-5565-45b1-a381-5ad1a3c3684e: not all arguments converted during string formatting
+
+Error upserting record 1392a454-8e41-4f6e-922c-5857a38c3087: not all arguments converted during string formatting
+
+Error upserting record 1af83425-08a1-45f6-8bcb-795c2ce9b832: not all arguments converted during string formatting
+
+Error upserting record 136b974b-9fc1-4e3d-b27f-d62285cc41bd: not all arguments converted during string formatting
+
+Error upserting record 92188e57-4728-426c-bb18-7bae9060881c: not all arguments converted during string formatting
+
+Error upserting record 15b0c7c0-9006-40c9-85d9-966407d19064: not all arguments converted during string formatting
+
+Error upserting record 54e1c444-83eb-401e-bc7d-aeb88910fde1: not all arguments converted during string formatting
+
+Error upserting record 5abaa115-3234-4cac-b311-d88a77c02d25: not all arguments converted during string formatting
+
+Error upserting record 180bc651-8de1-4178-9a62-a30f15a6071c: not all arguments converted during string formatting
+
+Error upserting record 358f1280-fdff-4321-8a60-67270000d64d: not all arguments converted during string formatting
+
+Error upserting record f7669275-49de-45b2-8d33-8d91fa292e27: not all arguments converted during string formatting
+
+Error upserting record 35760ca9-5ec7-4aa8-af09-0e22c381a22a: not all arguments converted during string formatting
+
+Error upserting record d07acfe6-9979-40fb-b473-d9d60803410e: not all arguments converted during string formatting
+
+Error upserting record bcb0547b-ac85-49b0-a6a9-86adbe62c0c7: not all arguments converted during string formatting
+
+Error upserting record f0e251af-9813-41be-b5ca-24b0540d5415: not all arguments converted during string formatting
+
+Error upserting record f7552956-a2ff-4e25-8168-c39ea2e531d7: not all arguments converted during string formatting
+
+Error upserting record ab154dff-6f4b-47a8-ae01-ea43414600cc: not all arguments converted during string formatting
+
+Error upserting record c55286eb-8eac-4671-bdfa-6fe6c548acad: not all arguments converted during string formatting
+
+Error upserting record 2154c854-f37b-4dff-8d85-206a530d8462: not all arguments converted during string formatting
+
+Error upserting record 32e33727-0fd5-4d77-9d9f-0163ad6088c8: not all arguments converted during string formatting
+
+Error upserting record 63365c23-40f0-4059-bf1f-9d30609ac866: not all arguments converted during string formatting
+
+Error upserting record 0c93ee77-8076-4713-8829-2f211e6fb184: not all arguments converted during string formatting
+
+Error upserting record bc8370dc-a337-4da0-872e-7f4298e3cfe3: not all arguments converted during string formatting
+
+Error upserting record 5932cabf-0533-4386-8a7d-bfdff052f8a0: not all arguments converted during string formatting
+
+Error upserting record fa33b5c2-d03d-42b6-8741-221b5665b151: not all arguments converted during string formatting
+
+Error upserting record ad8906bd-43d4-42fe-8593-1f211e5af2de: not all arguments converted during string formatting
+
+Error upserting record c28698b2-377c-4768-a455-21634088a631: not all arguments converted during string formatting
+
+Error upserting record e2bc26ba-6096-4122-81ee-cc1f88b71751: not all arguments converted during string formatting
+
+Error upserting record fc0ba7d8-a326-4639-8c48-09b3e6394802: not all arguments converted during string formatting
+
+Error upserting record 0ef471a9-1b21-4e4f-b018-a569e66399ec: not all arguments converted during string formatting
+
+Error upserting record 2f0ec884-e69f-40ab-8f60-00e7590f749d: not all arguments converted during string formatting
+
+Error upserting record 8f61e090-e2d5-43ab-9a36-790c16d74394: not all arguments converted during string formatting
+
+Error upserting record 839e9c99-4e1c-4b60-b1fe-e5157d8d22a4: not all arguments converted during string formatting
+
+Error upserting record 307e3c4d-d7c0-4ca9-b73e-e8e991899d10: not all arguments converted during string formatting
+
+Error upserting record 433c8e6c-02b2-4297-ba06-b1e7cf3acae7: not all arguments converted during string formatting
+
+Error upserting record 795448b3-3e3c-4d4c-baa3-7159048d4d3e: not all arguments converted during string formatting
+
+Error upserting record 1d85e3b9-e6a4-43f5-b0bd-4b2bae08f163: not all arguments converted during string formatting
+
+Error upserting record f73bc780-debe-4919-8020-ea689793a86e: not all arguments converted during string formatting
+
+Error upserting record bbb14340-5787-4f46-8169-dbbc22cd2a0e: not all arguments converted during string formatting
+
+Error upserting record d076c72e-35c1-4cef-b819-602f6d7415cf: not all arguments converted during string formatting
+
+Error upserting record f51bb2a6-a3e8-4980-b56a-5524efc0fcf6: not all arguments converted during string formatting
+
+Error upserting record 84055888-26b8-45c0-9897-af7b4cbdb7be: not all arguments converted during string formatting
+
+Error upserting record c93c3838-bdfd-428f-a575-b70b3f87c1d1: not all arguments converted during string formatting
+
+Error upserting record 722333fc-281d-4d14-a782-bf1fd5f19689: not all arguments converted during string formatting
+
+Error upserting record 756e0188-a464-44fe-b75f-bca5967dbe41: not all arguments converted during string formatting
+
+Error upserting record 1831b1fa-e251-476f-8449-3d12390e61ec: not all arguments converted during string formatting
+
+Error upserting record 6a0e4f2e-d29b-4fc1-b531-ce9d16eb2955: not all arguments converted during string formatting
+
+Error upserting record f25004b4-5b18-4b58-8887-3995b6e6c176: not all arguments converted during string formatting
+
+Error upserting record 64e84e6a-08df-44c1-9ce2-2b21c8eeb65b: not all arguments converted during string formatting
+
+Error upserting record 9b613545-74e3-4084-afa3-e278aeb48037: not all arguments converted during string formatting
+
+Error upserting record 76847f8f-bcad-42aa-8bc8-50b581b7f4eb: not all arguments converted during string formatting
+
+Error upserting record a26ca28c-5bca-49ea-ab02-c1c887ee36bd: not all arguments converted during string formatting
+
+Error upserting record bfe8480a-6185-4cc0-a161-4fec5841d346: not all arguments converted during string formatting
+
+Error upserting record e125bc3d-8947-4bea-8845-adcff73ab4f1: not all arguments converted during string formatting
+
+Error upserting record 0d6de20e-34ea-4ad4-b6a8-91e1ee60e344: not all arguments converted during string formatting
+
+Error upserting record a6434a89-ff12-44d6-b147-f9972a87e999: not all arguments converted during string formatting
+
+Error upserting record 63d07dfa-d2dd-4e40-86cc-02376ebe9e58: not all arguments converted during string formatting
+
+Error upserting record cc317465-240b-46cf-977e-9f2d46dc3b57: not all arguments converted during string formatting
+
+Error upserting record bf4ceb76-17d3-4756-96c6-ec06cee511c6: not all arguments converted during string formatting
+
+Error upserting record ee51bad8-612e-45d5-868b-0fc5b39ce961: not all arguments converted during string formatting
+
+Error upserting record 97dd081b-ae1f-4cb6-8bd1-92f45f37803f: not all arguments converted during string formatting
+
+Error upserting record bb6169c6-a6e6-426e-8370-ef4b7fa6a741: not all arguments converted during string formatting
+
+Error upserting record 3aa48f3c-9a54-462b-85a1-304e1c73ac5b: not all arguments converted during string formatting
+
+Error upserting record b5b0af7a-624b-4df2-a21a-8cc0cced5768: not all arguments converted during string formatting
+
+Error upserting record 2944180f-d0c9-442b-9331-9cec36e44e74: not all arguments converted during string formatting
+
+Error upserting record 743dc08c-46ca-4a6c-80da-05cf472a7418: not all arguments converted during string formatting
+
+Error upserting record 3cfdd134-9b17-4bab-aaa3-1de25c1184c3: not all arguments converted during string formatting
+
+Error upserting record 2f5056ab-070c-4c3c-a0b7-22728cd0747d: not all arguments converted during string formatting
+
+Error upserting record 59ff7e77-61f8-4b4d-846e-aa32cd880b72: not all arguments converted during string formatting
+
+Error upserting record 8f530b3a-07c0-41ea-a7a9-f501639d13cd: not all arguments converted during string formatting
+
+Error upserting record e5f1c3b2-8dd4-4512-b639-e6050b455142: not all arguments converted during string formatting
+
+Error upserting record 56412951-87f5-422e-bc08-6b0c91bd9196: not all arguments converted during string formatting
+
+Error upserting record 429f4ec2-9dcf-4bb1-99cb-36e26404a321: not all arguments converted during string formatting
+
+Error upserting record 8d4a05e2-45a7-4bd4-89c5-e94a0fc33ec3: not all arguments converted during string formatting
+
+Error upserting record 6008ad36-cdd0-44e6-bc2a-95215a654a75: not all arguments converted during string formatting
+
+Error upserting record f145ab61-2c7c-4748-bfa8-e6f6a63a2652: not all arguments converted during string formatting
+
+Error upserting record f629b6e7-bd9c-4bfd-af5b-b46cc65fbdd6: not all arguments converted during string formatting
+
+Error upserting record 99c3c283-faa3-475f-95ef-695c8493620d: not all arguments converted during string formatting
+
+Error upserting record a1b695f7-515e-4935-a59e-f93c383153cb: not all arguments converted during string formatting
+
+Error upserting record ca4b1b01-55e9-4fd1-a222-d78b59ddd3bb: not all arguments converted during string formatting
+
+Error upserting record 6060ebdd-ba92-487c-9b0b-0a893dc75265: not all arguments converted during string formatting
+
+Error upserting record a52f401f-3d64-4da4-aea5-2c16b5a8f86a: not all arguments converted during string formatting
+
+Error upserting record 26962d69-a658-4b2a-811e-7b3a115d9c24: not all arguments converted during string formatting
+
+Error upserting record 8b02346b-e1ca-4b07-8768-95868de38c6a: not all arguments converted during string formatting
+
+Error upserting record efc6d5a5-e1be-4df7-a496-005ad7290957: not all arguments converted during string formatting
+
+Error upserting record 37f293b0-ed85-4500-aae1-bbc72926ac1d: not all arguments converted during string formatting
+
+Error upserting record 621a7d5e-c532-4e40-83d9-ed459f3f87cc: not all arguments converted during string formatting
+
+Error upserting record 2ed13d2f-d799-4230-9bdc-f0517e2bdf8c: not all arguments converted during string formatting
+
+Error upserting record 94ee1f3b-c073-41b1-abee-ce23e0b3872d: not all arguments converted during string formatting
+
+Error upserting record d7ee5cd7-0395-44a0-899e-7216f8e29c28: not all arguments converted during string formatting
+
+Error upserting record 72db425b-57b8-4e43-99c1-0e16f5feaf0e: not all arguments converted during string formatting
+
+Error upserting record 5b58b4b5-7ceb-47c6-a66d-35062e9406bf: not all arguments converted during string formatting
+
+Error upserting record da05e1c1-824c-4da7-87d1-0071bb9a9a85: not all arguments converted during string formatting
+
+Error upserting record 7ca5677e-577d-4da8-a9a2-2baf39d74ba4: not all arguments converted during string formatting
+
+Error upserting record 193a6a18-cb80-4837-9222-779a623d0ff3: not all arguments converted during string formatting
+
+Error upserting record 911838ed-e7fa-443f-856c-67ab7edbce78: not all arguments converted during string formatting
+
+Error upserting record 64dc8142-27f5-4cf3-a5bf-c8e9296cb8ba: not all arguments converted during string formatting
+
+Error upserting record f6244dca-c3d0-4813-a70c-ba9c94de176f: not all arguments converted during string formatting
+
+Error upserting record ce0a1cff-f1b2-4d98-9b55-8ac11df00e6d: not all arguments converted during string formatting
+
+Error upserting record 0b081526-1097-48e8-a6f6-be361a9318f9: not all arguments converted during string formatting
+
+Error upserting record 39e3d2d5-7183-44d5-82b1-d2204a62c324: not all arguments converted during string formatting
+
+Error upserting record f8087b27-005d-432d-b957-97b36f9aa532: not all arguments converted during string formatting
+
+Error upserting record 163a8eac-41af-4e2a-a69b-938cb4b6f175: not all arguments converted during string formatting
+
+Error upserting record 6f9e999b-dd04-4956-9561-3381eb7ea7c4: not all arguments converted during string formatting
+
+Error upserting record 67cdd074-0264-4688-a259-18f14fc6d81c: not all arguments converted during string formatting
+
+Error upserting record 81be38d1-a736-4fc6-a94b-e62e8e2829f9: not all arguments converted during string formatting
+
+Error upserting record f9ee1308-3c7c-4954-95fe-aaaac209e95f: not all arguments converted during string formatting
+
+Error upserting record 6705fd26-8de4-48fa-a930-3ddcc10a2bf6: not all arguments converted during string formatting
+
+Error upserting record 1f5bc281-babd-4e49-b87d-5ba9763db2bf: not all arguments converted during string formatting
+
+Error upserting record e845312c-45d8-4b99-814c-da0ff18c4668: not all arguments converted during string formatting
+
+Error upserting record ab92b307-cc14-4726-a0a2-9e04f41d4056: not all arguments converted during string formatting
+
+Error upserting record d4bbc942-27a2-45c4-a90c-628487f68e58: not all arguments converted during string formatting
+
+Error upserting record 2d48ab02-d468-4e8e-84ba-c3433967710e: not all arguments converted during string formatting
+
+Error upserting record 933b2d12-de37-4b9e-b996-90209f4bb687: not all arguments converted during string formatting
+
+Error upserting record 1bb733ab-1dce-446b-b35e-b04e19a3acf5: not all arguments converted during string formatting
+
+Error upserting record a2ffb0a3-37b1-4fac-ba12-f70c14b8ec82: not all arguments converted during string formatting
+
+Error upserting record e2dc586d-689c-46e0-8637-5323c511fcd9: not all arguments converted during string formatting
+
+Error upserting record 30172a30-d605-472c-ac64-0e7c03c09485: not all arguments converted during string formatting
+
+Error upserting record 4e4d0c40-b28a-44c2-a04c-665045c748ab: not all arguments converted during string formatting
+
+Error upserting record df1a097c-8c05-4bb1-864b-f9594538f430: not all arguments converted during string formatting
+
+Error upserting record 59cb19b8-9e26-45fc-9e86-87b5adaf508b: not all arguments converted during string formatting
+
+Error upserting record 63b01629-7062-4347-b90c-96918721498f: not all arguments converted during string formatting
+
+Error upserting record 3359d58d-e425-4833-b9d5-3096e661908d: not all arguments converted during string formatting
+
+Error upserting record cb12ad52-32e6-49fb-b80e-06177aad489f: not all arguments converted during string formatting
+
+Error upserting record 52acd508-efcf-45d6-b2d4-0023183b7d4b: not all arguments converted during string formatting
+
+Error upserting record c20300e5-60cb-4aba-9a49-ca3abfa69f0a: not all arguments converted during string formatting
+
+Error upserting record d6e44f49-7486-433d-a15a-4b25bb3af8d2: not all arguments converted during string formatting
+
+Error upserting record e184be76-943c-4140-981a-99ad23a52577: not all arguments converted during string formatting
+
+Error upserting record a11992fa-f9bf-44b8-8c19-b18b3e940ebf: not all arguments converted during string formatting
+
+Error upserting record 9319ced0-ac71-4f1c-b298-c8bc4fdea642: not all arguments converted during string formatting
+
+Error upserting record 7d9b2e0d-d913-4429-b50e-d968544f2c6c: not all arguments converted during string formatting
+
+Error upserting record 077161f2-9b59-49bb-9880-002d41347c31: not all arguments converted during string formatting
+
+Error upserting record 5feb81d9-e743-41cd-9c03-8a08d7ed2429: not all arguments converted during string formatting
+
+Error upserting record a4973a48-2d4f-4675-a791-6eb294dcc3d9: not all arguments converted during string formatting
+
+Error upserting record 8ec6b173-40c7-4d32-a814-601f5d03f296: not all arguments converted during string formatting
+
+Error upserting record e3b0d16f-e7df-4b87-853f-aae0f740d987: not all arguments converted during string formatting
+
+Error upserting record ff14b048-cc80-4bfd-ab76-080aa52979d2: not all arguments converted during string formatting
+
+Error upserting record 0c832906-0dad-4d92-86bc-1b2c26e6b4a3: not all arguments converted during string formatting
+
+Error upserting record 7408d5b9-2bed-4481-9d03-959d6c211c6d: not all arguments converted during string formatting
+
+Error upserting record 62bb79e9-929c-4868-8b07-11f80f6eb508: not all arguments converted during string formatting
+
+Error upserting record eb49478e-2042-4d80-a386-d817b1a72891: not all arguments converted during string formatting
+
+Error upserting record 0f66c0f2-f1c1-4ed0-a76f-4a08c84dc21a: not all arguments converted during string formatting
+
+Error upserting record c0dc0028-433f-4597-9002-9c824841bcf0: not all arguments converted during string formatting
+
+Error upserting record 8fe4ba8c-f36b-48c8-8ba2-d81834862db0: not all arguments converted during string formatting
+
+Error upserting record 5e57c052-0ac1-4b81-9676-7e28c9db4ac3: not all arguments converted during string formatting
+
+Error upserting record ebfbed42-3ded-4b56-ba47-4b14d3d10450: not all arguments converted during string formatting
+
+Error upserting record 881efed2-0324-40dc-bfea-061abe5266a5: not all arguments converted during string formatting
+
+Error upserting record d607b1ef-2428-425f-9475-4bab1cbab5f4: not all arguments converted during string formatting
+
+Error upserting record 6932fd3f-15b2-488e-88fc-56a90d0ce069: not all arguments converted during string formatting
+
+Error upserting record 1a8ee7c5-283a-4130-8ff1-e7f887131f3e: not all arguments converted during string formatting
+
+Error upserting record c398b127-ee99-41cb-bf0a-57f4f0f86b03: not all arguments converted during string formatting
+
+Error upserting record d9512efc-82dd-4f9a-8afc-551d67a10b9d: not all arguments converted during string formatting
+
+Error upserting record 6b92e578-4e4c-4aa1-b280-bd572df2c8ef: not all arguments converted during string formatting
+
+Error upserting record e098faba-c726-4bb2-b044-cd0a45659e0f: not all arguments converted during string formatting
+
+Error upserting record 27b246fc-fc2c-4410-820b-a70eec1083fe: not all arguments converted during string formatting
+
+Error upserting record db241219-b6e4-499e-9d41-d03d1a7e98e2: not all arguments converted during string formatting
+
+Error upserting record ad36673d-a5de-4cf1-b82b-6237a93dd502: not all arguments converted during string formatting
+
+Error upserting record 3fb71335-8d21-4168-882b-d0e91aeec92a: not all arguments converted during string formatting
+
+Error upserting record d8518364-c792-45b6-a318-870b806b9cd1: not all arguments converted during string formatting
+
+Error upserting record 0934bd84-c391-43e8-b2e6-50b285bdb558: not all arguments converted during string formatting
+
+Error upserting record 104d68e1-fc76-4992-a138-ce0bc3c39c7a: not all arguments converted during string formatting
+
+Error upserting record 7a5f47d2-99e4-4db3-a187-d4ba0d2cb74c: not all arguments converted during string formatting
+
+Error upserting record 22982acf-e716-4395-9291-fe3caa7a65cb: not all arguments converted during string formatting
+
+Error upserting record 9c71aa8b-d88c-4736-875a-7524118e5bc6: not all arguments converted during string formatting
+
+Error upserting record dba612d0-bcea-458b-a8f8-627295e23bde: not all arguments converted during string formatting
+
+Error upserting record 47ea478a-3857-444b-a899-d5a00bebca6d: not all arguments converted during string formatting
+
+Error upserting record e7d7a24b-c005-4742-8319-f71e29ac702d: not all arguments converted during string formatting
+
+Error upserting record 4b464338-fa13-4e2b-83f0-7c3a8d10de76: not all arguments converted during string formatting
+
+Error upserting record 2b3ce6ca-d468-4768-b601-1c578014c9b8: not all arguments converted during string formatting
+
+Error upserting record 9c1cd218-5a75-4f6a-8748-e893c28baa05: not all arguments converted during string formatting
+
+Error upserting record b162cf18-8422-4564-9d44-3bece053e727: not all arguments converted during string formatting
+
+Error upserting record 5ecc8ca8-b411-475a-ba65-b23676b8617e: not all arguments converted during string formatting
+
+Error upserting record 5891ea19-9040-40ed-b445-2da0535aa888: not all arguments converted during string formatting
+
+Error upserting record e2ee45d4-aa5a-477c-b17e-2ab9c93aa4f3: not all arguments converted during string formatting
+
+Error upserting record 8343b0bf-a79e-478a-818c-c3f4e1285e32: not all arguments converted during string formatting
+
+Error upserting record 775e7044-0ac0-47e9-a285-bee95a32f085: not all arguments converted during string formatting
+
+Error upserting record 49d4809c-1bb3-46f9-9549-a2b5a060f10d: not all arguments converted during string formatting
+
+Error upserting record 9a441217-1cc2-456b-b004-3f429570fd38: not all arguments converted during string formatting
+
+Error upserting record 21a31953-002c-4177-95dc-b3808769740f: not all arguments converted during string formatting
+
+Error upserting record 9c74890c-e8b0-4181-aff7-bd24e6acd678: not all arguments converted during string formatting
+
+Error upserting record c8e0bbcd-b04c-4342-9a71-9f6b5cb42905: not all arguments converted during string formatting
+
+Error upserting record fcb0955c-3e84-4d02-a004-196de691b86d: not all arguments converted during string formatting
+
+Error upserting record 46efd586-49a6-4e60-93dd-6640ee2573e6: not all arguments converted during string formatting
+
+Error upserting record f71f6fa7-f5d6-4439-9e22-d92476ba832a: not all arguments converted during string formatting
+
+Error upserting record aaa9c0f0-9f54-452d-82e1-60a29596bb3b: not all arguments converted during string formatting
+
+Error upserting record 903d597c-eda2-427c-ad35-ac4d6b1993e1: not all arguments converted during string formatting
+
+Error upserting record 10122c1f-c397-4c81-92db-f492ae16eda5: not all arguments converted during string formatting
+
+Error upserting record 8d257f01-424e-4148-9cb7-729283ace2ed: not all arguments converted during string formatting
+
+Error upserting record 54845653-7249-40d4-8c77-438bbdbd59cb: not all arguments converted during string formatting
+
+Error upserting record 2e85caa1-be10-44e2-8930-cbb1285c6042: not all arguments converted during string formatting
+
+Error upserting record 05d36829-b32d-4e04-a16e-6b963cb9f2ad: not all arguments converted during string formatting
+
+Error upserting record 4ef0712a-cd18-4cf7-8f53-f9f85300fd54: not all arguments converted during string formatting
+
+Error upserting record 91df8cbd-7a17-471a-aa50-826180b1c531: not all arguments converted during string formatting
+
+Error upserting record 2c469a72-6c0b-44bb-b0a0-ab5a17a6b808: not all arguments converted during string formatting
+
+Error upserting record a368d6b7-5ad6-406d-be5e-279485af8de9: not all arguments converted during string formatting
+
+Error upserting record 268d858a-acbf-4c8b-8402-209cb2c19275: not all arguments converted during string formatting
+
+Error upserting record a62d3c54-ec70-4698-8154-39badda76f09: not all arguments converted during string formatting
+
+Error upserting record 584fda00-fa13-4c5a-803b-4dda385d2b1a: not all arguments converted during string formatting
+
+Error upserting record 134d8aa5-408f-4668-8c9a-9fbdac2a42c0: not all arguments converted during string formatting
+
+Error upserting record 006841d5-5d02-4601-85e7-52f17ef57feb: not all arguments converted during string formatting
+
+Error upserting record 81a8d444-ef84-436e-8a2d-28c7cadf5d56: not all arguments converted during string formatting
+
+Error upserting record d64844c4-b816-467a-8ef9-7de52909b41c: not all arguments converted during string formatting
+
+Error upserting record 55cb9b55-6a48-456d-8ead-b999f01aec81: not all arguments converted during string formatting
+
+Error upserting record 1a1eb5f6-fc59-4177-86e1-4f0633cbbe91: not all arguments converted during string formatting
+
+Error upserting record e08627cb-5059-458b-88ec-07eef27b9e23: not all arguments converted during string formatting
+
+Error upserting record 7eb76f63-8e4b-4abf-8fb4-213fe69607f3: not all arguments converted during string formatting
+
+Error upserting record 1dadf19a-06f2-45ec-88da-45e402f2eb9e: not all arguments converted during string formatting
+
+Error upserting record 2148bee4-a3f9-48e8-8c74-7d2c6d4dae04: not all arguments converted during string formatting
+
+Error upserting record ead79e3a-6b1e-4a95-81dc-ca6184ffc59c: not all arguments converted during string formatting
+
+Error upserting record 873363f9-86de-456f-8d2c-22c46f3e9755: not all arguments converted during string formatting
+
+Error upserting record 7c1eaede-2d90-43aa-8d08-fcb825f0bdea: not all arguments converted during string formatting
+
+Error upserting record 86b7504f-caa9-4fcd-8dcd-7803d4152ca6: not all arguments converted during string formatting
+
+Error upserting record 5c365a40-816b-4395-8490-d753074427e5: not all arguments converted during string formatting
+
+Error upserting record 650e3d55-de09-4a45-8bb2-eba173dd558c: not all arguments converted during string formatting
+
+Error upserting record b9b2a5f5-f960-4789-8405-d66200070f5d: not all arguments converted during string formatting
+
+Error upserting record 466ba41a-2629-4081-8b8c-aee2a50345e8: not all arguments converted during string formatting
+
+Error upserting record 7cd1eb74-a4de-4101-8d5e-c291777aaea3: not all arguments converted during string formatting
+
+Error upserting record 3a2db7a3-5736-405a-8e06-e9c8e3126394: not all arguments converted during string formatting
+
+Error upserting record 67a7df62-2590-40a7-8f0f-1587d2416853: not all arguments converted during string formatting
+
+Error upserting record ae019fdf-61db-4ce9-8221-be7b64338f27: not all arguments converted during string formatting
+
+Error upserting record 21bb3660-d29d-4acc-8250-23c32e8186ad: not all arguments converted during string formatting
+
+Error upserting record 6e4d34bb-b67d-4a85-87c0-94228081da26: not all arguments converted during string formatting
+
+Error upserting record d37bbc2a-4609-4d35-8e03-9e61ca09f054: not all arguments converted during string formatting
+
+Error upserting record 5f3c74fa-3094-4c0f-864c-9396f63aa5fe: not all arguments converted during string formatting
+
+Error upserting record a01d3a6f-598a-480c-bcf6-4b6048384d2e: not all arguments converted during string formatting
+
+Error upserting record bdfe14f1-0e3e-4d95-964c-261c4eb0fd21: not all arguments converted during string formatting
+
+Error upserting record 3df5af11-57e0-4119-b8b0-7de592785617: not all arguments converted during string formatting
+
+Error upserting record e94f9fdc-9784-4a71-adbd-c3f89e23d7c1: not all arguments converted during string formatting
+
+Error upserting record b361ebb6-0189-4d92-a765-658889031c91: not all arguments converted during string formatting
+
+Error upserting record e175840d-b523-45dc-a821-2234dbebef2d: not all arguments converted during string formatting
+
+Error upserting record d9c01932-75aa-40eb-87a2-0c3a3c85b758: not all arguments converted during string formatting
+
+Error upserting record 20015701-ca9b-4e93-b597-82e7577a4b1c: not all arguments converted during string formatting
+
+Error upserting record 332639a0-8a48-4d9c-8f75-8f15a5d24928: not all arguments converted during string formatting
+
+Error upserting record 7b26d629-5b98-4595-ab9e-76b16d9f5d87: not all arguments converted during string formatting
+
+Error upserting record b4b4f24d-ffaa-4b45-84a0-cf92a5e3e5ac: not all arguments converted during string formatting
+
+Error upserting record f3136520-e297-4c08-95f2-496a4c4654cd: not all arguments converted during string formatting
+
+Error upserting record bfd36d7f-54dc-45ef-8d6f-0cfb73028b43: not all arguments converted during string formatting
+
+Error upserting record 5bbfe680-df1c-4ba1-85c8-2b3a7354778e: not all arguments converted during string formatting
+
+Error upserting record 43bebe6b-ec6a-4231-88f2-57a0c2f81559: not all arguments converted during string formatting
+
+Error upserting record cca0188b-6aa7-40e8-87ba-da8a78a1dbb8: not all arguments converted during string formatting
+
+Error upserting record fabc6497-c647-419c-91e2-362c32286f7d: not all arguments converted during string formatting
+
+Error upserting record ceb3bcb9-b898-47e5-8aa0-32adb0fdb8d6: not all arguments converted during string formatting
+
+Error upserting record dd791b5d-96fb-4cf9-8e29-b47a9f8d2022: not all arguments converted during string formatting
+
+Error upserting record 19bc0b2d-aea5-4e04-98e4-f33c19a35ad6: not all arguments converted during string formatting
+
+Error upserting record a3bef248-11a8-4259-9fbb-5e5bec8fa907: not all arguments converted during string formatting
+
+Error upserting record 2b83837c-651e-4aa1-b5fc-73d6590bb205: not all arguments converted during string formatting
+
+Error upserting record 17ddeb3b-a0a3-464e-bedb-9b6dccf4f8a5: not all arguments converted during string formatting
+
+Error upserting record a1566c5a-5095-4f41-b9a9-1607dc3a9338: not all arguments converted during string formatting
+
+Error upserting record 86a0f999-0d45-45a3-b053-0622c77877e3: not all arguments converted during string formatting
+
+Error upserting record d7a9ffcc-f338-47b3-86cb-dc6c8c07e1bb: not all arguments converted during string formatting
+
+Error upserting record 58671679-5815-4f4f-8cb1-ef3c763bfb47: not all arguments converted during string formatting
+
+Error upserting record a27795a8-6fb9-4260-a95f-bc125e4d94d9: not all arguments converted during string formatting
+
+Error upserting record c9fe1a9c-6e3f-4e99-ac7c-63e83e440936: not all arguments converted during string formatting
+
+Error upserting record 3f504a7b-dbe2-4b9c-adaf-a9e7d3db844f: not all arguments converted during string formatting
+
+Error upserting record 10a16405-7c16-4a0f-8eea-0fe78d02572b: not all arguments converted during string formatting
+
+Error upserting record 4e761f95-9a5c-48b6-8655-e8948efc4415: not all arguments converted during string formatting
+
+Error upserting record e8b9b491-3a28-4ead-8951-9268bf18b429: not all arguments converted during string formatting
+
+Error upserting record 1f35edb3-9955-45cb-8311-44cc2ad02dfc: not all arguments converted during string formatting
+
+Error upserting record 5466bb28-aec7-49de-838b-94123c3a70ce: not all arguments converted during string formatting
+
+Error upserting record 78583937-6423-4f7c-8731-bd21ba5932ce: not all arguments converted during string formatting
+
+Error upserting record 6a377794-50a5-450f-80eb-75d42e75555c: not all arguments converted during string formatting
+
+Error upserting record 33ff9609-4502-4653-84a2-68c41c56149b: not all arguments converted during string formatting
+
+Error upserting record 5627b844-de2f-4279-8954-c2ac817ad546: not all arguments converted during string formatting
+
+Error upserting record 59df96d9-5837-44b3-80ee-30e26b793559: not all arguments converted during string formatting
+
+Error upserting record e75cf390-bb6b-4c20-8d45-1b61aefeb721: not all arguments converted during string formatting
+
+Error upserting record e3c56375-31ce-4f17-8b88-3e2673765f11: not all arguments converted during string formatting
+
+Error upserting record 25b3a7ad-e4fe-4b5c-8596-71d68df87914: not all arguments converted during string formatting
+
+Error upserting record 73c37039-2774-4c67-8d24-eaf0dcddc60b: not all arguments converted during string formatting
+
+Error upserting record 27738624-755e-4ba3-b813-9f4710f0c008: not all arguments converted during string formatting
+
+Error upserting record ce5cc703-532e-4932-b4b9-432cbbe55b32: not all arguments converted during string formatting
+
+Error upserting record d4240770-5ed4-49df-b0cc-a401fb12a3e4: not all arguments converted during string formatting
+
+Error upserting record c0e122f7-5083-4be9-afd6-be8700d3041c: not all arguments converted during string formatting
+
+Error upserting record 75da0996-b841-4394-81c5-8e1e4397b9a4: not all arguments converted during string formatting
+
+Error upserting record 9f4a6091-d6db-471d-8b44-20470335d771: not all arguments converted during string formatting
+
+Error upserting record c40c4736-5624-477c-8f32-9b09e6d94443: not all arguments converted during string formatting
+
+Error upserting record d6a195ca-2d9e-4c7a-86bb-c27ffd1460a7: not all arguments converted during string formatting
+
+Error upserting record 128ae77d-d52d-4006-8276-9dd22fa7b0a6: not all arguments converted during string formatting
+
+Error upserting record f81b9363-6619-44da-8d26-e0fa4120ce22: not all arguments converted during string formatting
+
+Error upserting record a7facfdd-9462-45fe-880f-303b43c7be16: not all arguments converted during string formatting
+
+Error upserting record 582cbfb0-9ac1-4c19-8e33-e6305d606ed3: not all arguments converted during string formatting
+
+Error upserting record 428f2f02-9e46-4ea5-849f-d956d1283a35: not all arguments converted during string formatting
+
+Error upserting record f466d9a7-4cbc-4432-860b-79d53253596e: not all arguments converted during string formatting
+
+Error upserting record 1d954243-1bfd-4071-8c58-fab472b7306a: not all arguments converted during string formatting
+
+Error upserting record da9e17fe-a566-441d-813c-97d529b74724: not all arguments converted during string formatting
+
+Error upserting record 29cca91b-c1fd-496e-87ea-73c5810c4be2: not all arguments converted during string formatting
+
+Error upserting record 62bdb810-6c55-4b75-8d1a-f3684d1f7d3b: not all arguments converted during string formatting
+
+Error upserting record 5bc9c751-f95f-4948-808e-d69a85a7044d: not all arguments converted during string formatting
+
+Error upserting record 3c3b6547-999c-4807-8158-f0e3d9b880ad: not all arguments converted during string formatting
+
+Error upserting record deea380b-f0d5-466b-885e-272001702305: not all arguments converted during string formatting
+
+Error upserting record 0a31fda3-0d43-4d0e-8341-c3c04ff14a7c: not all arguments converted during string formatting
+
+Error upserting record 69cb0f7e-a518-4956-8b5c-771348f1c12e: not all arguments converted during string formatting
+
+Error upserting record 8c844b87-5e21-41ba-8d79-0141d2e450f9: not all arguments converted during string formatting
+
+Error upserting record 2693f50c-d736-46e0-94ad-759c9d9d52c2: not all arguments converted during string formatting
+
+Error upserting record b70b1795-9e8e-41c3-b2ed-2800e7d97b17: not all arguments converted during string formatting
+
+Error upserting record 8f18ca85-bfd6-4fbd-aa84-973ea60203e2: not all arguments converted during string formatting
+
+Error upserting record e381b44a-7bd4-4f67-940a-4fcce8166ab7: not all arguments converted during string formatting
+
+Error upserting record 788e618a-00aa-43b3-bce6-34db015d030d: not all arguments converted during string formatting
+
+Error upserting record 35167d0e-f7a0-406d-a787-1eb48cc6b52d: not all arguments converted during string formatting
+
+Error upserting record c6044abb-9c93-443f-93d6-119bb84d5c52: not all arguments converted during string formatting
+
+Error upserting record 2dbdccc6-fcef-4af4-872e-a1fcc37b1dd0: not all arguments converted during string formatting
+
+Error upserting record 83e236c8-abec-4152-9edf-1fdecf386de8: not all arguments converted during string formatting
+
+Error upserting record 77a024f2-0c65-4bb9-ad26-cd5c9715a382: not all arguments converted during string formatting
+
+Error upserting record 8c5d0793-2610-4161-b0ab-e8a517170567: not all arguments converted during string formatting
+
+Error upserting record 37ad9c1c-9af0-4d36-9798-9834e75d8b8e: not all arguments converted during string formatting
+
+Error upserting record 9bb670ec-a9a3-4216-8a93-ce5b9c18fedd: not all arguments converted during string formatting
+
+Error upserting record 67e9dce9-7f81-454a-a4e5-04c079863b9b: not all arguments converted during string formatting
+
+Error upserting record cbd85126-b39c-4fdb-8abf-3a8c60794bf0: not all arguments converted during string formatting
+
+Error upserting record 77f47215-f842-4d42-93da-bb987dc9b910: not all arguments converted during string formatting
+
+Error upserting record 0d8d0589-a400-47c9-9760-b59524c90d80: not all arguments converted during string formatting
+
+Error upserting record b479f270-cb38-46c2-936d-7c75832bbb29: not all arguments converted during string formatting
+
+Error upserting record 35bb6d91-6068-4b56-bb4f-076631956862: not all arguments converted during string formatting
+
+Error upserting record 0e2ae8fd-87de-4887-85cb-c00f06d806c0: not all arguments converted during string formatting
+
+Error upserting record f1f5d3c2-0c09-42d1-96ef-d51bd37ddd78: not all arguments converted during string formatting
+
+Error upserting record a986f073-e20f-432f-9a07-d7514ebedbe7: not all arguments converted during string formatting
+
+Error upserting record 4a00c2b5-2841-4c5c-a50a-14c84300f435: not all arguments converted during string formatting
+
+Error upserting record 9781d3b5-3c30-414a-ab12-ad260835c889: not all arguments converted during string formatting
+
+Error upserting record aae6500e-2e87-4345-8ba6-46b60e67b704: not all arguments converted during string formatting
+
+Error upserting record 5bbfdb38-5779-4a48-a7c3-58b6310a0c60: not all arguments converted during string formatting
+
+Error upserting record 85ebd57d-6ab2-4f14-9c9a-fc541c0c6043: not all arguments converted during string formatting
+
+Error upserting record 5e25dc7e-837d-4d91-9696-2606dbbde14c: not all arguments converted during string formatting
+
+Error upserting record 6b4b16de-277c-4036-8737-220a962da51e: not all arguments converted during string formatting
+
+Error upserting record 0549a38b-b3d2-49dd-9e13-b5861964e94e: not all arguments converted during string formatting
+
+Error upserting record 3ec346ad-60e7-4231-b4da-750aec8ebc48: not all arguments converted during string formatting
+
+Error upserting record 0f26437c-186b-47c3-ac2c-b030a610f3eb: not all arguments converted during string formatting
+
+Error upserting record 35531cb1-d6ad-46ad-993b-b8818beaf2f1: not all arguments converted during string formatting
+
+Error upserting record 9e49edf0-6127-43a3-b640-be54d47540ce: not all arguments converted during string formatting
+
+Error upserting record 16c80128-4e05-4b55-9888-6fc42fa204f3: not all arguments converted during string formatting
+
+Error upserting record 8bbf986b-c463-4b5b-82f9-cfdd29e31810: not all arguments converted during string formatting
+
+Error upserting record 83d1eec1-efcc-4c27-8b54-00fc430733af: not all arguments converted during string formatting
+
+Error upserting record 5a9c9227-a4bd-4b1c-899d-9624ff92d60c: not all arguments converted during string formatting
+
+Error upserting record e0b59a8d-3ab8-4c91-9941-bbe9a2adc722: not all arguments converted during string formatting
+
+Error upserting record 2161856f-38ab-40ff-863e-0b80ddb3c4e4: not all arguments converted during string formatting
+
+Error upserting record 02a73a03-d60f-4ac5-a8c4-71bbda2a4213: not all arguments converted during string formatting
+
+Error upserting record f7fafa03-f1bb-4492-ba14-099bfad40d07: not all arguments converted during string formatting
+
+Error upserting record 8cb435a3-dac3-450a-8253-a028de66811b: not all arguments converted during string formatting
+
+Error upserting record b5b4327d-3c9a-4728-bc9a-a59c2719e19b: not all arguments converted during string formatting
+
+Error upserting record 8c1ea478-e4e9-4d45-900c-da43bf492c45: not all arguments converted during string formatting
+
+Error upserting record 5e25d9e2-6d1f-4976-843b-adb166dd4878: not all arguments converted during string formatting
+
+Error upserting record 6331e4ce-bdf7-4324-882e-3ceabb462d5e: not all arguments converted during string formatting
+
+Error upserting record 1393fc9c-a5df-45e6-b1b7-ef440488196e: not all arguments converted during string formatting
+
+Error upserting record d1cdf431-122e-49b8-bfbb-04dd9dcc7e64: not all arguments converted during string formatting
+
+Error upserting record 8cd1933a-d90a-4ef0-a3af-6909d0e206c8: not all arguments converted during string formatting
+
+Error upserting record 5f5016d3-9d7a-4c40-a43e-b202cf9b059d: not all arguments converted during string formatting
+
+Error upserting record 4a3ce670-ebec-4fb9-89f5-c95458be5f8a: not all arguments converted during string formatting
+
+Error upserting record 58eab375-59ee-444e-8dc3-92e235648e73: not all arguments converted during string formatting
+
+Error upserting record 9d6b6069-a4e2-45a9-be55-fc1a1548ab6d: not all arguments converted during string formatting
+
+Error upserting record c4f821ef-2ca9-42c1-b058-795580697444: not all arguments converted during string formatting
+
+Error upserting record 1e2019d7-1ffc-425c-bc45-94e3dfc28ea9: not all arguments converted during string formatting
+
+Error upserting record a7c5fb48-51a9-4e53-9dac-ef78ac810f91: not all arguments converted during string formatting
+
+Error upserting record 3d2c24d5-af93-4549-bea1-5128a7100ac3: not all arguments converted during string formatting
+
+Error upserting record 65752041-5f5a-4355-9737-8686debb36ea: not all arguments converted during string formatting
+
+Error upserting record 3b32a1a9-1b46-4525-ae2b-434339114888: not all arguments converted during string formatting
+
+Error upserting record 596057f0-f94d-4401-a8d3-7cf4621d74a1: not all arguments converted during string formatting
+
+Error upserting record ec65717f-9d9d-4b91-af2f-c19d57082b5c: not all arguments converted during string formatting
+
+Error upserting record b05a91cc-c09d-472f-bae8-a7faa572cfbf: not all arguments converted during string formatting
+
+Error upserting record a17c2414-d708-4b6a-8d50-cbe8d475ea18: not all arguments converted during string formatting
+
+Error upserting record 5dbfb81a-4edf-48a5-bc53-56f329485545: not all arguments converted during string formatting
+
+Error upserting record bf31c77d-5b8e-4487-8e15-bc498e048d8b: not all arguments converted during string formatting
+
+Error upserting record dbcc5cf0-a46a-4818-8ea5-e155ec1117be: not all arguments converted during string formatting
+
+Error upserting record 1d65db99-9110-447f-9e5f-abc18992bfd1: not all arguments converted during string formatting
+
+Error upserting record 5ab7a72c-5e2e-45db-832c-f00d5e62e0da: not all arguments converted during string formatting
+
+Error upserting record d992b81f-6316-4a29-b779-c1547b79f2dd: not all arguments converted during string formatting
+
+Error upserting record 57efd9cb-5110-4538-8e8d-9ac701e24001: not all arguments converted during string formatting
+
+Error upserting record eb3af48b-7e30-44ef-8eef-08a359b0a95e: not all arguments converted during string formatting
+
+Error upserting record 5ba03322-580a-4862-84de-908e75a68a1b: not all arguments converted during string formatting
+
+Error upserting record 8d16c8ed-1081-4f05-8892-5147003f368d: not all arguments converted during string formatting
+
+Error upserting record 6eed6b51-b7be-48b4-837f-2c842653f194: not all arguments converted during string formatting
+
+Error upserting record 2ba92329-6108-499f-8927-5cb8fad3e576: not all arguments converted during string formatting
+
+Error upserting record 0dd2a7ca-1937-40e1-833a-d954d064524b: not all arguments converted during string formatting
+
+Error upserting record cf92814b-627c-455b-83c1-90264287c5c2: not all arguments converted during string formatting
+
+Error upserting record 4f08a747-d20e-4af7-8028-7c7eb4e79b31: not all arguments converted during string formatting
+
+Error upserting record 59405d1d-31ea-435c-8b41-975b8309a7ab: not all arguments converted during string formatting
+
+Error upserting record f8461b84-a8a1-4ac4-8afc-35d5776f35fd: not all arguments converted during string formatting
+
+Error upserting record b55c534a-67d9-4220-8288-64df016d4e6c: not all arguments converted during string formatting
+
+Error upserting record 50eef0af-5e1f-48c8-8661-41ae31e752c3: not all arguments converted during string formatting
+
+Error upserting record 91bd7764-aa73-4167-8429-bc5c4d42e0e1: not all arguments converted during string formatting
+
+Error upserting record 71fb5d39-8077-4de6-8054-f66418130a90: not all arguments converted during string formatting
+
+Error upserting record 960de91f-ddb7-460b-890a-1e1ea91381c4: not all arguments converted during string formatting
+
+Error upserting record 85b49302-cd92-492f-8576-74da80c44ed0: not all arguments converted during string formatting
+
+Error upserting record 121f8b4e-233b-44e7-826d-397ee3624169: not all arguments converted during string formatting
+
+Error upserting record 8098dac5-2a01-4482-8f71-7e4383bcf1a0: not all arguments converted during string formatting
+
+Error upserting record 111be1af-9bc7-4188-83a2-697b24e739bf: not all arguments converted during string formatting
+
+Error upserting record e20e98b6-55b2-4236-87f2-73620539a3d3: not all arguments converted during string formatting
+
+Error upserting record c439ad33-2cfb-448e-846d-4398f3790558: not all arguments converted during string formatting
+
+Error upserting record 225c4c5b-b2b5-4007-8736-7518db465fb6: not all arguments converted during string formatting
+
+Error upserting record a672ce7f-5ffa-46ec-8a74-e47a430832b5: not all arguments converted during string formatting
+
+Error upserting record e26381a3-90c6-49a3-8370-af0a8b74432a: not all arguments converted during string formatting
+
+Error upserting record bd1ae599-e08c-45c4-86c6-e896bdebf697: not all arguments converted during string formatting
+
+Error upserting record 675cd364-31f8-49ca-8b27-5b7fb64490b9: not all arguments converted during string formatting
+
+Error upserting record 6f5120df-93a1-4072-8e8a-eff97269296e: not all arguments converted during string formatting
+
+Error upserting record 859499e0-ae33-4030-8747-c9d9a184a670: not all arguments converted during string formatting
+
+Error upserting record c4c7c2ff-d38b-4301-8512-bbf30823dcbb: not all arguments converted during string formatting
+
+Error upserting record 2fca387e-2bcf-479b-8abd-194133fbfd09: not all arguments converted during string formatting
+
+Error upserting record 90f6b361-5a10-4870-8fa0-629ba4201efd: not all arguments converted during string formatting
+
+Error upserting record af0d927a-2860-4d01-8d8d-0618e877c847: not all arguments converted during string formatting
+
+Error upserting record ce5b4668-c426-49b9-8188-f578999a4599: not all arguments converted during string formatting
+
+Error upserting record 1e9db992-75e1-4e4a-897b-b8e32b0c6373: not all arguments converted during string formatting
+
+Error upserting record 5c48e6ed-1a06-4973-8cd6-fe221bfde4b2: not all arguments converted during string formatting
+
+Error upserting record 7a37fcee-7a9a-4589-8633-3ea4848f22b5: not all arguments converted during string formatting
+
+Error upserting record 75c30628-2861-4330-8f7b-5cb86ade0cf6: not all arguments converted during string formatting
+
+Error upserting record 6ea38f0b-6701-45e1-8179-96316f67ff16: not all arguments converted during string formatting
+
+Error upserting record 15d93d67-a45b-48ea-8676-78908c0a4bcc: not all arguments converted during string formatting
+
+Error upserting record a7b211d1-045a-471f-8406-9877fed6c629: not all arguments converted during string formatting
+
+Error upserting record 591a30ac-4ec5-4943-82a0-9603e5ec558b: not all arguments converted during string formatting
+
+Error upserting record 39eb4418-f28e-4c07-84ce-4991aee6e828: not all arguments converted during string formatting
+
+Error upserting record bbc043b7-1330-416b-84d7-20b2db84ea34: not all arguments converted during string formatting
+
+Error upserting record 40877d8a-1b6e-4f4a-8468-beaadb9246c4: not all arguments converted during string formatting
+
+Error upserting record 2e9ddd95-93ca-49b7-8d3d-56306ea0ff6c: not all arguments converted during string formatting
+
+Error upserting record 96de6925-9cce-4c5c-8157-bc5c1b84fd55: not all arguments converted during string formatting
+
+Error upserting record 843beb1d-e5fc-4726-8f7d-30b4f4085515: not all arguments converted during string formatting
+
+Error upserting record 72b140b1-f8e3-4868-8ba1-b48dbf96bb06: not all arguments converted during string formatting
+
+Error upserting record fd9e5aaf-0659-44e9-8183-154236480dc8: not all arguments converted during string formatting
+
+Error upserting record a2eaf46b-f03f-4593-88f0-7ba8f12fbb8e: not all arguments converted during string formatting
+
+Error upserting record 768aae10-52a4-4d72-8443-a64e11d8e99c: not all arguments converted during string formatting
+
+Error upserting record 55233737-3901-4f9f-8cef-d5119667378f: not all arguments converted during string formatting
+
+Error upserting record ede1a1be-4ea1-4cba-8a5e-066b8d33a95b: not all arguments converted during string formatting
+
+Error upserting record 22734042-8ec1-4c6d-8207-1346fde907e2: not all arguments converted during string formatting
+
+Error upserting record 184df35b-de58-49cb-8e4c-a10f837344aa: not all arguments converted during string formatting
+
+Error upserting record 08441027-696e-4e3b-8d78-6d372ef1b3e2: not all arguments converted during string formatting
+
+Error upserting record 3f6e2809-4352-4228-8078-b8bcd14d9817: not all arguments converted during string formatting
+
+Error upserting record 6ab9fbd5-4c4a-4e11-897b-5110da61967b: not all arguments converted during string formatting
+
+Error upserting record b3ba75e2-181a-4e19-8086-9ca49cc88c56: not all arguments converted during string formatting
+
+Error upserting record a5f44216-8291-40f3-84b9-1f97d9feef6d: not all arguments converted during string formatting
+
+Error upserting record 9cc5d745-25e4-41ad-8a6f-50e580753c17: not all arguments converted during string formatting
+
+Error upserting record 2ee73ea0-473d-4b33-84ba-4fc8a5375d2f: not all arguments converted during string formatting
+
+Error upserting record ea226067-0d17-47b4-80a8-9ec807000fd4: not all arguments converted during string formatting
+
+Error upserting record 4b14d73d-2816-48d7-87a2-ea2b67b4cf6f: not all arguments converted during string formatting
+
+Error upserting record bcc60698-68ef-4cba-8056-1e34b5ab6838: not all arguments converted during string formatting
+
+Error upserting record e84eee51-9533-4a29-845c-944e8a495b0a: not all arguments converted during string formatting
+
+Error upserting record e85e7fae-4107-4ba7-8369-3f32056aa304: not all arguments converted during string formatting
+
+Error upserting record 46737ccc-b277-4e9b-880e-a1b8ce80108d: not all arguments converted during string formatting
+
+Error upserting record 40cf9bc7-6723-4dd0-861c-8bfd943518e6: not all arguments converted during string formatting
+
+Error upserting record 95f72c2a-93e5-4993-821f-ba47d25c2287: not all arguments converted during string formatting
+
+Error upserting record 789f8af0-e29f-49b4-8c6d-8db7f9e672a0: not all arguments converted during string formatting
+
+Error upserting record 8e91322d-696d-4252-8e60-04e71e90d383: not all arguments converted during string formatting
+
+Error upserting record fdb8d442-2aa2-45fd-886c-3d03fffd56fb: not all arguments converted during string formatting
+
+Error upserting record 90fda75c-632e-4a1e-8ab9-75d174ca83dc: not all arguments converted during string formatting
+
+Error upserting record c321b058-998a-453f-8c62-071b8a2343ae: not all arguments converted during string formatting
+
+Error upserting record ba21754a-a396-45d2-8c09-eae7ce352cb9: not all arguments converted during string formatting
+
+Error upserting record d22e4578-714c-48d7-8f14-9abf7fe1339b: not all arguments converted during string formatting
+
+Error upserting record efa3c4f6-41ee-4889-8f0b-b41e4d32a25f: not all arguments converted during string formatting
+
+Error upserting record 7db8640d-e7df-44f9-87f7-bb437b08d54a: not all arguments converted during string formatting
+
+Error upserting record f1555d9c-aecc-44a0-8fea-9a9ee7fe6072: not all arguments converted during string formatting
+
+Error upserting record 523c8b2f-b423-4566-8ee8-04d9c8fa7ddf: not all arguments converted during string formatting
+
+Error upserting record 534e7215-71da-4738-8c96-757b49031bb4: not all arguments converted during string formatting
+
+Error upserting record 62ccef5d-d46f-43bf-8ba8-079bf18af8fc: not all arguments converted during string formatting
+
+Error upserting record 43ef699d-2c2f-40e3-8f73-1df2c5baf6bd: not all arguments converted during string formatting
+
+Error upserting record b642e9d5-e0d8-42c4-8f1c-5f15bdac4205: not all arguments converted during string formatting
+
+Error upserting record 15fcfa02-1121-407e-8b52-d5fa1695a9b8: not all arguments converted during string formatting
+
+Error upserting record 2902e15e-ce3d-4299-8da7-940fb21398a5: not all arguments converted during string formatting
+
+Error upserting record d7470fa7-31c5-43e0-8bf5-2e1c0ccf72a9: not all arguments converted during string formatting
+
+Error upserting record 24dc48ab-c84a-4476-83b4-e840cf6134ab: not all arguments converted during string formatting
+
+Error upserting record 9e11a10f-531f-4a48-8bd4-aec67be0dc9b: not all arguments converted during string formatting
+
+Error upserting record 6b74443d-d84a-4a0e-8b54-8f657c74028f: not all arguments converted during string formatting
+
+Error upserting record 9c535405-b24e-4333-82d8-3bd51944d251: not all arguments converted during string formatting
+
+Error upserting record 1b2ff82a-f201-4205-80a5-91bdd15e4e20: not all arguments converted during string formatting
+
+Error upserting record 4bbe6612-3d94-479e-8798-2bf6184353f3: not all arguments converted during string formatting
+
+Error upserting record 69b9e911-cf31-4678-8f20-9e6b5c5e3244: not all arguments converted during string formatting
+
+Error upserting record 86c76535-32ac-49c7-8b60-badb7c8562e6: not all arguments converted during string formatting
+
+Error upserting record 61e73179-cdf2-45b4-82f7-9be92dd5e952: not all arguments converted during string formatting
+
+Error upserting record 67090085-128a-4d6e-8c18-27ed0d7d1174: not all arguments converted during string formatting
+
+Error upserting record 9f53ed8b-cf91-4708-8b46-e8bb9d7b584f: not all arguments converted during string formatting
+
+Error upserting record 7ca624de-5ed7-484d-8273-16c8d49ea429: not all arguments converted during string formatting
+
+Error upserting record 9be17394-fc55-403e-8ad6-7e7427ce134c: not all arguments converted during string formatting
+
+Error upserting record c1f7e77c-aa52-4ece-882a-7d2563ec8b39: not all arguments converted during string formatting
+
+Error upserting record 9ddf3994-d97e-4857-89c3-0a7bf125ae42: not all arguments converted during string formatting
+
+Error upserting record 96f77e84-0905-4787-8df9-74ef77ec38da: not all arguments converted during string formatting
+
+Error upserting record 0785f17d-216c-4349-8c0c-af69e6961127: not all arguments converted during string formatting
+
+Error upserting record 7f1ae108-4c75-4657-80e3-1f193cb41708: not all arguments converted during string formatting
+
+Error upserting record 1f0498a6-6fad-454a-8a9c-05a54ddfb742: not all arguments converted during string formatting
+
+Error upserting record 7f0a88cc-a0f3-47dd-8b48-0f1ae84b422b: not all arguments converted during string formatting
+
+Error upserting record 04d9b678-ed23-4256-8c09-e71803139317: not all arguments converted during string formatting
+
+Error upserting record e1f9a1dd-baa6-485f-8c6a-a0c782d3ff81: not all arguments converted during string formatting
+
+Error upserting record 22ad78c4-2141-47b9-85e3-a02eba94c90b: not all arguments converted during string formatting
+
+Error upserting record cc194093-cf52-4e6a-8ed4-4b4b5b708d67: not all arguments converted during string formatting
+
+Error upserting record 52b010c1-6be4-4efb-8455-67f6ec1eec89: not all arguments converted during string formatting
+
+Error upserting record 7a7a22f6-05a8-4665-8420-8c495a2b1448: not all arguments converted during string formatting
+
+Error upserting record 59d2966b-f674-4ff0-8197-14893cb9d9e3: not all arguments converted during string formatting
+
+Error upserting record 6f89a5c1-fc29-4ad0-8258-903304324b1b: not all arguments converted during string formatting
+
+Error upserting record 20ee2b39-efbc-450f-8478-6b3a810843f7: not all arguments converted during string formatting
+
+Error upserting record 1b9ab5d7-7f65-4e9d-8c1c-1d90cae50f34: not all arguments converted during string formatting
+
+Error upserting record a753f8fe-43b9-4dd4-8493-90f0e789aa3e: not all arguments converted during string formatting
+
+Error upserting record 48aad971-3c3b-4de8-8ca7-aebd01217460: not all arguments converted during string formatting
+
+Error upserting record e451c2ce-3357-400e-8ac4-4052c45d210e: not all arguments converted during string formatting
+
+Error upserting record 38bf1eaa-9f7f-4af6-8384-f9c9b2242ac2: not all arguments converted during string formatting
+
+Error upserting record 7ed3ca1b-ab76-47d7-8ef1-1ba5803d77a2: not all arguments converted during string formatting
+
+Error upserting record 0ad49cfb-7f84-42fc-8637-9422191de7a5: not all arguments converted during string formatting
+
+Error upserting record eba7adca-bb66-47a5-87ad-0f107ae871dc: not all arguments converted during string formatting
+
+Error upserting record 712f8c59-9ada-4ed1-8b98-4e4319fa5061: not all arguments converted during string formatting
+
+Error upserting record d771ec10-67c5-42af-8792-c4e888216739: not all arguments converted during string formatting
+
+Error upserting record 110fd222-e5e2-4c7d-8899-6009beddd0a9: not all arguments converted during string formatting
+
+Error upserting record 65c5db3d-a662-4bf8-8748-72556912ea2a: not all arguments converted during string formatting
+
+Error upserting record 83573443-1f0d-4402-8cb0-d5a2e6810c73: not all arguments converted during string formatting
+
+Error upserting record 9f16ba43-e212-4f91-8f4d-857868c2066e: not all arguments converted during string formatting
+
+Error upserting record 5464e421-326d-4f92-8147-659ad84ee892: not all arguments converted during string formatting
+
+Error upserting record 6d6dcd28-e5a6-41d1-84a6-575540fa5f1c: not all arguments converted during string formatting
+
+Error upserting record 8e68c227-7b24-44ff-8e58-0a1b2d3a2cab: not all arguments converted during string formatting
+
+Error upserting record 23ed2cdb-a3c5-4852-84fb-48f6256ef877: not all arguments converted during string formatting
+
+Error upserting record 11072886-281e-4518-801a-1fad8706bc81: not all arguments converted during string formatting
+
+Error upserting record 07c5e219-ecce-469d-878d-14eaba305b5f: not all arguments converted during string formatting
+
+Error upserting record 34e29c0b-029a-4a1e-8b71-03f47211196e: not all arguments converted during string formatting
+
+Error upserting record 7579ee9c-2095-4825-817a-8c14f520db19: not all arguments converted during string formatting
+
+Error upserting record 59aed72b-8135-4353-832a-f8850931af4e: not all arguments converted during string formatting
+
+Error upserting record 90492cf8-44ae-4fd6-8129-f03e0244ec15: not all arguments converted during string formatting
+
+Error upserting record 4b430d55-30ef-47ba-8e9e-dbf27e926481: not all arguments converted during string formatting
+
+Error upserting record 4e0f6535-a5bc-4553-8f80-599022b786f2: not all arguments converted during string formatting
+
+Error upserting record c895adbf-f4fb-4952-899d-991a01e09aa5: not all arguments converted during string formatting
+
+Error upserting record 690126ce-56fe-4a6b-83af-a0efa0ba9b2a: not all arguments converted during string formatting
+
+Error upserting record cd170444-f65a-42b8-830f-0e73b98ae720: not all arguments converted during string formatting
+
+Error upserting record df2f569f-465c-477d-87df-5d0e968d3a09: not all arguments converted during string formatting
+
+Error upserting record c5ad8a7f-b145-46e4-89f1-7fbbe9711177: not all arguments converted during string formatting
+
+Error upserting record ea59d73f-300f-4993-85a8-f59feb445b0b: not all arguments converted during string formatting
+
+Error upserting record 1e5837c3-9f95-437b-81ca-a6b307a684e7: not all arguments converted during string formatting
+
+Error upserting record 0a632b57-4b49-4b0c-84ec-64c86bbfbc43: not all arguments converted during string formatting
+
+Error upserting record 3a74dad3-94a6-4ca2-87b6-ee1428e846f5: not all arguments converted during string formatting
+
+Error upserting record b349eddf-e29b-432e-8d7a-0ea4019b0abd: not all arguments converted during string formatting
+
+Error upserting record 70327dfa-4d09-41bd-8e36-62dc3ab29bf4: not all arguments converted during string formatting
+
+Error upserting record 95b1952c-f4c4-4efc-88af-c4b434357e4e: not all arguments converted during string formatting
+
+Error upserting record 6cc1a064-4433-4316-8895-dd9da2dbb144: not all arguments converted during string formatting
+
+Error upserting record 344df3ac-7f9d-4018-8edd-b3976a984f26: not all arguments converted during string formatting
+
+Error upserting record 26625666-c133-43e8-812d-a4983135691d: not all arguments converted during string formatting
+
+Error upserting record 781af024-7cf9-4884-8b7b-454a25e8e56f: not all arguments converted during string formatting
+
+Error upserting record d3dda0de-73b4-407a-8481-dac4af3d6943: not all arguments converted during string formatting
+
+Error upserting record d6bbebdf-d9cc-455a-8ab4-d42ff7a8ee6d: not all arguments converted during string formatting
+
+Error upserting record 0298330a-5d73-4b79-8557-43a8cbbc0d70: not all arguments converted during string formatting
+
+Error upserting record 81549adf-7f23-4e34-87d4-162c1ad6b71b: not all arguments converted during string formatting
+
+Error upserting record a0a3e440-f947-4d15-8ead-608cb12dae67: not all arguments converted during string formatting
+
+Error upserting record 461b51a9-47b1-45fe-8b0f-a30e2ebb57f9: not all arguments converted during string formatting
+
+Error upserting record 90ff7956-61e4-475f-8217-fe1e1560cd15: not all arguments converted during string formatting
+
+Error upserting record a56b20d2-a98b-4026-8cfc-3480f95a2238: not all arguments converted during string formatting
+
+Error upserting record db8ffa2e-c2a1-4a85-8010-77c12f4a5e1c: not all arguments converted during string formatting
+
+Error upserting record 687d0f8a-18fe-40c1-8b8c-20c634057d7b: not all arguments converted during string formatting
+
+Error upserting record 1478a351-30e0-4846-8397-5c2eddb917d6: not all arguments converted during string formatting
+
+Error upserting record 9a8aa24e-6b49-4472-88fa-a8aff001705b: not all arguments converted during string formatting
+
+Error upserting record 2e49d8f9-8eb0-40ad-84ed-19c52c2d3342: not all arguments converted during string formatting
+
+Error upserting record ffd9a295-b18a-43e7-8002-1c7d302070dc: not all arguments converted during string formatting
+
+Error upserting record f7354a8f-b966-4dc9-8883-707e7b9688cc: not all arguments converted during string formatting
+
+Error upserting record 1873f25f-a734-4e80-8acb-9998d9003dfb: not all arguments converted during string formatting
+
+Error upserting record 377c49b8-7d1b-4d69-80e6-688d1e53926b: not all arguments converted during string formatting
+
+Error upserting record e644677f-4933-4482-80f3-0e5c96171fc7: not all arguments converted during string formatting
+
+Error upserting record 50fe19e0-23ec-4436-862a-4dc953c9e984: not all arguments converted during string formatting
+
+Error upserting record eaa34497-755e-4ea5-865b-8ab64ac5c4f2: not all arguments converted during string formatting
+
+Error upserting record de7671eb-c13a-4356-83f8-da84d98a98f2: not all arguments converted during string formatting
+
+Error upserting record af0ac810-c4a9-48a2-8d33-57cec23931e4: not all arguments converted during string formatting
+
+Error upserting record f603ef02-bfc9-405c-8807-5d18daa8687e: not all arguments converted during string formatting
+
+Error upserting record 10d17eab-f2bf-477d-887f-3e1ec4852c95: not all arguments converted during string formatting
+
+Error upserting record 6d5e8bd4-6cae-4df5-8a49-04ce82c8df8e: not all arguments converted during string formatting
+
+Error upserting record 0cbee305-c01c-404c-8f2a-920c07c1b36f: not all arguments converted during string formatting
+
+Error upserting record d031d1cc-bc20-4e83-8051-fa06b63d0934: not all arguments converted during string formatting
+
+Error upserting record bad78a4c-bf87-4fb6-8a4d-0a1e2b9da53c: not all arguments converted during string formatting
+
+Error upserting record 3fede6a4-1f3d-46f4-8710-266f1f84b52c: not all arguments converted during string formatting
+
+Error upserting record 78e6d63c-7290-4601-8cb6-28018202dc0f: not all arguments converted during string formatting
+
+Error upserting record 46a91f65-da06-417a-8d51-34d476bb2324: not all arguments converted during string formatting
+
+Error upserting record 8cc1e243-2887-403a-851b-22abdb21db5b: not all arguments converted during string formatting
+
+Error upserting record f1573951-23c0-4d72-897c-df2d02d64919: not all arguments converted during string formatting
+
+Error upserting record 365060e4-50d6-4509-8533-7a957a76814c: not all arguments converted during string formatting
+
+Error upserting record f7e9bada-85f3-466f-87a0-e1d4daa3724d: not all arguments converted during string formatting
+
+Error upserting record 50269f67-33f2-401f-814d-6944266174f1: not all arguments converted during string formatting
+
+Error upserting record 79aec651-6ba0-4ce0-807d-cb831778669a: not all arguments converted during string formatting
+
+Error upserting record 70e21cf7-283a-416b-8d17-9058ba1d7af4: not all arguments converted during string formatting
+
+Error upserting record 5c3eabf8-6f35-4544-899f-be53108161eb: not all arguments converted during string formatting
+
+Error upserting record d836a3ee-9787-4238-824c-d6fcdcf7d603: not all arguments converted during string formatting
+
+Error upserting record a1fa5a93-fe52-4c54-8653-d984befa454a: not all arguments converted during string formatting
+
+Error upserting record db0f45a9-df78-41a7-8f10-d2705bc2ec01: not all arguments converted during string formatting
+
+Error upserting record deabd5a4-a603-452f-8dd7-edcab3b187a7: not all arguments converted during string formatting
+
+Error upserting record 4130106c-49a5-4968-8fe8-6331aee1d34e: not all arguments converted during string formatting
+
+Error upserting record 26100911-77dc-4dad-856b-5cc733cd0463: not all arguments converted during string formatting
+
+Error upserting record 546e6922-f427-46c5-808d-f03d1a8bff21: not all arguments converted during string formatting
+
+Error upserting record 1088e6ea-e96e-4ecf-8a80-a0ba287665da: not all arguments converted during string formatting
+
+Error upserting record 755fbb16-9a7f-4ab1-8920-a5c747282bb4: not all arguments converted during string formatting
+
+Error upserting record 9e162880-3daa-4d33-83f7-22d9b0ac197c: not all arguments converted during string formatting
+
+Error upserting record b7dc17af-0df3-41c2-852c-59826a4c8c4a: not all arguments converted during string formatting
+
+Error upserting record e0c1db7f-a94a-4457-880d-130cc14aa261: not all arguments converted during string formatting
+
+Error upserting record df19d615-73e9-44c3-8902-628b0cea452c: not all arguments converted during string formatting
+
+Error upserting record 9559b1a5-fcae-49fc-89d7-5527361746b5: not all arguments converted during string formatting
+
+Error upserting record 99499152-c4d0-46b0-8cf4-44e23d8d37ab: not all arguments converted during string formatting
+
+Error upserting record 3b96f4bf-93df-4071-8647-3b7bfc2af8b7: not all arguments converted during string formatting
+
+Error upserting record 50b6811f-ec67-4ad9-82ff-08d0e0672f7c: not all arguments converted during string formatting
+
+Error upserting record 12c48897-bbc2-4b3c-82d2-54541420c23a: not all arguments converted during string formatting
+
+Error upserting record 7ee593b4-ed54-4fc0-84e3-2ca08a72432a: not all arguments converted during string formatting
+
+Error upserting record c718997c-380d-4a77-8d4c-4b4738a9f96a: not all arguments converted during string formatting
+
+Error upserting record 43a7b67c-b8c3-4290-81c5-ea7a2e6ecbac: not all arguments converted during string formatting
+
+Error upserting record a137f4fe-12d1-435f-8fa7-2ec48d44cb26: not all arguments converted during string formatting
+
+Error upserting record 077d5b28-5e12-42e8-8fb0-1735746d7e39: not all arguments converted during string formatting
+
+Error upserting record a539a32e-f0f8-4b82-870c-d247e591ba78: not all arguments converted during string formatting
+
+Error upserting record 18886976-e88f-4e9e-8816-33907123d8ad: not all arguments converted during string formatting
+
+Error upserting record 49fc0d0d-7acc-492d-88c8-b641b7d89d70: not all arguments converted during string formatting
+
+Error upserting record fc5df8ed-d37b-477e-8e9f-edd30948ddc4: not all arguments converted during string formatting
+
+Error upserting record c629fdec-1ea4-4361-825e-efe2578bc4c7: not all arguments converted during string formatting
+
+Error upserting record 54320e36-30f1-4bb3-8cb8-367fd3626bd0: not all arguments converted during string formatting
+
+Error upserting record 61bd21b4-1bf7-4dd5-895e-45217a21049a: not all arguments converted during string formatting
+
+Error upserting record 411afb2e-c70d-40ac-8e4c-fcf0f14a8085: not all arguments converted during string formatting
+
+Error upserting record 5de0ac0c-efb3-4e80-8dc7-bbc7f96f55ba: not all arguments converted during string formatting
+
+Error upserting record bc260e1a-f4a3-435d-8fe1-43cd15a36108: not all arguments converted during string formatting
+
+Error upserting record 93668bad-cc5e-46a8-86af-49d23e48e008: not all arguments converted during string formatting
+
+Error upserting record 68025e44-42d0-4d99-8983-7d48240f7a6a: not all arguments converted during string formatting
+
+Error upserting record 8a197609-b825-43d3-848a-7372c20232f2: not all arguments converted during string formatting
+
+Error upserting record 38bd7984-bf0f-4d69-88c0-b19a550ec636: not all arguments converted during string formatting
+
+Error upserting record 01e6e8f9-a2ac-4a0c-8ba5-0ef49120ed50: not all arguments converted during string formatting
+
+Error upserting record 05cdcc21-cd5e-4cbd-8f37-334ff979296f: not all arguments converted during string formatting
+
+Error upserting record b3bb5662-d792-4f0f-834f-a7d4152db6f9: not all arguments converted during string formatting
+
+Error upserting record 7c386f3f-eeea-49ee-882e-1b5585c36b67: not all arguments converted during string formatting
+
+Error upserting record e5290ef1-caf1-47fc-8b27-9d55a34971b1: not all arguments converted during string formatting
+
+Error upserting record 426b312b-326a-45fc-8f0e-5c89a48f91eb: not all arguments converted during string formatting
+
+Error upserting record f6ed805d-1f3f-4bfd-878c-0cef982117fe: not all arguments converted during string formatting
+
+Error upserting record 3d6e99f5-d545-4470-8ada-c9ae9aa25289: not all arguments converted during string formatting
+
+Error upserting record 7d40b4f5-82c7-402c-8a38-7639b81aa5dd: not all arguments converted during string formatting
+
+Error upserting record da90b0bc-d3ac-4f4b-8b70-628b4599b33b: not all arguments converted during string formatting
+
+Error upserting record e6d383f9-a798-4374-8f0c-bca31b4f0218: not all arguments converted during string formatting
+
+Error upserting record b629c9cc-edaf-4b4c-8f0b-5e2933f246e2: not all arguments converted during string formatting
+
+Error upserting record 3e83665c-73e4-410d-8823-c12adff5fce7: not all arguments converted during string formatting
+
+Error upserting record 1b9442dc-2567-4b7a-8a7a-5561a10647d8: not all arguments converted during string formatting
+
+Error upserting record 362b6c13-6315-4680-8269-71d01027124d: not all arguments converted during string formatting
+
+Error upserting record 5964c7e4-2693-4e60-8713-7c66df79d6ca: not all arguments converted during string formatting
+
+Error upserting record a76efdc4-0e7e-4f90-81cb-1606b9d637e3: not all arguments converted during string formatting
+
+Error upserting record fcc2db99-45dd-479a-8ae9-2543cc4979c4: not all arguments converted during string formatting
+
+Error upserting record 6f39f101-5421-4757-85f1-f27e24a42e22: not all arguments converted during string formatting
+
+Error upserting record b754aa27-8751-446e-814d-b5d966e98149: not all arguments converted during string formatting
+
+Error upserting record 00e08220-58b8-4b28-86a7-b6f07c7d00d4: not all arguments converted during string formatting
+
+Error upserting record 7b7680d0-48ae-41bf-8fc4-4f1559ee097a: not all arguments converted during string formatting
+
+Error upserting record 4361994e-a1d6-44bc-846e-e0bf751b66ce: not all arguments converted during string formatting
+
+Error upserting record 19bbbd63-48c3-4c0a-8cf7-23c63088018b: not all arguments converted during string formatting
+
+Error upserting record aed7fc09-98b9-4d02-86e1-2496cfb1d2a0: not all arguments converted during string formatting
+
+Error upserting record 25ea58d7-207a-448d-809d-e0e6ea0003d0: not all arguments converted during string formatting
+
+Error upserting record f70ed11d-ad3e-445f-83a7-9c4aa6086300: not all arguments converted during string formatting
+
+Error upserting record 6564482f-67f9-4548-80f5-19a3b9c0c27e: not all arguments converted during string formatting
+
+Error upserting record 99b8b91c-5de5-4741-8311-77a6b3e8022f: not all arguments converted during string formatting
+
+Error upserting record e687b910-f738-4766-8703-8ced935eb807: not all arguments converted during string formatting
+
+Error upserting record b1936f28-50d9-4db2-83ba-ae09d427010e: not all arguments converted during string formatting
+
+Error upserting record fdb94ebc-ea66-4317-8b22-f399e9596110: not all arguments converted during string formatting
+
+Error upserting record c9d9f4dd-941c-4ce6-83ee-d72dd71b71e1: not all arguments converted during string formatting
+
+Error upserting record 65b9aa30-b380-4e96-8fa7-ee5cc12f0cd5: not all arguments converted during string formatting
+
+Error upserting record 88a6f0df-c94d-425c-8d61-924957213ce6: not all arguments converted during string formatting
+
+Error upserting record af1284ef-fab3-45ff-8b44-6c3e3d7f9611: not all arguments converted during string formatting
+
+Error upserting record e3995181-f058-453d-81a0-82b539377d10: not all arguments converted during string formatting
+
+Error upserting record 6c358548-a4f5-4c11-812b-f1637f8d5d48: not all arguments converted during string formatting
+
+Error upserting record 11c05908-d497-4514-8e06-8837e394a653: not all arguments converted during string formatting
+
+Error upserting record 7a81acde-fc3b-4aa0-8de3-21f8653e5c21: not all arguments converted during string formatting
+
+Error upserting record f2b32773-742b-4f1a-8ae6-16aefcea9678: not all arguments converted during string formatting
+
+Error upserting record 2f9e9087-2f62-45b3-8ff8-b41e95c4af6a: not all arguments converted during string formatting
+
+Error upserting record 563790fa-dfb4-4713-8f74-18e9c7ee06fd: not all arguments converted during string formatting
+
+Error upserting record abea3cbd-782c-49e8-8a6a-fd247717eca1: not all arguments converted during string formatting
+
+Error upserting record eef2459f-ec34-4eb1-80c7-c84f2e7c31c7: not all arguments converted during string formatting
+
+Error upserting record 2524ffd2-f2fb-4964-879b-d3f86259c562: not all arguments converted during string formatting
+
+Error upserting record ea32ab5c-b9b9-45f6-8663-ea6b6b324369: not all arguments converted during string formatting
+
+Error upserting record 82dfb51d-9ab7-4a9d-8c70-b5e3fd494cd8: not all arguments converted during string formatting
+
+Error upserting record 17011a11-eae1-4d6d-8467-f27e1fb43513: not all arguments converted during string formatting
+
+Error upserting record 2e2ec36c-7b01-4c18-8861-01ccb574b490: not all arguments converted during string formatting
+
+Error upserting record d828b748-62ed-4944-8090-bb6ba1258fe4: not all arguments converted during string formatting
+
+Error upserting record 7f4273d8-f8af-4d60-87c4-6744d911fc8c: not all arguments converted during string formatting
+
+Error upserting record 302b1fa9-fb02-4c56-8d35-5ddb0b15fa11: not all arguments converted during string formatting
+
+Error upserting record c6ac0aca-cc1a-4dcf-8ce1-aaf3c7bcdc0d: not all arguments converted during string formatting
+
+Error upserting record 0d1edfe0-55db-43f0-8a9f-061d416e72a5: not all arguments converted during string formatting
+
+Error upserting record 0a62b3a7-9212-4752-8733-8d201d7eecb2: not all arguments converted during string formatting
+
+Error upserting record 53654ce6-89ed-4ce6-8306-4f7678fa32a0: not all arguments converted during string formatting
+
+Error upserting record 53b1a855-243f-4a87-8783-780e0e4e3356: not all arguments converted during string formatting
+
+Error upserting record 761b216a-41bc-4ade-8016-7a78d7f447ed: not all arguments converted during string formatting
+
+Error upserting record 040bfa56-ec8a-47b7-83ad-baf4c8863966: not all arguments converted during string formatting
+
+Error upserting record aee8611b-3cc6-4438-8ab7-8b49ef8d3d8c: not all arguments converted during string formatting
+
+Error upserting record 1792ce06-358b-4dbf-8292-9408430f98db: not all arguments converted during string formatting
+
+Error upserting record 94868e33-be7b-48db-8df2-4df8eb366d08: not all arguments converted during string formatting
+
+Error upserting record 877b8d53-896d-44f9-8674-98192ed8cc64: not all arguments converted during string formatting
+
+Error upserting record 54debc00-ef58-4e2c-886d-32a4982f06ff: not all arguments converted during string formatting
+
+Error upserting record bdb8da70-9c07-4aa0-8a87-ec17c0f1fe1c: not all arguments converted during string formatting
+
+Error upserting record 2ea3e8b8-8050-4a75-8a96-4f81a3b97d0c: not all arguments converted during string formatting
+
+Error upserting record 0de2c104-8595-4efe-8371-cdd6828d14e9: not all arguments converted during string formatting
+
+Error upserting record d67e2303-a563-4db9-85ca-0b8f21fe5277: not all arguments converted during string formatting
+
+Error upserting record 14a9736d-9368-469f-8d20-6b9e92d503d2: not all arguments converted during string formatting
+
+Error upserting record f54211c9-0a54-41a1-8c14-add1552fb5c8: not all arguments converted during string formatting
+
+Error upserting record 69a4bb53-3f9f-4bcf-83c8-d3ebf78e3ae7: not all arguments converted during string formatting
+
+Error upserting record fcb40a61-6184-4398-8bbe-357259f84adf: not all arguments converted during string formatting
+
+Error upserting record 6bc2e585-88a6-4244-8d6a-d4c1ff8ba378: not all arguments converted during string formatting
+
+Error upserting record fd854740-6cd5-4f44-899b-545498e183c8: not all arguments converted during string formatting
+
+Error upserting record 0c34068e-0f9b-4d47-8a6e-aba12ee6c448: not all arguments converted during string formatting
+
+Error upserting record 58698f69-0154-42e9-889a-dabf24017ca2: not all arguments converted during string formatting
+
+Error upserting record 2d0b716e-64f6-448d-8367-8b49b6515d0f: not all arguments converted during string formatting
+
+Error upserting record 30dadb84-8a8d-429e-8b5e-e19556cc3143: not all arguments converted during string formatting
+
+Error upserting record 50277122-1c2d-4642-8ef7-214ae402b221: not all arguments converted during string formatting
+
+Error upserting record 16475579-4638-4557-81fc-d4d48007f0e7: not all arguments converted during string formatting
+
+Error upserting record 339a4820-41a1-48aa-87e1-0a5352be56a7: not all arguments converted during string formatting
+
+Error upserting record 112016bb-83ee-4b40-8c48-714325f9fc34: not all arguments converted during string formatting
+
+Error upserting record ce3af646-5633-4b17-8dab-bced3071a7a5: not all arguments converted during string formatting
+
+Error upserting record d8c377df-3ce1-444f-8367-f4ac8f515afa: not all arguments converted during string formatting
+
+Error upserting record 131e42a6-5261-4967-876a-d74e95106140: not all arguments converted during string formatting
+
+Error upserting record 06016c6b-dab0-48f3-8b52-4f0e01de069e: not all arguments converted during string formatting
+
+Error upserting record b3dab0b7-d39d-4ac1-82dc-0a459f1c1c9f: not all arguments converted during string formatting
+
+Error upserting record 55cb65b3-133a-47db-8a85-c58a62110532: not all arguments converted during string formatting
+
+Error upserting record 9a34477a-1771-43e0-8099-acb8eb5073bc: not all arguments converted during string formatting
+
+Error upserting record 393d58a5-5579-4498-83a8-09cfd5eef08f: not all arguments converted during string formatting
+
+Error upserting record a71c8e6b-be1c-4773-8c3b-3e76891d21d9: not all arguments converted during string formatting
+
+Error upserting record daabb0d0-4ffe-407d-8850-42fa66a130a2: not all arguments converted during string formatting
+
+Error upserting record 1e349ba6-d7d3-4426-85f0-ee6460ab84c5: not all arguments converted during string formatting
+
+Error upserting record 32b4b21b-89e1-41c1-878c-b5fc334fe236: not all arguments converted during string formatting
+
+Error upserting record 9bd74f55-96af-444e-837c-b4f2b769970b: not all arguments converted during string formatting
+
+Error upserting record c709ba97-1f9b-4d2b-8c98-71ae85a34de2: not all arguments converted during string formatting
+
+Error upserting record 0c26ba88-a6b0-449e-8d15-0e05b37588ba: not all arguments converted during string formatting
+
+Error upserting record a7db2be5-5f0e-4276-83be-c9239f5e7baa: not all arguments converted during string formatting
+
+Error upserting record 4fb29159-4709-4841-8a02-e16e753263bd: not all arguments converted during string formatting
+
+Error upserting record 2f9bebcc-25ec-491e-8026-a3d3d9239a0a: not all arguments converted during string formatting
+
+Error upserting record 12c0f104-92cf-40d5-8384-3a18fcecc95e: not all arguments converted during string formatting
+
+Error upserting record 5c837f4d-bc36-4671-8a01-319132375117: not all arguments converted during string formatting
+
+Error upserting record dde32b6e-8e80-48d8-8915-7e3162d4fa30: not all arguments converted during string formatting
+
+Error upserting record d95d65b3-b7d8-49f7-8c11-4724185f76c6: not all arguments converted during string formatting
+
+Error upserting record 2e9ab8ad-23fa-4be0-8e87-bbce9b5ab8e2: not all arguments converted during string formatting
+
+Error upserting record b03c1f6c-9f61-4918-84f2-63bb4e07e72f: not all arguments converted during string formatting
+
+Error upserting record 03c569a5-d300-4014-8307-e5f89d24c7cd: not all arguments converted during string formatting
+
+Error upserting record 6b0e33df-e4f8-4567-845e-3653b3bc3cb4: not all arguments converted during string formatting
+
+Error upserting record 5b6b0078-a2e1-4650-803e-e25231c1e32d: not all arguments converted during string formatting
+
+Error upserting record d2099392-e624-4026-8c66-ec4f55b45000: not all arguments converted during string formatting
+
+Error upserting record fcc2dd73-c0f4-45bc-8812-4ad87343a3c7: not all arguments converted during string formatting
+
+Error upserting record 00b08cb5-3b93-45d8-8772-bf76c2799916: not all arguments converted during string formatting
+
+Error upserting record 55e99452-e136-4a88-8fde-313b79160c60: not all arguments converted during string formatting
+
+Error upserting record 27ae5ad8-a303-445c-82c6-ff8c0b968f55: not all arguments converted during string formatting
+
+Error upserting record a4887fe1-2401-41d6-8b37-4c780992cd36: not all arguments converted during string formatting
+
+Error upserting record 6e0496a2-5ece-476e-86c9-30eca95b3636: not all arguments converted during string formatting
+
+Error upserting record 0bca49d2-97a2-462d-823b-184d617059b2: not all arguments converted during string formatting
+
+Error upserting record 8f0eb0f7-2dbe-41bc-81d5-3bfd7b9957f7: not all arguments converted during string formatting
+
+Error upserting record 71a07e2a-f46b-44b9-8743-b92a3258e073: not all arguments converted during string formatting
+
+Error upserting record 3ed1af41-6759-44e2-884c-dcb8efbd2a8f: not all arguments converted during string formatting
+
+Error upserting record 6e4e5bf6-3590-43a4-803d-cd95a4e83128: not all arguments converted during string formatting
+
+Error upserting record 32ca52ae-6f40-428d-8603-1c10900aabd5: not all arguments converted during string formatting
+
+Error upserting record 2eac4743-040d-4c0f-859f-455999994182: not all arguments converted during string formatting
+
+Error upserting record 3da952c1-413e-44ed-82a8-324266cdbbe0: not all arguments converted during string formatting
+
+Error upserting record 74844772-6f69-45c2-8407-fe427582497d: not all arguments converted during string formatting
+
+Error upserting record 8de7d474-47f9-4221-8a68-53be0982f369: not all arguments converted during string formatting
+
+Error upserting record 1e1c50fe-c5a3-4e4c-83c5-0ea65da51b40: not all arguments converted during string formatting
+
+Error upserting record a332e5c2-9614-4034-8486-4fbfd6b10162: not all arguments converted during string formatting
+
+Error upserting record 4133e037-bb3a-4470-848c-3d2563761492: not all arguments converted during string formatting
+
+Error upserting record b3143e75-a92a-49d5-8a4e-13348ae27654: not all arguments converted during string formatting
+
+Error upserting record 9603889f-3061-4824-8a6d-a669cc066012: not all arguments converted during string formatting
+
+Error upserting record 06215662-c66d-4e47-88bb-85bf80b8330d: not all arguments converted during string formatting
+
+Error upserting record 12981e7b-07fd-4c09-833c-aaa49ca62c02: not all arguments converted during string formatting
+
+Error upserting record fe926da0-8d6f-423c-8f68-be9db20d90c0: not all arguments converted during string formatting
+
+Error upserting record 75358db9-d04e-4b9c-810f-1dd406087471: not all arguments converted during string formatting
+
+Error upserting record 91b720d4-aff0-441a-8e0a-5dbf52038c78: not all arguments converted during string formatting
+
+Error upserting record 27bd26bb-7651-478d-801d-73629898aee2: not all arguments converted during string formatting
+
+Error upserting record 62ef24a4-3639-42a2-8dde-af31722975d0: not all arguments converted during string formatting
+
+Error upserting record efbe8a8d-560f-4606-81d5-f0380da23e84: not all arguments converted during string formatting
+
+Error upserting record 25b67833-5d9a-4780-8673-15209e087439: not all arguments converted during string formatting
+
+Error upserting record ae137cee-af47-4641-874c-01b0ba12f578: not all arguments converted during string formatting
+
+Error upserting record fc1523b6-51cd-4f9a-8c17-016cbac5337e: not all arguments converted during string formatting
+
+Error upserting record 2195a02e-9aeb-4d6e-8dea-016a7e30e9b9: not all arguments converted during string formatting
+
+Error upserting record 05a570e7-24bc-4983-85a0-214a084bc14e: not all arguments converted during string formatting
+
+Error upserting record 37a8a5e4-4128-44d1-8499-9e6ec12c8b5b: not all arguments converted during string formatting
+
+Error upserting record 32ecf359-9fa9-468d-8f32-ee7403b0add7: not all arguments converted during string formatting
+
+Error upserting record c5b71991-9f54-4bf0-8f05-16ab7581574c: not all arguments converted during string formatting
+
+Error upserting record 1c505c09-c02a-41b5-8645-f9dae9a60b1f: not all arguments converted during string formatting
+
+Error upserting record ebbb6ee0-2d9c-4ee3-8389-98e3adef8e50: not all arguments converted during string formatting
+
+Error upserting record 77da015d-142a-4118-83f3-8141690b4b02: not all arguments converted during string formatting
+
+Error upserting record a5ab4207-a7cd-40a8-8e79-71e7a5937146: not all arguments converted during string formatting
+
+Error upserting record ad79938d-7721-40b6-8034-75b1d21f4932: not all arguments converted during string formatting
+
+Error upserting record 00eb7b5d-370d-460b-87c2-ba58009bcc5f: not all arguments converted during string formatting
+
+Error upserting record 2baacd25-094a-4454-8034-77d5768c4740: not all arguments converted during string formatting
+
+Error upserting record 25cc97b4-c6a5-49f9-8beb-6e77f41b1fa2: not all arguments converted during string formatting
+
+Error upserting record 89de4365-aa53-486b-83e9-9ce87a44f921: not all arguments converted during string formatting
+
+Error upserting record be1f9c52-2243-4bc3-897b-03cc736ce677: not all arguments converted during string formatting
+
+Error upserting record 70b46ab5-6ac3-4043-80c0-eb6de3d6cbc7: not all arguments converted during string formatting
+
+Error upserting record a3d90fac-3158-42be-873f-a5a588df56fd: not all arguments converted during string formatting
+
+Error upserting record d936c1b0-6487-42c6-84a1-2a6db2e24761: not all arguments converted during string formatting
+
+Error upserting record ae5887aa-a8e6-45bb-8685-eb48b0f4c361: not all arguments converted during string formatting
+
+Error upserting record 3954e1e5-697e-4105-8c27-c0aa562a52c6: not all arguments converted during string formatting
+
+Error upserting record 50b7d843-13fe-4dd6-84a6-a5e777a07296: not all arguments converted during string formatting
+
+Error upserting record bd99e61e-6fb9-4bf9-8397-cf7b4e7f1545: not all arguments converted during string formatting
+
+Error upserting record b0c31567-3e75-4da4-897c-f92faec76468: not all arguments converted during string formatting
+
+Error upserting record 380894d2-75a2-47db-865d-86efeb7edcd6: not all arguments converted during string formatting
+
+Error upserting record 12da96db-dd16-4941-8d90-cd30e1ee40ce: not all arguments converted during string formatting
+
+Error upserting record 8f0ef01f-08fa-429a-8e75-92162d3879ff: not all arguments converted during string formatting
+
+Error upserting record 7a970375-66d8-4743-838f-5e03de9ecf52: not all arguments converted during string formatting
+
+Error upserting record d8d3d34c-c9b4-4046-8b27-4a2db6b3abd9: not all arguments converted during string formatting
+
+Error upserting record f58fdef1-987c-4dc9-8c38-13b3569a56e5: not all arguments converted during string formatting
+
+Error upserting record 7125c697-fcc8-4ca2-80e7-3cc84d92e190: not all arguments converted during string formatting
+
+Error upserting record 460cb2f4-bbe0-4a33-83b7-0feaab3577db: not all arguments converted during string formatting
+
+Error upserting record f4f1db8a-c684-43bf-844a-c2e7aea5b480: not all arguments converted during string formatting
+
+Error upserting record 0e0f4959-cbad-4a94-8e70-af81e35e6ba0: not all arguments converted during string formatting
+
+Error upserting record 61393c8c-165f-4f94-8885-a11cac940fdb: not all arguments converted during string formatting
+
+Error upserting record a85d711a-7c52-4f5c-85c9-19bc8cb82820: not all arguments converted during string formatting
+✓ 793 records processed
+✅ Phase 2 complete: 0 records upserted
+🔄 Phase 3: Ingesting recent Public_CRM (closed tickets, 7 fields)...
+  Fetching recent Public_CRM at offset 0... done.
+✅ Phase 3 complete: 0 new records inserted
+
+✅ All phases complete. Computing final statistics...
+Total records in crm_full: 56734
+Closed: 0
+Open: 0

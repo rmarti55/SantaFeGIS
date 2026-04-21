@@ -222,9 +222,9 @@ export default function WorkOrderTable() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {data?.rows.map((row) => (
+            {data?.rows.map((row, index) => (
               <tr
-                key={row.objectid}
+                key={row.objectid ?? `row-${index}`}
                 className="hover:bg-gray-50 transition-colors"
               >
                 <td className="px-3 py-2.5 text-sm text-gray-500 font-mono text-xs">
