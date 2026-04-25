@@ -19,6 +19,12 @@ import {
   STATUS_LABELS,
   FLAT_PROBLEM_TYPES,
 } from "@/lib/arcgis";
+import {
+  TOOLTIP_CONTENT_STYLE,
+  TOOLTIP_LABEL_STYLE,
+  TOOLTIP_ITEM_STYLE,
+  TOOLTIP_CURSOR_STYLE,
+} from "@/lib/chartTooltip";
 
 
 interface Stats {
@@ -56,13 +62,6 @@ const STATUS_LABELS_LOCAL: Record<string, string> = {
   historical: "Historical (pre-2026, status not recorded)",
 };
 
-const TOOLTIP_STYLE = {
-  backgroundColor: "#1f2937",
-  border: "none",
-  borderRadius: "8px",
-  color: "#f9fafb",
-  fontSize: "13px",
-};
 
 function pct(n: number, total: number): string {
   if (!total) return "0";
@@ -222,7 +221,9 @@ export default function WorkOrderStats() {
                         ))}
                       </Pie>
                       <Tooltip
-                        contentStyle={TOOLTIP_STYLE}
+                        contentStyle={TOOLTIP_CONTENT_STYLE}
+                        labelStyle={TOOLTIP_LABEL_STYLE}
+                        itemStyle={TOOLTIP_ITEM_STYLE}
                         formatter={(value, _name, item) => {
                           const v = Number(value);
                           const label = (item?.payload as { fullName?: string })?.fullName ?? "";
@@ -272,7 +273,9 @@ export default function WorkOrderStats() {
                         ))}
                       </Pie>
                       <Tooltip
-                        contentStyle={TOOLTIP_STYLE}
+                        contentStyle={TOOLTIP_CONTENT_STYLE}
+                        labelStyle={TOOLTIP_LABEL_STYLE}
+                        itemStyle={TOOLTIP_ITEM_STYLE}
                         formatter={(value) => [
                           `${Number(value).toLocaleString()} (${pct(Number(value), stats.total)}%)`,
                           "",
@@ -502,7 +505,9 @@ export default function WorkOrderStats() {
                             ))}
                           </Pie>
                           <Tooltip
-                            contentStyle={TOOLTIP_STYLE}
+                            contentStyle={TOOLTIP_CONTENT_STYLE}
+                            labelStyle={TOOLTIP_LABEL_STYLE}
+                            itemStyle={TOOLTIP_ITEM_STYLE}
                             formatter={(value) => [
                               `${Number(value).toLocaleString()} (${pct(Number(value), drillTotal)}%)`,
                               "",
@@ -553,7 +558,10 @@ export default function WorkOrderStats() {
                         <XAxis type="number" tick={{ fontSize: 11 }} />
                         <YAxis dataKey="name" type="category" width={200} tick={{ fontSize: 11 }} />
                         <Tooltip
-                          contentStyle={TOOLTIP_STYLE}
+                          contentStyle={TOOLTIP_CONTENT_STYLE}
+                          labelStyle={TOOLTIP_LABEL_STYLE}
+                          itemStyle={TOOLTIP_ITEM_STYLE}
+                          cursor={TOOLTIP_CURSOR_STYLE}
                           formatter={(value) => [Number(value).toLocaleString(), "Work Orders"]}
                           labelFormatter={(label) => {
                             const item = barData.find((d) => d.name === String(label));
@@ -583,7 +591,9 @@ export default function WorkOrderStats() {
                               ))}
                             </Pie>
                             <Tooltip
-                              contentStyle={TOOLTIP_STYLE}
+                              contentStyle={TOOLTIP_CONTENT_STYLE}
+                              labelStyle={TOOLTIP_LABEL_STYLE}
+                              itemStyle={TOOLTIP_ITEM_STYLE}
                               formatter={(value) => [
                                 `${Number(value).toLocaleString()} (${pct(Number(value), drillTotal)}%)`,
                                 "",

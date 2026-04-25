@@ -1,0 +1,43 @@
+{
+  "operatingTotal": 5996713,
+  "capitalTotal": 0,
+  "grandTotal": 5996713,
+  "subOrgs": [
+    {
+      "name": "Garage Operations",
+      "total": 2200000,
+      "type": "operating",
+      "description": "Downtown parking garages — operations, cashiering, maintenance",
+      "lineItems": []
+    },
+    {
+      "name": "Parking Enforcement",
+      "total": 2100000,
+      "type": "operating",
+      "description": "Parking officers, citation processing, boots and tows",
+      "lineItems": []
+    },
+    {
+      "name": "On-Street Meters & Equipment",
+      "total": 800000,
+      "type": "operating",
+      "description": "Multi-space meters, pay stations, technology maintenance",
+      "lineItems": []
+    },
+    {
+      "name": "Parking Administration",
+      "total": 896713,
+      "type": "operating",
+      "description": "Division director, customer service, revenue management, appeals",
+      "lineItems": []
+    }
+  ],
+  "spendingCategories": [
+    { "name": "Personnel (Salaries & Benefits)", "amount": 2800000, "color": "#3b82f6" },
+    { "name": "Contracts & Services",           "amount": 1500000, "color": "#10b981" },
+    { "name": "Facilities & Utilities",         "amount":  700000, "color": "#06b6d4" },
+    { "name": "Technology (meters/systems)",    "amount":  500000, "color": "#8b5cf6" },
+    { "name": "Insurance & Other",              "amount":  496713, "color": "#f59e0b" }
+  ],
+  "capitalNote": ""
+}

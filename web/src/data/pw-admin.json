@@ -1,0 +1,28 @@
+{
+  "operatingTotal": 1425488,
+  "capitalTotal": 0,
+  "grandTotal": 1425488,
+  "subOrgs": [
+    {
+      "name": "Department Leadership",
+      "total": 875000,
+      "type": "operating",
+      "description": "Public Works Director, Deputy Director, executive administrative support",
+      "lineItems": []
+    },
+    {
+      "name": "Business Operations",
+      "total": 550488,
+      "type": "operating",
+      "description": "Budget management, HR support, fleet coordination, public communications",
+      "lineItems": []
+    }
+  ],
+  "spendingCategories": [
+    { "name": "Personnel (Salaries & Benefits)", "amount": 1100000, "color": "#3b82f6" },
+    { "name": "Contracts & Services",           "amount":  175000, "color": "#10b981" },
+    { "name": "Insurance",                      "amount":   75000, "color": "#8b5cf6" },
+    { "name": "Other Operating Costs",          "amount":   75488, "color": "#f59e0b" }
+  ],
+  "capitalNote": ""
+}

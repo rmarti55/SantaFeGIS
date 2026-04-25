@@ -1,0 +1,63 @@
+{
+  "operatingTotal": 7843879,
+  "capitalTotal": 0,
+  "grandTotal": 7843879,
+  "subOrgs": [
+    {
+      "name": "Golf Operations (Marty Sanchez Links)",
+      "total": 3200000,
+      "type": "operating",
+      "description": "Public golf course operations — new management contract ~$2.8M plus direct course maintenance",
+      "lineItems": [
+        { "name": "Golf Management Contract",        "amount": 2800000, "category": "contracts", "note": "New FY26 management contract (+$2.8M)" },
+        { "name": "Course Maintenance Supplies",     "amount":  250000, "category": "materials", "note": "" },
+        { "name": "Equipment Repairs",               "amount":  150000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Recreation Programs & Fitness",
+      "total": 2100000,
+      "type": "operating",
+      "description": "Classes, leagues, youth programs, fitness facilities at recreation centers",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount": 1300000, "category": "overhead",  "note": "" },
+        { "name": "Program Contracts & Instructors", "amount":  450000, "category": "contracts", "note": "" },
+        { "name": "Supplies & Equipment",            "amount":  200000, "category": "materials", "note": "" },
+        { "name": "Facilities Utilities",            "amount":  150000, "category": "utilities", "note": "" }
+      ]
+    },
+    {
+      "name": "Community Facilities & Playgrounds",
+      "total": 1200000,
+      "type": "operating",
+      "description": "Campos de los Suenos, community centers, playground maintenance",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount":  600000, "category": "overhead",  "note": "" },
+        { "name": "Facility Maintenance Contracts",  "amount":  350000, "category": "contracts", "note": "" },
+        { "name": "Rep & Maint Equipment",           "amount":  150000, "category": "materials", "note": "" },
+        { "name": "Utilities",                       "amount":  100000, "category": "utilities", "note": "" }
+      ]
+    },
+    {
+      "name": "MRC Administration",
+      "total": 1343879,
+      "type": "operating",
+      "description": "Division management, scheduling, registration systems, marketing",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount":  900000, "category": "overhead",   "note": "" },
+        { "name": "Insurance (liability & property)","amount":  200000, "category": "overhead",   "note": "" },
+        { "name": "Software & Registration Systems", "amount":  143879, "category": "technology", "note": "" },
+        { "name": "Other Operating Costs",           "amount":  100000, "category": "overhead",   "note": "" }
+      ]
+    }
+  ],
+  "spendingCategories": [
+    { "name": "Golf Management Contract",        "amount": 2800000, "color": "#3b82f6" },
+    { "name": "Personnel (Salaries & Benefits)", "amount": 2800000, "color": "#10b981" },
+    { "name": "Contracts & Program Services",    "amount":  800000, "color": "#f59e0b" },
+    { "name": "Facilities & Utilities",          "amount":  550000, "color": "#06b6d4" },
+    { "name": "Supplies & Materials",            "amount":  593879, "color": "#ec4899" },
+    { "name": "Insurance & Administration",      "amount":  300000, "color": "#8b5cf6" }
+  ],
+  "capitalNote": ""
+}

@@ -1,271 +1,339 @@
 {
   "meta": {
-    "totalAllFunds": 598147203,
-    "totalGeneralFund": 224537890,
-    "yoyChangeAmount": 28912450,
-    "yoyChangePercent": 5.1,
-    "totalRevenue": 612834567
+    "totalAllFunds": 480589392,
+    "totalGeneralFund": 161051606,
+    "yoyChangeAmount": 40510651,
+    "yoyChangePercent": 9.2,
+    "totalRevenue": 482729463
   },
   "departmentExpenditures": [
-    { "department": "Police", "fy26": 72341000, "change": 4215000, "changePct": 6.2 },
-    { "department": "Fire", "fy26": 53218000, "change": 3102000, "changePct": 6.2 },
-    { "department": "Public Works", "fy26": 68742000, "change": 5840000, "changePct": 9.3 },
-    { "department": "Public Utilities", "fy26": 87412000, "change": 6230000, "changePct": 7.7 },
-    { "department": "Community Development", "fy26": 22814000, "change": 1752000, "changePct": 8.3 },
-    { "department": "Parks & Recreation", "fy26": 18936000, "change": -412000, "changePct": -2.1 },
-    { "department": "General Government", "fy26": 35821000, "change": 2145000, "changePct": 6.4 },
-    { "department": "Finance", "fy26": 12467000, "change": 815000, "changePct": 7.0 },
-    { "department": "Human Resources", "fy26": 6234000, "change": 320000, "changePct": 5.4 },
-    { "department": "Information Technology", "fy26": 14218000, "change": 1890000, "changePct": 15.3 },
-    { "department": "Legal", "fy26": 5412000, "change": 245000, "changePct": 4.7 },
-    { "department": "City Manager", "fy26": 8934000, "change": 612000, "changePct": 7.4 },
-    { "department": "City Clerk", "fy26": 3214000, "change": 178000, "changePct": 5.9 },
-    { "department": "Municipal Court", "fy26": 4812000, "change": 310000, "changePct": 6.9 },
-    { "department": "Economic Development", "fy26": 9437000, "change": -215000, "changePct": -2.2 },
-    { "department": "Housing", "fy26": 31246000, "change": 2430000, "changePct": 8.4 },
-    { "department": "Transit", "fy26": 25614000, "change": 1810000, "changePct": 7.6 },
-    { "department": "Library", "fy26": 8218000, "change": 415000, "changePct": 5.3 },
-    { "department": "Land Use", "fy26": 14836000, "change": -960000, "changePct": -6.1 },
-    { "department": "Arts & Culture", "fy26": 5214000, "change": 185000, "changePct": 3.7 },
-    { "department": "Non-Departmental", "fy26": 88777203, "change": -1995550, "changePct": -2.2 }
+    { "department": "Public Utilities",                 "fy25":  86153895, "fy26": 100717264, "change":  14563369, "changePct":  16.9 },
+    { "department": "Public Works",                     "fy25":  64036604, "fy26":  71744063, "change":   7707459, "changePct":  12.0 },
+    { "department": "Non-Departmental",                 "fy25":  39332607, "fy26":  42907578, "change":   3574971, "changePct":   9.1 },
+    { "department": "Police",                           "fy25":  39904500, "fy26":  42113479, "change":   2208979, "changePct":   5.5 },
+    { "department": "Community Services",               "fy25":  40457829, "fy26":  40308146, "change":   -149683, "changePct":  -0.4 },
+    { "department": "Human Resources",                  "fy25":  35511063, "fy26":  32349993, "change":  -3161070, "changePct":  -8.9 },
+    { "department": "Fire",                             "fy25":  30022424, "fy26":  35903389, "change":   5880965, "changePct":  19.6 },
+    { "department": "Finance",                          "fy25":  22755201, "fy26":  26326485, "change":   3571284, "changePct":  15.7 },
+    { "department": "General Government",               "fy25":  22625319, "fy26":  21217755, "change":  -1407564, "changePct":  -6.2 },
+    { "department": "TOURISM Santa Fe",                 "fy25":  15436938, "fy26":  16269150, "change":    832212, "changePct":   5.4 },
+    { "department": "Info Tech & Telecom",              "fy25":  14755125, "fy26":  15019557, "change":    264432, "changePct":   1.8 },
+    { "department": "Planning & Land Use",              "fy25":   8116206, "fy26":   8353102, "change":    236896, "changePct":   2.9 },
+    { "department": "Affordable Housing",               "fy25":   6026527, "fy26":   8623080, "change":   2596553, "changePct":  43.1 },
+    { "department": "Airport",                          "fy25":   4658342, "fy26":   5381897, "change":    723555, "changePct":  15.5 },
+    { "department": "Economic Development",             "fy25":   3751268, "fy26":   5361592, "change":   1610324, "changePct":  42.9 },
+    { "department": "Community Engagement",             "fy25":   3156696, "fy26":   3827614, "change":    670918, "changePct":  21.3 },
+    { "department": "Arts & Culture",                   "fy25":   2143627, "fy26":   2117640, "change":    -25987, "changePct":  -1.2 },
+    { "department": "Emergency Management",             "fy25":    665058, "fy26":    948098, "change":    283040, "changePct":  42.6 },
+    { "department": "Metropolitan Redevelopment Agency","fy25":    569512, "fy26":    594555, "change":     25043, "changePct":   4.4 },
+    { "department": "Santa Fe Film Office",             "fy25":         0, "fy26":    504955, "change":    504955, "changePct":  null }
   ],
   "departmentCategoryBreakdowns": [
     {
-      "department": "Police",
+      "department": "Affordable Housing",
       "categories": [
-        { "category": "Personnel Services", "fy26": 58912000 },
-        { "category": "Contractual Services", "fy26": 4218000 },
-        { "category": "Commodities", "fy26": 3412000 },
-        { "category": "Capital Outlay", "fy26": 5799000 }
+        { "category": "Salaries, Wages & Benefits", "fy2223": 496565,   "fy2324": 473696,   "fy25": 594831,   "fy26": 581820   },
+        { "category": "Contractuals & Utilities",   "fy2223": 7292842,  "fy2324": 5427667,  "fy25": 4608166,  "fy26": 4966210  },
+        { "category": "Supplies",                   "fy2223": 25557,    "fy2324": 625,      "fy25": 3050,     "fy26": 900      },
+        { "category": "Insurance",                  "fy2223": 3565,     "fy2324": 14834,    "fy25": 17687,    "fy26": 16512    },
+        { "category": "Other Operating Costs",      "fy2223": 51456,    "fy2324": 61881,    "fy25": 49472,    "fy26": 57638    },
+        { "category": "Capital Purchases",          "fy2223": null,     "fy2324": 723854,   "fy25": null,     "fy26": null     },
+        { "category": "Transfers to Other Funds",   "fy2223": 3028950,  "fy2324": 692837,   "fy25": 753321,   "fy26": 3000000  }
       ]
     },
     {
-      "department": "Fire",
+      "department": "Airport",
       "categories": [
-        { "category": "Personnel Services", "fy26": 44218000 },
-        { "category": "Contractual Services", "fy26": 3100000 },
-        { "category": "Commodities", "fy26": 2400000 },
-        { "category": "Capital Outlay", "fy26": 3500000 }
-      ]
-    },
-    {
-      "department": "Public Works",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 24312000 },
-        { "category": "Contractual Services", "fy26": 18420000 },
-        { "category": "Commodities", "fy26": 8610000 },
-        { "category": "Capital Outlay", "fy26": 17400000 }
-      ]
-    },
-    {
-      "department": "Public Utilities",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 31450000 },
-        { "category": "Contractual Services", "fy26": 22130000 },
-        { "category": "Commodities", "fy26": 12832000 },
-        { "category": "Capital Outlay", "fy26": 21000000 }
-      ]
-    },
-    {
-      "department": "Community Development",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 12814000 },
-        { "category": "Contractual Services", "fy26": 5200000 },
-        { "category": "Commodities", "fy26": 1800000 },
-        { "category": "Capital Outlay", "fy26": 3000000 }
-      ]
-    },
-    {
-      "department": "Parks & Recreation",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 11236000 },
-        { "category": "Contractual Services", "fy26": 3200000 },
-        { "category": "Commodities", "fy26": 2100000 },
-        { "category": "Capital Outlay", "fy26": 2400000 }
-      ]
-    },
-    {
-      "department": "General Government",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 6821000 },
-        { "category": "Contractual Services", "fy26": 14500000 },
-        { "category": "Commodities", "fy26": 2500000 },
-        { "category": "Transfers", "fy26": 12000000 }
-      ]
-    },
-    {
-      "department": "Finance",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 8467000 },
-        { "category": "Contractual Services", "fy26": 2100000 },
-        { "category": "Commodities", "fy26": 1200000 },
-        { "category": "Capital Outlay", "fy26": 700000 }
-      ]
-    },
-    {
-      "department": "Human Resources",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 4234000 },
-        { "category": "Contractual Services", "fy26": 1400000 },
-        { "category": "Commodities", "fy26": 600000 }
-      ]
-    },
-    {
-      "department": "Information Technology",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 6218000 },
-        { "category": "Contractual Services", "fy26": 4500000 },
-        { "category": "Commodities", "fy26": 1200000 },
-        { "category": "Capital Outlay", "fy26": 2300000 }
-      ]
-    },
-    {
-      "department": "Legal",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 3612000 },
-        { "category": "Contractual Services", "fy26": 1400000 },
-        { "category": "Commodities", "fy26": 400000 }
-      ]
-    },
-    {
-      "department": "City Manager",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 5934000 },
-        { "category": "Contractual Services", "fy26": 2100000 },
-        { "category": "Commodities", "fy26": 900000 }
-      ]
-    },
-    {
-      "department": "City Clerk",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 2214000 },
-        { "category": "Contractual Services", "fy26": 700000 },
-        { "category": "Commodities", "fy26": 300000 }
-      ]
-    },
-    {
-      "department": "Municipal Court",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 3612000 },
-        { "category": "Contractual Services", "fy26": 800000 },
-        { "category": "Commodities", "fy26": 400000 }
-      ]
-    },
-    {
-      "department": "Economic Development",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 4437000 },
-        { "category": "Contractual Services", "fy26": 3200000 },
-        { "category": "Commodities", "fy26": 800000 },
-        { "category": "Capital Outlay", "fy26": 1000000 }
-      ]
-    },
-    {
-      "department": "Housing",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 8246000 },
-        { "category": "Contractual Services", "fy26": 6400000 },
-        { "category": "Commodities", "fy26": 1600000 },
-        { "category": "Capital Outlay", "fy26": 15000000 }
-      ]
-    },
-    {
-      "department": "Transit",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 14614000 },
-        { "category": "Contractual Services", "fy26": 5400000 },
-        { "category": "Commodities", "fy26": 3200000 },
-        { "category": "Capital Outlay", "fy26": 2400000 }
-      ]
-    },
-    {
-      "department": "Library",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 5718000 },
-        { "category": "Contractual Services", "fy26": 1200000 },
-        { "category": "Commodities", "fy26": 1000000 },
-        { "category": "Capital Outlay", "fy26": 300000 }
-      ]
-    },
-    {
-      "department": "Land Use",
-      "categories": [
-        { "category": "Personnel Services", "fy26": 9836000 },
-        { "category": "Contractual Services", "fy26": 3200000 },
-        { "category": "Commodities", "fy26": 1200000 },
-        { "category": "Capital Outlay", "fy26": 600000 }
+        { "category": "Salaries, Wages & Benefits", "fy2223": 699042,   "fy2324": 2614327,  "fy25": 2657974,  "fy26": 3772121  },
+        { "category": "Contractuals & Utilities",   "fy2223": 509983,   "fy2324": 1064107,  "fy25": 180000,   "fy26": 153700   },
+        { "category": "Repairs & Maintenance",      "fy2223": 88148,    "fy2324": 215757,   "fy25": 181500,   "fy26": 206000   },
+        { "category": "Supplies",                   "fy2223": 121924,   "fy2324": 272939,   "fy25": 598250,   "fy26": 326000   },
+        { "category": "Insurance",                  "fy2223": 44830,    "fy2324": 83447,    "fy25": 139942,   "fy26": 153021   },
+        { "category": "Other Operating Costs",      "fy2223": 1625230,  "fy2324": 2013693,  "fy25": 715042,   "fy26": 701055   },
+        { "category": "Capital Purchases",          "fy2223": 23595,    "fy2324": 80069,    "fy25": 165000,   "fy26": 70000    },
+        { "category": "Transfers to Other Funds",   "fy2223": 10602,    "fy2324": null,     "fy25": 20634,    "fy26": null     }
       ]
     },
     {
       "department": "Arts & Culture",
       "categories": [
-        { "category": "Personnel Services", "fy26": 2014000 },
-        { "category": "Contractual Services", "fy26": 2200000 },
-        { "category": "Commodities", "fy26": 500000 },
-        { "category": "Capital Outlay", "fy26": 500000 }
+        { "category": "Salaries, Wages & Benefits", "fy2223": 331760,   "fy2324": 371866,   "fy25": 537418,   "fy26": 687658   },
+        { "category": "Contractuals & Utilities",   "fy2223": 486369,   "fy2324": 236077,   "fy25": 479242,   "fy26": 91000    },
+        { "category": "Repairs & Maintenance",      "fy2223": 2973,     "fy2324": 1569,     "fy25": 4000,     "fy26": 4000     },
+        { "category": "Supplies",                   "fy2223": 5481,     "fy2324": 12632,    "fy25": 24550,    "fy26": 28800    },
+        { "category": "Insurance",                  "fy2223": 11933,    "fy2324": 20375,    "fy25": 23836,    "fy26": 26457    },
+        { "category": "Other Operating Costs",      "fy2223": 620641,   "fy2324": 776201,   "fy25": 918045,   "fy26": 1153023  },
+        { "category": "Transfers to Other Funds",   "fy2223": 362792,   "fy2324": 156948,   "fy25": 156536,   "fy26": 126702   }
+      ]
+    },
+    {
+      "department": "Community Engagement",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 1647391,  "fy2324": 1640182,  "fy25": 1966464,  "fy26": 2235713  },
+        { "category": "Contractuals & Utilities",   "fy2223": 384740,   "fy2324": 312521,   "fy25": 400385,   "fy26": 432965   },
+        { "category": "Repairs & Maintenance",      "fy2223": 6142,     "fy2324": 3813,     "fy25": 11273,    "fy26": 5000     },
+        { "category": "Supplies",                   "fy2223": 94383,    "fy2324": 175563,   "fy25": 247646,   "fy26": 162296   },
+        { "category": "Insurance",                  "fy2223": 28052,    "fy2324": 66885,    "fy25": 75781,    "fy26": 71078    },
+        { "category": "Other Operating Costs",      "fy2223": 231150,   "fy2324": 424452,   "fy25": 389547,   "fy26": 920562   },
+        { "category": "Capital Purchases",          "fy2223": 8548,     "fy2324": 110651,   "fy25": null,     "fy26": null     },
+        { "category": "Transfers to Other Funds",   "fy2223": 68074,    "fy2324": 62000,    "fy25": 65600,    "fy26": null     }
+      ]
+    },
+    {
+      "department": "Community Services",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 11065845, "fy2324": 12457056, "fy25": 14806397, "fy26": 16980050 },
+        { "category": "Contractuals & Utilities",   "fy2223": 4680853,  "fy2324": 8798076,  "fy25": 14949648, "fy26": 7930929  },
+        { "category": "Repairs & Maintenance",      "fy2223": 187402,   "fy2324": 216476,   "fy25": 211862,   "fy26": 179932   },
+        { "category": "Supplies",                   "fy2223": 1990870,  "fy2324": 2001022,  "fy25": 1982944,  "fy26": 1994650  },
+        { "category": "Insurance",                  "fy2223": 433975,   "fy2324": 878434,   "fy25": 805468,   "fy26": 739169   },
+        { "category": "Other Operating Costs",      "fy2223": 2383279,  "fy2324": 2786308,  "fy25": 2478226,  "fy26": 2354510  },
+        { "category": "Capital Purchases",          "fy2223": 32960,    "fy2324": 624376,   "fy25": 300508,   "fy26": 167011   },
+        { "category": "Transfers to Other Funds",   "fy2223": 5036159,  "fy2324": 6078697,  "fy25": 4922776,  "fy26": 9961895  }
+      ]
+    },
+    {
+      "department": "Economic Development",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 1188311,  "fy2324": 1298432,  "fy25": 1178869,  "fy26": 1490283  },
+        { "category": "Contractuals & Utilities",   "fy2223": 1243111,  "fy2324": 2412327,  "fy25": 2053125,  "fy26": 1341204  },
+        { "category": "Supplies",                   "fy2223": 23296,    "fy2324": 42119,    "fy25": 8050,     "fy26": 50050    },
+        { "category": "Insurance",                  "fy2223": 15360,    "fy2324": 35864,    "fy25": 32336,    "fy26": 46231    },
+        { "category": "Other Operating Costs",      "fy2223": 257540,   "fy2324": 434772,   "fy25": 478888,   "fy26": 552338   },
+        { "category": "Debt Service",               "fy2223": 20160,    "fy2324": null,     "fy25": null,     "fy26": null     },
+        { "category": "Transfers to Other Funds",   "fy2223": 1354939,  "fy2324": 1770000,  "fy25": null,     "fy26": 1881486  }
+      ]
+    },
+    {
+      "department": "Emergency Management",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 216948,   "fy2324": 229189,   "fy25": 236115,   "fy26": 273538   },
+        { "category": "Contractuals & Utilities",   "fy2223": 3166,     "fy2324": 98352,    "fy25": 103259,   "fy26": 243021   },
+        { "category": "Repairs & Maintenance",      "fy2223": 6465,     "fy2324": null,     "fy25": 250,      "fy26": 250      },
+        { "category": "Supplies",                   "fy2223": 49521,    "fy2324": 103340,   "fy25": 135160,   "fy26": 217351   },
+        { "category": "Insurance",                  "fy2223": 3375,     "fy2324": 7327,     "fy25": 8071,     "fy26": 6604     },
+        { "category": "Other Operating Costs",      "fy2223": 151114,   "fy2324": 75253,    "fy25": 72834,    "fy26": 131176   },
+        { "category": "Capital Purchases",          "fy2223": null,     "fy2324": 28845,    "fy25": 109369,   "fy26": 76158    }
+      ]
+    },
+    {
+      "department": "Finance",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 4425344,  "fy2324": 4840314,  "fy25": 6016684,  "fy26": 6960781  },
+        { "category": "Contractuals & Utilities",   "fy2223": 2683095,  "fy2324": 4124143,  "fy25": 4250000,  "fy26": 2482700  },
+        { "category": "Repairs & Maintenance",      "fy2223": 212942,   "fy2324": 163798,   "fy25": 282546,   "fy26": 250000   },
+        { "category": "Supplies",                   "fy2223": 489646,   "fy2324": 550829,   "fy25": 553389,   "fy26": 574200   },
+        { "category": "Insurance",                  "fy2223": 69966,    "fy2324": 153994,   "fy25": 221956,   "fy26": 197212   },
+        { "category": "Other Operating Costs",      "fy2223": 604249,   "fy2324": 763676,   "fy25": 596697,   "fy26": 574603   },
+        { "category": "Capital Purchases",          "fy2223": 16909,    "fy2324": 12292,    "fy25": 93292,    "fy26": 20000    },
+        { "category": "Transfers to Other Funds",   "fy2223": 16792685, "fy2324": 18524383, "fy25": 10740637, "fy26": 15266989 }
+      ]
+    },
+    {
+      "department": "Fire",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 21973230, "fy2324": 25028156, "fy25": 23583934, "fy26": 29464690 },
+        { "category": "Contractuals & Utilities",   "fy2223": 671728,   "fy2324": 524845,   "fy25": 772893,   "fy26": 768885   },
+        { "category": "Repairs & Maintenance",      "fy2223": 133034,   "fy2324": 140854,   "fy25": 207444,   "fy26": 127674   },
+        { "category": "Supplies",                   "fy2223": 1515216,  "fy2324": 1812582,  "fy25": 1458734,  "fy26": 1655951  },
+        { "category": "Insurance",                  "fy2223": 288150,   "fy2324": 710451,   "fy25": 876512,   "fy26": 776875   },
+        { "category": "Other Operating Costs",      "fy2223": 934854,   "fy2324": 1292611,  "fy25": 2171214,  "fy26": 2116782  },
+        { "category": "Capital Purchases",          "fy2223": null,     "fy2324": 1101042,  "fy25": 828532,   "fy26": 992532   },
+        { "category": "Debt Service",               "fy2223": null,     "fy2324": 89839,    "fy25": null,     "fy26": null     },
+        { "category": "Transfers to Other Funds",   "fy2223": 123161,   "fy2324": 123163,   "fy25": 123161,   "fy26": null     }
+      ]
+    },
+    {
+      "department": "General Government",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 4513765,  "fy2324": 5302306,  "fy25": 6534524,  "fy26": 6556468  },
+        { "category": "Contractuals & Utilities",   "fy2223": 881968,   "fy2324": 1042516,  "fy25": 1695122,  "fy26": 1270827  },
+        { "category": "Repairs & Maintenance",      "fy2223": -5898,    "fy2324": 4415,     "fy25": null,     "fy26": 6775     },
+        { "category": "Supplies",                   "fy2223": 233176,   "fy2324": 213169,   "fy25": 387910,   "fy26": 422928   },
+        { "category": "Insurance",                  "fy2223": 8560537,  "fy2324": 8118866,  "fy25": 12727331, "fy26": 11642810 },
+        { "category": "Other Operating Costs",      "fy2223": 717261,   "fy2324": 974726,   "fy25": 1223312,  "fy26": 1186947  },
+        { "category": "Capital Purchases",          "fy2223": 9408,     "fy2324": 23315,    "fy25": 55000,    "fy26": 131000   },
+        { "category": "Transfers to Other Funds",   "fy2223": 62500,    "fy2324": 62500,    "fy25": 2120,     "fy26": null     }
+      ]
+    },
+    {
+      "department": "Human Resources",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 4343321,  "fy2324": 3505379,  "fy25": 4191169,  "fy26": 2042177  },
+        { "category": "Contractuals & Utilities",   "fy2223": 1137858,  "fy2324": 1396034,  "fy25": 1957640,  "fy26": 1442277  },
+        { "category": "Supplies",                   "fy2223": 52956,    "fy2324": 32950,    "fy25": 59200,    "fy26": 115320   },
+        { "category": "Insurance",                  "fy2223": 19966763, "fy2324": 22670557, "fy25": 28866124, "fy26": 28297999 },
+        { "category": "Other Operating Costs",      "fy2223": 247074,   "fy2324": 347409,   "fy25": 361930,   "fy26": 377220   },
+        { "category": "Transfers to Other Funds",   "fy2223": 1677872,  "fy2324": 75000,    "fy25": 75000,    "fy26": 75000    }
+      ]
+    },
+    {
+      "department": "Info Tech & Telecom",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 3140322,  "fy2324": 5438875,  "fy25": 5077327,  "fy26": 5754695  },
+        { "category": "Contractuals & Utilities",   "fy2223": 1879490,  "fy2324": 4026467,  "fy25": 2515802,  "fy26": 2395326  },
+        { "category": "Repairs & Maintenance",      "fy2223": 137916,   "fy2324": 97865,    "fy25": 730807,   "fy26": 171000   },
+        { "category": "Supplies",                   "fy2223": 1069599,  "fy2324": 1246244,  "fy25": 2640688,  "fy26": 1943221  },
+        { "category": "Insurance",                  "fy2223": 58280,    "fy2324": 97986,    "fy25": 199165,   "fy26": 154947   },
+        { "category": "Other Operating Costs",      "fy2223": 2973931,  "fy2324": 3061424,  "fy25": 2846209,  "fy26": 2744100  },
+        { "category": "Capital Purchases",          "fy2223": null,     "fy2324": 427312,   "fy25": 622715,   "fy26": 498715   },
+        { "category": "Debt Service",               "fy2223": 13251,    "fy2324": 967711,   "fy25": null,     "fy26": null     },
+        { "category": "Transfers to Other Funds",   "fy2223": 2158022,  "fy2324": 3250000,  "fy25": 122412,   "fy26": 1357553  }
+      ]
+    },
+    {
+      "department": "Metropolitan Redevelopment Agency",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": null,     "fy2324": 95505,    "fy25": 279353,   "fy26": 304396   },
+        { "category": "Contractuals & Utilities",   "fy2223": null,     "fy2324": null,     "fy25": 271326,   "fy26": 271326   },
+        { "category": "Supplies",                   "fy2223": null,     "fy2324": 2755,     "fy25": 2500,     "fy26": 2500     },
+        { "category": "Other Operating Costs",      "fy2223": null,     "fy2324": 578,      "fy25": 16333,    "fy26": 16333    }
       ]
     },
     {
       "department": "Non-Departmental",
       "categories": [
-        { "category": "Transfers", "fy26": 42000000 },
-        { "category": "Debt Service", "fy26": 28777203 },
-        { "category": "Contractual Services", "fy26": 12000000 },
-        { "category": "Capital Outlay", "fy26": 6000000 }
+        { "category": "Transfers & Debt Service",   "fy2223": null,     "fy2324": null,     "fy25": 39332607, "fy26": 42907578 }
+      ]
+    },
+    {
+      "department": "Planning & Land Use",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 5000577,  "fy2324": 5286648,  "fy25": 5763971,  "fy26": 6357205  },
+        { "category": "Contractuals & Utilities",   "fy2223": 381167,   "fy2324": 462952,   "fy25": 1263431,  "fy26": 755380   },
+        { "category": "Repairs & Maintenance",      "fy2223": 315,      "fy2324": null,     "fy25": 3374,     "fy26": 2549     },
+        { "category": "Supplies",                   "fy2223": 74156,    "fy2324": 76239,    "fy25": 54156,    "fy26": 107770   },
+        { "category": "Insurance",                  "fy2223": 89008,    "fy2324": 216514,   "fy25": 254816,   "fy26": 235669   },
+        { "category": "Other Operating Costs",      "fy2223": 562879,   "fy2324": 790940,   "fy25": 776235,   "fy26": 659529   },
+        { "category": "Capital Purchases",          "fy2223": null,     "fy2324": null,     "fy25": null,     "fy26": 235000   },
+        { "category": "Transfers to Other Funds",   "fy2223": null,     "fy2324": null,     "fy25": 223,      "fy26": null     }
+      ]
+    },
+    {
+      "department": "Police",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 22620685, "fy2324": 25612137, "fy25": 26482064, "fy26": 29652902 },
+        { "category": "Contractuals & Utilities",   "fy2223": 980675,   "fy2324": 963171,   "fy25": 1522020,  "fy26": 1652589  },
+        { "category": "Repairs & Maintenance",      "fy2223": 57915,    "fy2324": 136043,   "fy25": 217489,   "fy26": 199571   },
+        { "category": "Supplies",                   "fy2223": 945526,   "fy2324": 948770,   "fy25": 1348159,  "fy26": 1048408  },
+        { "category": "Insurance",                  "fy2223": 474388,   "fy2324": 1166076,  "fy25": 1994332,  "fy26": 1804304  },
+        { "category": "Other Operating Costs",      "fy2223": 3861248,  "fy2324": 6220180,  "fy25": 7097520,  "fy26": 6232342  },
+        { "category": "Capital Purchases",          "fy2223": null,     "fy2324": 4729022,  "fy25": 1242916,  "fy26": 1523363  }
+      ]
+    },
+    {
+      "department": "Public Utilities",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 11691098, "fy2324": 18419827, "fy25": 22853414, "fy26": 25224532 },
+        { "category": "Contractuals & Utilities",   "fy2223": 12226176, "fy2324": 11803762, "fy25": 17837607, "fy26": 21043173 },
+        { "category": "Repairs & Maintenance",      "fy2223": 2522266,  "fy2324": 3275335,  "fy25": 4673812,  "fy26": 5502600  },
+        { "category": "Supplies",                   "fy2223": 2788594,  "fy2324": 2494884,  "fy25": 3344946,  "fy26": 4476977  },
+        { "category": "Insurance",                  "fy2223": 786578,   "fy2324": 1915740,  "fy25": 1321677,  "fy26": 1387124  },
+        { "category": "Other Operating Costs",      "fy2223": 24342594, "fy2324": 26688716, "fy25": 17468046, "fy26": 19075526 },
+        { "category": "Capital Purchases",          "fy2223": 7386,     "fy2324": -16076,   "fy25": 2885000,  "fy26": 4996700  },
+        { "category": "Debt Service",               "fy2223": 2479863,  "fy2324": 2541386,  "fy25": 5557329,  "fy26": 5584253  },
+        { "category": "Transfers to Other Funds",   "fy2223": 8499910,  "fy2324": 7677338,  "fy25": 10212064, "fy26": 13426379 }
+      ]
+    },
+    {
+      "department": "Public Works",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 16884071, "fy2324": 21808242, "fy25": 26404200, "fy26": 27510356 },
+        { "category": "Contractuals & Utilities",   "fy2223": 10626072, "fy2324": 12433174, "fy25": 13926735, "fy26": 16264303 },
+        { "category": "Repairs & Maintenance",      "fy2223": 3752545,  "fy2324": 2581244,  "fy25": 3090178,  "fy26": 3480555  },
+        { "category": "Supplies",                   "fy2223": 2501609,  "fy2324": 2227847,  "fy25": 2580252,  "fy26": 2346667  },
+        { "category": "Insurance",                  "fy2223": 1022145,  "fy2324": 2315341,  "fy25": 2021615,  "fy26": 2166614  },
+        { "category": "Other Operating Costs",      "fy2223": 8345983,  "fy2324": 9130926,  "fy25": 5745144,  "fy26": 5629004  },
+        { "category": "Capital Purchases",          "fy2223": 965019,   "fy2324": 5091534,  "fy25": 4307464,  "fy26": 4136032  },
+        { "category": "Debt Service",               "fy2223": 1130383,  "fy2324": 1162381,  "fy25": 3721981,  "fy26": 4479000  },
+        { "category": "Transfers to Other Funds",   "fy2223": 4859323,  "fy2324": 10030792, "fy25": 2239035,  "fy26": 5731532  }
+      ]
+    },
+    {
+      "department": "Santa Fe Film Office",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": null,     "fy2324": null,     "fy25": null,     "fy26": 304955   },
+        { "category": "Contractuals & Utilities",   "fy2223": null,     "fy2324": null,     "fy25": null,     "fy26": 45000    },
+        { "category": "Supplies",                   "fy2223": null,     "fy2324": null,     "fy25": null,     "fy26": 20000    },
+        { "category": "Other Operating Costs",      "fy2223": null,     "fy2324": null,     "fy25": null,     "fy26": 135000   }
+      ]
+    },
+    {
+      "department": "TOURISM Santa Fe",
+      "categories": [
+        { "category": "Salaries, Wages & Benefits", "fy2223": 2695975,  "fy2324": 3386663,  "fy25": 3923064,  "fy26": 4136679  },
+        { "category": "Contractuals & Utilities",   "fy2223": 1307984,  "fy2324": 1295969,  "fy25": 1897300,  "fy26": 2241100  },
+        { "category": "Repairs & Maintenance",      "fy2223": 111049,   "fy2324": 136189,   "fy25": 177500,   "fy26": 186000   },
+        { "category": "Supplies",                   "fy2223": 247814,   "fy2324": 220193,   "fy25": 212550,   "fy26": 224950   },
+        { "category": "Insurance",                  "fy2223": 54876,    "fy2324": 137973,   "fy25": 171541,   "fy26": 164531   },
+        { "category": "Other Operating Costs",      "fy2223": 4684388,  "fy2324": 5981009,  "fy25": 6045459,  "fy26": 6049807  },
+        { "category": "Capital Purchases",          "fy2223": 56236,    "fy2324": 65843,    "fy25": 1145000,  "fy26": 1350000  },
+        { "category": "Debt Service",               "fy2223": 726450,   "fy2324": 450787,   "fy25": 1770198,  "fy26": 1758386  },
+        { "category": "Transfers to Other Funds",   "fy2223": 169311,   "fy2324": 52286,    "fy25": 94326,    "fy26": 157697   }
       ]
     }
   ],
   "expenditureCategories": {
     "years": ["FY22", "FY23", "FY24", "FY25", "FY26"],
     "categories": [
-      { "category": "Personnel Services", "values": [228340000, 241820000, 256900000, 267450000, 284888000] },
-      { "category": "Contractual Services", "values": [89420000, 95340000, 102180000, 108400000, 115368000] },
-      { "category": "Commodities", "values": [34120000, 36810000, 39420000, 41200000, 44932000] },
-      { "category": "Capital Outlay", "values": [62340000, 68420000, 71800000, 78100000, 81999000] },
-      { "category": "Debt Service", "values": [24100000, 25340000, 26780000, 27810000, 28777203] },
-      { "category": "Transfers", "values": [38210000, 40120000, 41640000, 46274753, 42183000] }
+      { "category": "Personnel Services", "values": [null, null, null, null, 170291019] },
+      { "category": "Operating",          "values": [null, null, null, null, 193208028] },
+      { "category": "Capital",            "values": [null, null, null, null,  14196511] },
+      { "category": "Debt Service",       "values": [null, null, null, null,  22561097] },
+      { "category": "Transfers Out",      "values": [null, null, null, null,  80332737] }
     ]
   },
   "revenueCategories": {
     "categories": [
-      { "category": "Taxes", "values": [172340000, 181420000, 190870000, 198340000, 207207967] },
-      { "category": "Charges for Services", "values": [89420000, 94810000, 99200000, 104580000, 110234000] },
-      { "category": "Intergovernmental", "values": [78340000, 82410000, 86920000, 91240000, 96812000] },
-      { "category": "Licenses & Permits", "values": [12840000, 13520000, 14210000, 15100000, 15918000] },
-      { "category": "Fines & Forfeitures", "values": [4210000, 4380000, 4520000, 4680000, 4812600] },
-      { "category": "Investment Income", "values": [3420000, 5810000, 8340000, 9210000, 9850000] },
-      { "category": "Transfers In", "values": [98240000, 102130000, 106340000, 112450000, 118000000] },
-      { "category": "Other Revenue", "values": [42130000, 44820000, 46510000, 48940000, 50000000] }
+      { "category": "Taxes",                   "values": [null, null, null, null, 207207967] },
+      { "category": "Fees & Services",          "values": [null, null, null, null, 134077918] },
+      { "category": "Transfers In",             "values": [null, null, null, null,  80636771] },
+      { "category": "Interest on Investments",  "values": [null, null, null, null,  15313783] },
+      { "category": "Intergovernmental",        "values": [null, null, null, null,  10036224] },
+      { "category": "Miscellaneous",            "values": [null, null, null, null,   6381712] },
+      { "category": "Rents & Royalties",        "values": [null, null, null, null,   4253385] },
+      { "category": "Licenses & Permits",       "values": [null, null, null, null,   4126300] },
+      { "category": "Fines & Forfeitures",      "values": [null, null, null, null,    695403] }
     ]
   },
   "revVsExp": [
-    { "year": "FY22", "revenue": 500940000, "expenditure": 476530000 },
-    { "year": "FY23", "revenue": 529300000, "expenditure": 507850000 },
-    { "year": "FY24", "revenue": 556910000, "expenditure": 538720000 },
-    { "year": "FY25", "revenue": 584540000, "expenditure": 569234753 },
-    { "year": "FY26", "revenue": 612834567, "expenditure": 598147203 }
+    { "year": "FY22", "revenue": null, "expenditure": 330811472 },
+    { "year": "FY23", "revenue": null, "expenditure": 347285844 },
+    { "year": "FY24", "revenue": null, "expenditure": 447914764 },
+    { "year": "FY25", "revenue": null, "expenditure": 440078741 },
+    { "year": "FY26", "revenue": 482729463, "expenditure": 480589392 }
   ],
   "generalFundDepartments": [
-    { "department": "Police", "fy26": 62141000 },
-    { "department": "Fire", "fy26": 47818000 },
-    { "department": "General Government", "fy26": 28621000 },
-    { "department": "Public Works", "fy26": 18342000 },
-    { "department": "Parks & Recreation", "fy26": 14236000 },
-    { "department": "Finance", "fy26": 11267000 },
-    { "department": "Information Technology", "fy26": 10918000 },
-    { "department": "City Manager", "fy26": 7434000 },
-    { "department": "Library", "fy26": 6918000 },
-    { "department": "Human Resources", "fy26": 5234000 },
-    { "department": "Legal", "fy26": 4612000 },
-    { "department": "Municipal Court", "fy26": 3812000 },
-    { "department": "City Clerk", "fy26": 3184890 }
+    { "department": "Police",              "fy26":  36813085 },
+    { "department": "Fire",               "fy26":  34740216 },
+    { "department": "Public Works",       "fy26":  30230696 },
+    { "department": "Community Services", "fy26":  19876868 },
+    { "department": "Finance",            "fy26":   8751208 },
+    { "department": "Planning & Land Use","fy26":   8263413 },
+    { "department": "General Government", "fy26":   8173823 },
+    { "department": "Affordable Housing", "fy26":   3841977 },
+    { "department": "Community Engagement","fy26":  3227614 },
+    { "department": "Economic Development","fy26":  2848991 },
+    { "department": "Human Resources",    "fy26":   2595897 },
+    { "department": "Emergency Management","fy26":   335924 },
+    { "department": "Non-Departmental",   "fy26":   1351894 }
+  ],
+  "publicWorksDivisions": [
+    { "division": "Parks Division",                   "fy26": 16247453, "note": "77 parks, 30 open spaces, urban trails, medians, stormwater" },
+    { "division": "Facilities Maintenance",           "fy26": 15254797, "note": "100+ city buildings, Midtown campus ($713K security), Railyard complex" },
+    { "division": "Transit",                          "fy26": 12529528, "note": "Fixed-route buses, paratransit (Ride Connect), FTA compliance" },
+    { "division": "Complete Streets",                 "fy26": 11896032, "note": "Roads, signals, sidewalks, traffic engineering, LED streetlights" },
+    { "division": "Municipal Recreation Complex",     "fy26":  7843879, "note": "Marty Sanchez Links golf ($2.8M contract), rec programs, community centers" },
+    { "division": "Parking Division",                 "fy26":  5996713, "note": "Downtown garages, on-street meters, enforcement" },
+    { "division": "Public Works Admin",               "fy26":  1425488, "note": "Department leadership, business operations, budget management" },
+    { "division": "Metropolitan Planning Organization","fy26":   550173, "note": "Regional transportation planning, federal TIP, long-range plan" }
   ],
   "taxBreakdown": [
     { "source": "Gross Receipts Tax", "fy26": 143812000 },
-    { "source": "Property Tax", "fy26": 38420967 },
-    { "source": "Franchise Tax", "fy26": 9875000 },
-    { "source": "Lodgers Tax", "fy26": 8412000 },
-    { "source": "Gasoline Tax", "fy26": 3480000 },
-    { "source": "Other Taxes", "fy26": 3208000 }
+    { "source": "Property Tax",       "fy26":  38420967 },
+    { "source": "Franchise Tax",      "fy26":   9875000 },
+    { "source": "Lodgers Tax",        "fy26":   8412000 },
+    { "source": "Gasoline Tax",       "fy26":   3480000 },
+    { "source": "Other Taxes",        "fy26":   3208000 }
   ]
 }

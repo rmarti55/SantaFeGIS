@@ -1,0 +1,28 @@
+{
+  "operatingTotal": 550173,
+  "capitalTotal": 0,
+  "grandTotal": 550173,
+  "subOrgs": [
+    {
+      "name": "Regional Transportation Planning",
+      "total": 350173,
+      "type": "operating",
+      "description": "Transportation Improvement Program (TIP), Long-Range Transportation Plan, federal FHWA/FTA pass-through",
+      "lineItems": []
+    },
+    {
+      "name": "MPO Administration",
+      "total": 200000,
+      "type": "operating",
+      "description": "MPO director, policy board support, public engagement, interagency coordination",
+      "lineItems": []
+    }
+  ],
+  "spendingCategories": [
+    { "name": "Federal Pass-Through (FHWA/FTA)", "amount": 250000, "color": "#3b82f6" },
+    { "name": "Personnel (Salaries & Benefits)", "amount": 185000, "color": "#10b981" },
+    { "name": "Contracts & Consultants",        "amount":  90000, "color": "#f59e0b" },
+    { "name": "Other Operating Costs",          "amount":  25173, "color": "#8b5cf6" }
+  ],
+  "capitalNote": "The MPO administers federal transportation funds for the Santa Fe metro area but does not directly spend capital. Project allocations are made through the Transportation Improvement Program (TIP) to member agencies."
+}

@@ -1,0 +1,78 @@
+{
+  "operatingTotal": 16247453,
+  "capitalTotal": 0,
+  "grandTotal": 16247453,
+  "subOrgs": [
+    {
+      "name": "Parks Maintenance Operations",
+      "total": 7200000,
+      "type": "operating",
+      "description": "Core maintenance crew for 77 city parks — turf, irrigation, playground equipment",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount": 4100000, "category": "overhead",   "note": "" },
+        { "name": "Service Contracts (grounds)",     "amount": 1500000, "category": "contracts",  "note": "" },
+        { "name": "Rep & Maint Grounds/Facilities",  "amount":  900000, "category": "materials",  "note": "" },
+        { "name": "Operating Supplies",              "amount":  450000, "category": "materials",  "note": "" },
+        { "name": "Equipment Repairs",               "amount":  250000, "category": "materials",  "note": "" }
+      ]
+    },
+    {
+      "name": "Open Spaces & Urban Trails",
+      "total": 3000000,
+      "type": "operating",
+      "description": "30 open spaces and arroyo trail network — access, erosion control, weed management",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount": 1600000, "category": "overhead",  "note": "" },
+        { "name": "Weed & Vegetation Management",    "amount":  700000, "category": "contracts", "note": "" },
+        { "name": "Trail Repairs & Materials",       "amount":  450000, "category": "materials", "note": "" },
+        { "name": "Operating Supplies",              "amount":  250000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Medians & Rights-of-Way",
+      "total": 2300000,
+      "type": "operating",
+      "description": "Highway medians, traffic circle landscaping, rights-of-way beautification",
+      "lineItems": [
+        { "name": "Landscape Service Contracts",    "amount": 1200000, "category": "contracts", "note": "" },
+        { "name": "Personnel — Salaries & Benefits","amount":  700000, "category": "overhead",  "note": "" },
+        { "name": "Irrigation & Water",             "amount":  250000, "category": "utilities", "note": "" },
+        { "name": "Plants & Materials",             "amount":  150000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Stormwater & Drainage",
+      "total": 2000000,
+      "type": "operating",
+      "description": "Arroyo maintenance, drainage infrastructure, flood-control vegetation",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits","amount":  900000, "category": "overhead",  "note": "" },
+        { "name": "Engineering Contracts",          "amount":  600000, "category": "contracts", "note": "" },
+        { "name": "Rep & Maint Drainage Systems",  "amount":  350000, "category": "materials", "note": "" },
+        { "name": "Operating Supplies",            "amount":  150000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Parks Administration",
+      "total": 1747453,
+      "type": "operating",
+      "description": "Division director, planning, asset management, public engagement",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount": 1200000, "category": "overhead",    "note": "" },
+        { "name": "Professional Contracts",          "amount":  200000, "category": "contracts",   "note": "" },
+        { "name": "Insurance (liability)",           "amount":  200000, "category": "overhead",    "note": "" },
+        { "name": "Software & Technology",           "amount":  100000, "category": "technology",  "note": "" },
+        { "name": "Other Operating Costs",           "amount":   47453, "category": "overhead",    "note": "" }
+      ]
+    }
+  ],
+  "spendingCategories": [
+    { "name": "Personnel (Salaries & Benefits)", "amount": 8500000, "color": "#3b82f6" },
+    { "name": "Contracts & Landscape Services",  "amount": 4000000, "color": "#10b981" },
+    { "name": "Repairs & Maintenance",           "amount": 1700000, "color": "#f59e0b" },
+    { "name": "Operating Supplies",              "amount":  850000, "color": "#ec4899" },
+    { "name": "Utilities (Irrigation & Water)",  "amount":  497453, "color": "#06b6d4" },
+    { "name": "Insurance & Admin",               "amount":  700000, "color": "#8b5cf6" }
+  ],
+  "capitalNote": ""
+}

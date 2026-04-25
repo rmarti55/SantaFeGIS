@@ -19,15 +19,12 @@ import {
 } from "recharts";
 import kpiData from "@/data/fy26-kpis.json";
 import budgetData from "@/data/budget-fy26.json";
-
-const TOOLTIP_STYLE = {
-  backgroundColor: "#1f2937",
-  border: "none",
-  borderRadius: "8px",
-  color: "#f9fafb",
-  fontSize: "13px",
-  padding: "8px 12px",
-};
+import {
+  TOOLTIP_CONTENT_STYLE,
+  TOOLTIP_LABEL_STYLE,
+  TOOLTIP_ITEM_STYLE,
+  TOOLTIP_CURSOR_STYLE,
+} from "@/lib/chartTooltip";
 
 const DEPT_COLORS = [
   "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6",
@@ -281,11 +278,11 @@ function ScatterTooltipContent({ active, payload }: any) {
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   return (
-    <div style={TOOLTIP_STYLE}>
+    <div style={TOOLTIP_CONTENT_STYLE}>
       <p className="font-semibold text-sm">{d.name}</p>
       <p className="text-xs mt-1">Budget: {fmtM(d.budget)}</p>
       <p className="text-xs">KPIs: {d.kpis}</p>
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-gray-500">
         {fmtM(d.ratio)}/KPI
       </p>
     </div>
@@ -424,7 +421,7 @@ export default function KPIDashboard() {
                 tick={{ fontSize: 11 }}
                 width={135}
               />
-              <Tooltip contentStyle={TOOLTIP_STYLE} />
+              <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} cursor={TOOLTIP_CURSOR_STYLE} />
               <Bar dataKey="kpis" radius={[0, 4, 4, 0]}>
                 {kpisByDept.map((entry, i) => (
                   <Cell key={i} fill={entry.fill} />
@@ -462,7 +459,7 @@ export default function KPIDashboard() {
                   />
                 ))}
               </Pie>
-              <Tooltip contentStyle={TOOLTIP_STYLE} />
+              <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -534,7 +531,10 @@ export default function KPIDashboard() {
                 width={135}
               />
               <Tooltip
-                contentStyle={TOOLTIP_STYLE}
+                contentStyle={TOOLTIP_CONTENT_STYLE}
+                labelStyle={TOOLTIP_LABEL_STYLE}
+                itemStyle={TOOLTIP_ITEM_STYLE}
+                cursor={TOOLTIP_CURSOR_STYLE}
                 formatter={(v) => fmtM(Number(v ?? 0))}
               />
               <Bar dataKey="ratio" name="$/KPI" radius={[0, 4, 4, 0]}>

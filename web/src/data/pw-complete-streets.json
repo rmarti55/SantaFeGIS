@@ -1,0 +1,133 @@
+{
+  "operatingTotal": 6685555,
+  "capitalTotal": 5210477,
+  "grandTotal": 11896032,
+  "subOrgs": [
+    {
+      "name": "Streets Admin",
+      "total": 1781294,
+      "type": "operating",
+      "description": "Headquarters, cost allocations, internal overhead",
+      "lineItems": [
+        { "name": "Svcs of other City Depts", "amount": 485086, "category": "overhead", "note": "" },
+        { "name": "Gen Liab Dept Assessment", "amount": 364049, "category": "overhead", "note": "" },
+        { "name": "Rep & Maint Grounds/Rd",   "amount": 220000, "category": "materials", "note": "" },
+        { "name": "Service Contracts",        "amount": 162909, "category": "contracts", "note": "" },
+        { "name": "Operating Supplies",       "amount": 160000, "category": "materials", "note": "" },
+        { "name": "Landfill Tip Fees",        "amount": 150000, "category": "overhead", "note": "" },
+        { "name": "Software Purchases >$5K",  "amount":  50000, "category": "technology", "note": "" }
+      ]
+    },
+    {
+      "name": "Streets - Gas Tax",
+      "total": 1627520,
+      "type": "operating",
+      "description": "State gas tax pass-through — majority transfers to capital paving fund",
+      "lineItems": [
+        { "name": "Operating Transfer Out To 400", "amount": 1337520, "category": "capital-transfer", "note": "Pass-through to capital paving fund" },
+        { "name": "WIP Construction",             "amount":  200000, "category": "capital", "note": "" },
+        { "name": "Rep & Maint Machin/Equip",     "amount":   40000, "category": "materials", "note": "" },
+        { "name": "Diesel Fuel",                  "amount":   25000, "category": "fuel", "note": "" },
+        { "name": "Operating Supplies",           "amount":   20000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Signals Operations/Maint",
+      "total": 1232860,
+      "type": "operating",
+      "description": "121 signals, 40 school zone flashers, 17 warning beacons",
+      "lineItems": [
+        { "name": "Electric",                   "amount": 650000, "category": "utilities", "note": "+$470K from FY25 (+261%)" },
+        { "name": "Service Contracts",          "amount": 377760, "category": "contracts", "note": "" },
+        { "name": "Operating Supplies",         "amount": 125000, "category": "materials", "note": "" },
+        { "name": "Equipment & Machinery >$5K", "amount":  50000, "category": "capital", "note": "" }
+      ]
+    },
+    {
+      "name": "Traffic Engineering",
+      "total": 1037877,
+      "type": "operating",
+      "description": "Engineering, design, project management",
+      "lineItems": [
+        { "name": "Service Contracts",             "amount": 338410, "category": "contracts", "note": "" },
+        { "name": "Professional Contracts",        "amount": 275450, "category": "contracts", "note": "" },
+        { "name": "Rep and Maint System Equip",    "amount": 200000, "category": "materials", "note": "" },
+        { "name": "Operating Transfer Out To 230", "amount": 185517, "category": "capital-transfer", "note": "LED Streetlights debt service" },
+        { "name": "Software Subscriptions >$5K",   "amount":  35000, "category": "technology", "note": "" }
+      ]
+    },
+    {
+      "name": "Paint/Sign Operations",
+      "total": 413250,
+      "type": "operating",
+      "description": "Striping crew, signage, road markings",
+      "lineItems": [
+        { "name": "Service Contracts",    "amount": 275450, "category": "contracts", "note": "" },
+        { "name": "Operating Supplies",   "amount": 110000, "category": "materials", "note": "Down $540K from FY25 — unusual given striping priority" },
+        { "name": "Vehicle & Equip Repr", "amount":  13000, "category": "materials", "note": "" },
+        { "name": "Employee Training",    "amount":   8000, "category": "overhead", "note": "" }
+      ]
+    },
+    {
+      "name": "LED Streetlights",
+      "total": 185517,
+      "type": "debt-service",
+      "description": "Bond repayment for citywide LED conversion",
+      "lineItems": [
+        { "name": "Principal", "amount": 138781, "category": "debt", "note": "" },
+        { "name": "Interest",  "amount":  46736, "category": "debt", "note": "" }
+      ]
+    },
+    {
+      "name": "Traffic Calming",
+      "total": 182000,
+      "type": "operating",
+      "description": "Speed humps, traffic circles, neighborhood calming",
+      "lineItems": [
+        { "name": "WIP Construction", "amount": 180000, "category": "capital", "note": "" },
+        { "name": "Small Equipment",  "amount":   2000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Streets Maintenance",
+      "total": 134950,
+      "type": "operating",
+      "description": "Supplemental paving and maintenance crew budget",
+      "lineItems": [
+        { "name": "Rep & Maint Machin & Equip", "amount": 47200, "category": "materials", "note": "" },
+        { "name": "Water",                      "amount": 40000, "category": "utilities", "note": "" },
+        { "name": "Operating Supplies",         "amount": 15750, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Engineering Projects Mgmt",
+      "total": 88537,
+      "type": "operating",
+      "description": "Capital project management oversight, contracted out",
+      "lineItems": [
+        { "name": "Engineering Services", "amount": 88537, "category": "contracts", "note": "" }
+      ]
+    },
+    {
+      "name": "Roadways & Drainage",
+      "total": 1750,
+      "type": "operating",
+      "description": "Operating stub — capital work moved to CIP/bond",
+      "lineItems": [
+        { "name": "Operating Supplies", "amount": 1750, "category": "materials", "note": "" }
+      ]
+    }
+  ],
+  "spendingCategories": [
+    { "name": "Capital Transfers Out",         "amount": 1700000, "color": "#6b7280" },
+    { "name": "Contracts & Professional Svcs", "amount": 1600000, "color": "#3b82f6" },
+    { "name": "Overhead & Internal Alloc",     "amount": 1000000, "color": "#8b5cf6" },
+    { "name": "Utilities (Signals Electric)",  "amount":  700000, "color": "#f59e0b" },
+    { "name": "Repairs & Materials",           "amount":  500000, "color": "#10b981" },
+    { "name": "Operating Supplies",            "amount":  420000, "color": "#ec4899" },
+    { "name": "WIP / Capital (in operating)", "amount":  380000, "color": "#14b8a6" },
+    { "name": "Debt Service (LED)",            "amount":  186000, "color": "#ef4444" },
+    { "name": "Fuel",                          "amount":  120000, "color": "#f97316" }
+  ],
+  "capitalNote": "The ~$5.2M capital layer is funded through the 2024 GO Bond paving program, legislative grants, and mid-year Budget Adjustment Requests (e.g., Corte de Princesa $360K, Agua Fria-Cottonwood $600K). These are appropriated separately from the operating ledger above."
+}

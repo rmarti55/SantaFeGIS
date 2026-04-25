@@ -1,0 +1,78 @@
+{
+  "operatingTotal": 12529528,
+  "capitalTotal": 0,
+  "grandTotal": 12529528,
+  "subOrgs": [
+    {
+      "name": "Fixed Route Bus Operations",
+      "total": 5200000,
+      "type": "operating",
+      "description": "City bus routes — drivers, fuel, dispatch, ADA compliance",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount": 2800000, "category": "overhead",  "note": "" },
+        { "name": "Bus Operations Contracts",        "amount": 1200000, "category": "contracts", "note": "" },
+        { "name": "Diesel & CNG Fuel",               "amount":  700000, "category": "fuel",      "note": "" },
+        { "name": "Gen Liability & Insurance",       "amount":  300000, "category": "overhead",  "note": "" },
+        { "name": "Operating Supplies",              "amount":  200000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Paratransit (Ride Connect)",
+      "total": 3600000,
+      "type": "operating",
+      "description": "ADA paratransit for seniors and riders with disabilities — contracted operations",
+      "lineItems": [
+        { "name": "Paratransit Operations Contract", "amount": 2500000, "category": "contracts", "note": "" },
+        { "name": "Personnel — Salaries & Benefits", "amount":  700000, "category": "overhead",  "note": "" },
+        { "name": "Insurance & Liability",           "amount":  250000, "category": "overhead",  "note": "" },
+        { "name": "Operating Supplies",              "amount":  150000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Fleet Maintenance",
+      "total": 2000000,
+      "type": "operating",
+      "description": "Bus and vehicle maintenance — in-house mechanics plus contracted heavy repair",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits",  "amount":  900000, "category": "overhead",  "note": "" },
+        { "name": "Rep & Maint Vehicles/Equipment",   "amount":  600000, "category": "materials", "note": "" },
+        { "name": "Parts & Operating Supplies",       "amount":  300000, "category": "materials", "note": "" },
+        { "name": "Fleet Maintenance Contracts",      "amount":  200000, "category": "contracts", "note": "" }
+      ]
+    },
+    {
+      "name": "Transit Technology",
+      "total": 730000,
+      "type": "operating",
+      "description": "Scheduling software, CAD/AVL, passenger information systems",
+      "lineItems": [
+        { "name": "Scheduling Software Upgrade",      "amount":  219000, "category": "technology", "note": "New scheduling system FY26" },
+        { "name": "CAD/AVL & Real-Time Systems",      "amount":  250000, "category": "technology", "note": "" },
+        { "name": "Passenger Info & Displays",        "amount":  161000, "category": "technology", "note": "" },
+        { "name": "Software Subscriptions",           "amount":  100000, "category": "technology", "note": "" }
+      ]
+    },
+    {
+      "name": "Transit Administration & FTA Compliance",
+      "total": 999528,
+      "type": "operating",
+      "description": "Division director, federal grant management, Title VI compliance, NTD reporting",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount":  650000, "category": "overhead",   "note": "" },
+        { "name": "Professional Contracts (grants)",  "amount":  200000, "category": "contracts",  "note": "" },
+        { "name": "Insurance",                        "amount":  100000, "category": "overhead",   "note": "" },
+        { "name": "Other Operating Costs",            "amount":   49528, "category": "overhead",   "note": "" }
+      ]
+    }
+  ],
+  "spendingCategories": [
+    { "name": "Personnel (Salaries & Benefits)",  "amount": 5050000, "color": "#3b82f6" },
+    { "name": "Operations Contracts",             "amount": 3900000, "color": "#10b981" },
+    { "name": "Fuel (Diesel & CNG)",              "amount":  700000, "color": "#f97316" },
+    { "name": "Technology & Software",            "amount":  730000, "color": "#06b6d4" },
+    { "name": "Repairs, Parts & Materials",       "amount":  900000, "color": "#f59e0b" },
+    { "name": "Insurance & Administration",       "amount":  649528, "color": "#8b5cf6" },
+    { "name": "Operating Supplies",               "amount":  600000, "color": "#ec4899" }
+  ],
+  "capitalNote": "Federal Transit Administration (FTA) Section 5307 and 5310 grants fund bus replacements and capital improvements separately from this operating appropriation. FTA funds require local match, typically sourced from General Fund or state grants."
+}

@@ -26,3 +26,8 @@ html, body {
   width: 100%;
   touch-action: manipulation;
 }
+
+.recharts-wrapper *:focus,
+.recharts-wrapper *:focus-visible {
+  outline: none;
+}

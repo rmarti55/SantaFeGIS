@@ -1,0 +1,89 @@
+{
+  "operatingTotal": 15254797,
+  "capitalTotal": 0,
+  "grandTotal": 15254797,
+  "subOrgs": [
+    {
+      "name": "Building Operations & Maintenance",
+      "total": 6000000,
+      "type": "operating",
+      "description": "Core maintenance for 100+ city-owned buildings — HVAC, electrical, plumbing, roofing",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount": 2200000, "category": "overhead",  "note": "" },
+        { "name": "Maintenance Contracts (HVAC/Elec)","amount": 1800000, "category": "contracts", "note": "" },
+        { "name": "Rep & Maint Buildings",           "amount": 1200000, "category": "materials", "note": "" },
+        { "name": "Utilities (gas, electric, water)","amount":  550000, "category": "utilities", "note": "" },
+        { "name": "Operating Supplies",              "amount":  250000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Midtown Campus Operations",
+      "total": 3000000,
+      "type": "operating",
+      "description": "Midtown redevelopment campus operations, including $713K security enhancement",
+      "lineItems": [
+        { "name": "Security Services Contract",       "amount":  713000, "category": "contracts", "note": "+$713K security enhancement FY26" },
+        { "name": "Personnel — Salaries & Benefits",  "amount":  900000, "category": "overhead",  "note": "" },
+        { "name": "Building Maintenance Contracts",   "amount":  700000, "category": "contracts", "note": "" },
+        { "name": "Utilities",                        "amount":  400000, "category": "utilities", "note": "" },
+        { "name": "Supplies & Materials",             "amount":  287000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Railyard Complex",
+      "total": 2000000,
+      "type": "operating",
+      "description": "Railyard Park and surrounding city-owned Railyard infrastructure",
+      "lineItems": [
+        { "name": "Facility Management Contract",    "amount":  900000, "category": "contracts", "note": "" },
+        { "name": "Personnel — Salaries & Benefits", "amount":  600000, "category": "overhead",  "note": "" },
+        { "name": "Utilities",                       "amount":  300000, "category": "utilities", "note": "" },
+        { "name": "Rep & Maint",                     "amount":  200000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Custodial & Janitorial Services",
+      "total": 1900000,
+      "type": "operating",
+      "description": "Contracted and in-house cleaning for city offices, community buildings",
+      "lineItems": [
+        { "name": "Custodial Service Contracts",     "amount": 1400000, "category": "contracts", "note": "" },
+        { "name": "Personnel — Salaries & Benefits", "amount":  350000, "category": "overhead",  "note": "" },
+        { "name": "Cleaning Supplies",               "amount":  150000, "category": "materials", "note": "" }
+      ]
+    },
+    {
+      "name": "Energy & Systems Management",
+      "total": 1100000,
+      "type": "operating",
+      "description": "Energy audits, HVAC controls, building automation systems",
+      "lineItems": [
+        { "name": "Energy Management Contracts",     "amount":  500000, "category": "contracts",  "note": "" },
+        { "name": "Personnel — Salaries & Benefits", "amount":  350000, "category": "overhead",   "note": "" },
+        { "name": "Software & Controls",             "amount":  150000, "category": "technology", "note": "" },
+        { "name": "Supplies",                        "amount":  100000, "category": "materials",  "note": "" }
+      ]
+    },
+    {
+      "name": "Facilities Administration",
+      "total": 1254797,
+      "type": "operating",
+      "description": "Division director, asset management, capital project coordination",
+      "lineItems": [
+        { "name": "Personnel — Salaries & Benefits", "amount":  800000, "category": "overhead",   "note": "" },
+        { "name": "Insurance (property/liability)",  "amount":  254797, "category": "overhead",   "note": "" },
+        { "name": "Professional Contracts",          "amount":  100000, "category": "contracts",  "note": "" },
+        { "name": "Software & Asset Mgmt Systems",   "amount":  100000, "category": "technology", "note": "" }
+      ]
+    }
+  ],
+  "spendingCategories": [
+    { "name": "Personnel (Salaries & Benefits)", "amount": 5200000, "color": "#3b82f6" },
+    { "name": "Contracts & Managed Services",   "amount": 6113000, "color": "#10b981" },
+    { "name": "Repairs & Maintenance",          "amount": 1400000, "color": "#f59e0b" },
+    { "name": "Utilities",                      "amount": 1250000, "color": "#06b6d4" },
+    { "name": "Supplies & Materials",           "amount":  687000, "color": "#ec4899" },
+    { "name": "Insurance & Administration",     "amount":  604797, "color": "#8b5cf6" }
+  ],
+  "capitalNote": "Significant capital improvements to city buildings are funded separately through the Capital Improvements Program (CIP) and General Obligation Bonds. Operating budget above covers day-to-day maintenance only."
+}

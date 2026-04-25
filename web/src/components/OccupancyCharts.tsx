@@ -12,6 +12,12 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import {
+  TOOLTIP_CONTENT_STYLE,
+  TOOLTIP_LABEL_STYLE,
+  TOOLTIP_ITEM_STYLE,
+  TOOLTIP_CURSOR_STYLE,
+} from "@/lib/chartTooltip";
 
 interface TopLevel {
   total: number;
@@ -56,14 +62,6 @@ type DrillDown = "owner_occupied" | "not_owner_occupied" | "entities" | "states"
 
 const DONUT_COLORS = ["#22c55e", "#ef4444", "#9ca3af"];
 
-const CUSTOM_TOOLTIP_STYLE = {
-  backgroundColor: "#1f2937",
-  border: "none",
-  borderRadius: "8px",
-  color: "#f9fafb",
-  fontSize: "13px",
-  padding: "8px 12px",
-};
 
 function pct(n: number, total: number) {
   if (!total) return "0";
@@ -174,7 +172,9 @@ export default function OccupancyCharts() {
               ))}
             </Pie>
             <Tooltip
-              contentStyle={CUSTOM_TOOLTIP_STYLE}
+              contentStyle={TOOLTIP_CONTENT_STYLE}
+              labelStyle={TOOLTIP_LABEL_STYLE}
+              itemStyle={TOOLTIP_ITEM_STYLE}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={(value: any) => [
                 `${fmt(Number(value))} (${pct(Number(value), total)}%)`,
@@ -219,7 +219,7 @@ export default function OccupancyCharts() {
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="name" width={140} tick={{ fontSize: 11, fill: "#6b7280" }} />
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <Tooltip contentStyle={CUSTOM_TOOLTIP_STYLE} formatter={(v: any) => fmt(Number(v))} />
+              <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} cursor={TOOLTIP_CURSOR_STYLE} formatter={(v: any) => fmt(Number(v))} />
               <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                 {ownerOccBars.map((b) => (
                   <Cell key={b.name} fill={b.fill} />
@@ -252,7 +252,10 @@ export default function OccupancyCharts() {
               <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 11, fill: "#6b7280" }} />
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <Tooltip
-                contentStyle={CUSTOM_TOOLTIP_STYLE}
+                contentStyle={TOOLTIP_CONTENT_STYLE}
+                labelStyle={TOOLTIP_LABEL_STYLE}
+                itemStyle={TOOLTIP_ITEM_STYLE}
+                cursor={TOOLTIP_CURSOR_STYLE}
                 formatter={(v: any) => fmt(Number(v))}
                 labelFormatter={(label: any) => {
                   const row = notOwnerBars.find((r) => r.name === String(label));
@@ -292,7 +295,7 @@ export default function OccupancyCharts() {
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 11, fill: "#6b7280" }} />
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <Tooltip contentStyle={CUSTOM_TOOLTIP_STYLE} formatter={(v: any) => fmt(Number(v))} />
+              <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} cursor={TOOLTIP_CURSOR_STYLE} formatter={(v: any) => fmt(Number(v))} />
               <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                 {entityBars.map((b) => (
                   <Cell key={b.name} fill={b.fill} />
@@ -314,7 +317,7 @@ export default function OccupancyCharts() {
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="name" width={40} tick={{ fontSize: 11, fill: "#6b7280" }} />
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              <Tooltip contentStyle={CUSTOM_TOOLTIP_STYLE} formatter={(v: any) => fmt(Number(v))} />
+              <Tooltip contentStyle={TOOLTIP_CONTENT_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} cursor={TOOLTIP_CURSOR_STYLE} formatter={(v: any) => fmt(Number(v))} />
               <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                 {stateBars.map((b) => (
                   <Cell key={b.name} fill={b.fill} />
